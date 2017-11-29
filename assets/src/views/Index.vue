@@ -373,7 +373,34 @@
                                 "pid": 2,
                                 "level": 1,
                                 "items": []
-                            }, ]
+                            }],
+                            "items": [{
+                                "id": 15,
+                                "menu_name": "gov登录日志",
+                                "menu_node": "/user/loginlog",
+                                "remark": "",
+                                "pid": 2,
+                                "level": 1,
+                                "items": []
+                            }],
+                            "items": [{
+                                "id": 16,
+                                "menu_name": "课程观看日志",
+                                "menu_node": "/course/history",
+                                "remark": "",
+                                "pid": 2,
+                                "level": 1,
+                                "items": []
+                            }],
+                            "items": [{
+                                "id": 13,
+                                "menu_name": "课时记录",
+                                "menu_node": "/course/log",
+                                "remark": "",
+                                "pid": 2,
+                                "level": 1,
+                                "items": []
+                            }],
                         },
                         {
                             "id": 2,

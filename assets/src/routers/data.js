@@ -63,5 +63,48 @@ export default {
                 noback: false
             }
         },
+        //gov登录日志
+         {
+            path: 'company/manage',
+            name: 'analysis-company-manage',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/data/Manage.vue'))
+                })
+            },
+            meta: {
+                title: '管理员',
+                noback: true
+            }
+        },
+        //课程观看日志
+        {
+            path: 'company/stat',
+            name: 'analysis-company-stat',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/data/companyStat/Index.vue'))
+                })
+            },
+            meta: {
+                title: '行为统计',
+                noback: true
+            }
+        },
+        {
+            path: 'company/stat/view',
+            name: 'analysis-company-stat-view',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/data/companyStat/View.vue'))
+                })
+            },
+            meta: {
+                title: '趋势',
+                noback: true
+            }
+        },
+        //课时记录
+
     ]
 }
