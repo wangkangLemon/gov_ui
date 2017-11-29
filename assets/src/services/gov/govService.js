@@ -1,0 +1,514 @@
+import * as api from '../api'
+import config from '../../utils/config'
+const urlPre = config.apiHost 
+const urlPre1 = config.apiHost
+
+class govService {
+
+    // category - 0-企业 1-工业 2-连锁 
+    getSelectList({
+        id = '',
+        name = '',
+        category = '',
+        pagesize = '',
+        page = '',
+        pid = '',
+        province_id = '',
+        city_id = '',
+        area_id = '',
+        town_id = '',
+        village_id = '',
+        deleted = '',
+    }) {
+        let finalUrl = urlPre + '/gov/lists'
+        return api.get(finalUrl, {
+            id,
+            name,
+            category,
+            page,
+            pagesize,
+            pid,
+            province_id,
+            city_id,
+            area_id,
+            town_id,
+            village_id,
+            deleted,
+        }, false).then((ret) => {
+            return ret.data
+        })
+    }
+
+    // category - 0-企业 1-工业 2-连锁 
+    postSelectList({
+        id = '',
+        name = '',
+        category = '',
+        pagesize = '',
+        page = '',
+        pid = '',
+        province_id = '',
+        city_id = '',
+        area_id = '',
+        town_id = '',
+        village_id = '',
+        deleted = '',
+    }) {
+        let finalUrl = urlPre + '/gov/lists'
+        return api.post(finalUrl, {
+            id,
+            name,
+            category,
+            page,
+            pagesize,
+            pid,
+            province_id,
+            city_id,
+            area_id,
+            town_id,
+            village_id,
+            deleted,
+        }, false).then((ret) => {
+            return ret.data
+        })
+    }
+
+    // 获取详情接口
+    getGovInfo(val) {
+        let finalUrl = `${urlPre}/gov/get/${val}`
+        return api.get(finalUrl).then((ret) => {
+            return ret.data
+        })
+    }
+
+    // 添加企业
+    addGov({
+        category,
+        pid,
+        province_id,
+        city_id,
+        area_id,
+        town_id,
+        village_id,
+        name,
+        concact,
+        mobile,
+        email,
+        mobile_title,
+        tel,
+        zip,
+        fax,
+        url,
+        address,
+        description,
+    }) {
+        let finalUrl = urlPre + '/gov/create'
+        return api.post(finalUrl, {
+            category,
+            pid,
+            province_id,
+            city_id,
+            area_id,
+            town_id,
+            village_id,
+            name,
+            concact,
+            mobile,
+            email,
+            mobile_title,
+            tel,
+            zip,
+            fax,
+            url,
+            address,
+            description,
+        }).then((ret) => {
+            if (ret.code) {
+                return Promise.reject(ret)
+            }
+        })
+    }
+
+    // 修改企业信息
+    editGov(val) {
+        let finalUrl = `${urlPre}/gov/edit/${val}`
+        return api.get(finalUrl).then((ret) => {
+            return ret.data
+        })
+    }
+
+    // 更新企业信息
+    updateGov({
+        gov_id,
+        category,
+        pid,
+        province_id,
+        city_id,
+        area_id,
+        town_id,
+        village_id,
+        name,
+        concact,
+        mobile,
+        email,
+        mobile_title,
+        tel,
+        zip,
+        fax,
+        url,
+        address,
+        description,
+    }) {
+        let finalUrl = `${urlPre}/gov/edit/${gov_id}`
+        return api.post(finalUrl, {
+            category,
+            pid,
+            province_id,
+            city_id,
+            area_id,
+            town_id,
+            village_id,
+            name,
+            concact,
+            mobile,
+            email,
+            mobile_title,
+            tel,
+            zip,
+            fax,
+            url,
+            address,
+            description,
+        }).then((ret) => {
+            if (ret.code) {
+                return Promise.reject(ret)
+            }
+        })
+    }
+    
+     // 企业管理员查询接口
+    govAdminList({
+        // keyword,
+        gov_id,
+        page,
+        pagesize
+    }) {
+        let finalUrl = `${urlPre1}/user/lists`
+        return api.get(finalUrl, {
+            // keyword,
+            gov_id,
+            page,
+            pagesize
+        }).then((ret) => {
+            return ret.data
+        })
+    }
+    // 企业管理员查询接口
+    govAdmin({
+        // keyword,
+        gov_id,
+        page,
+        pagesize
+    }) {
+        let finalUrl = `${urlPre1}/user/get/${gov_id}`
+        return api.get(finalUrl, {
+            // keyword,
+            page,
+            pagesize
+        }).then((ret) => {
+            return ret.data
+        })
+    }
+
+    // 新增管理员
+    addGovAdmin({
+        name,
+        sex,
+        mobile,
+        passwd,
+        // birthday,
+        // address,
+        gov_id,
+        role_id,
+        area_id,
+        nickname
+    }) {
+        let finalUrl = `${urlPre1}/user/create`
+        return api.post(finalUrl, {
+            name,
+            sex,
+            mobile,
+            passwd,
+            // birthday,
+            // address,
+            gov_id,
+            role_id,
+            area_id,
+            nickname
+        }).then((ret) => {
+            if (ret.code) {
+                return Promise.reject(ret)
+            }
+        })
+    }
+
+
+     // 获取成绩管理统计列表
+    getGovTestingData({
+                           page,
+                           pagesize,
+                           gov_id,
+                           course_id,
+                           time_start = '',
+                           time_end = '',
+                       }) {
+        let finalUrl = `${urlPre}/testing/lists`
+        return api.get(finalUrl, {page, pagesize, gov_id, course_id, time_start, time_end}).then((ret) => {
+            return ret.data
+        })
+    }
+
+
+    
+    // 上传企业logo
+    CompanyLogoUpload ({company_id, image, alias}) {
+        let finalUrl = `${config.apiHost}/com/${company_id}/mobile/logo/upload`
+        return api.post(finalUrl, {image, alias}).then((ret) => {
+            return ret.data
+        })
+    }
+
+    // 获取企业logo
+    // getCompanyLogo ({company_id}) {
+    //     let finalUrl = `${config.apiHost}/com/${company_id}/mobile/logo`
+    //     return api.get(finalUrl).then((ret) => {
+    //         return ret.data
+    //     })
+    // }
+    getCompanyLogo ({company_id}) {
+        let finalUrl = `${urlPre}/app/setting`
+        return api.get(finalUrl).then((ret) => {
+            return ret.data
+        })
+    }
+
+    // 设置企业logo
+    setCompanyLogo ({company_id, logo}) {
+        let finalUrl = `${config.apiHost}/com/${company_id}/mobile/logo`
+        return api.put(finalUrl, {logo})
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //拿到数据 
+    a({
+        pagesize,
+        page
+    }) {
+        let url = urlPre + '/lists'
+        return api.get(url, {
+            pagesize,
+            page
+        }).then(ret => {
+            if (ret.code == 0) {
+                return ret
+            } else {
+                return Promise.reject(ret)
+            }
+        })
+    }
+
+
+    // 搜索
+    getAdminInfo(id) {
+        let url = `${urlPre}/view/${id}` //传递的地址的id
+        return api.get(url, {}, false).then(ret => {
+            if (ret.code == 0) {
+                return ret.data
+            } else {
+                return Promise.reject(ret)
+            }
+        })
+    }
+
+    // 创建
+    create({
+        role_id,
+        name,
+        mobile,
+        email,
+        password
+    }) {
+        let url = urlPre + '/create'
+        return api.post(url, {
+            role_id,
+            name,
+            mobile,
+            email,
+            password
+        }).then(ret => {
+            if (ret.code == 0) {
+                return ret.data
+            } else {
+                xmview.showTip('error', ret.message)
+                return Promise.reject(ret)
+            }
+        })
+    }
+    // 更新
+    update({
+        id,
+        role_id,
+        name,
+        mobile,
+        email,
+        password,
+        sex,
+        avatar,
+        address
+    }) {
+        let url = `${urlPre}/update/${id}`
+        return api.post(url, {
+            role_id,
+            name,
+            mobile,
+            email,
+            password,
+            sex,
+            avatar,
+            address
+        }).then(ret => {
+            if (ret.code) {
+                console.log('update()')
+                return Promise.reject(ret)
+            }
+        })
+    }
+
+    // 删除 GOV部门
+    deleteGov(id) {
+        let url = `${urlPre}/gov/delete/${id}`
+        // console.log(url)
+        return api.get(url, {}).then(ret => {
+            if (ret.code == 0) {
+                 xmview.showTip('success',ret.message)
+                return ret.data
+            } else {
+                xmview.showTip('error',ret.message)
+                return Promise.reject(ret)
+            }
+        })
+    }
+    // 删除
+    delete(id) {
+        let url = `${urlPre}/delete/${id}`
+        // console.log(url)
+        return api.get(url, {}).then(ret => {
+            if (ret.code) {
+                return Promise.reject(ret)
+            }
+        })
+    }
+
+    // 批量删除管理员
+    deleteMulty(ids) {
+        let url = `${urlPre}/batchdel`
+        return api.put(url, {
+            ids
+        })
+    }
+
+    // 批量移动管理员到指定分类
+    moveToCategoryMulty({
+        ids,
+        category_id
+    }) {
+        let url = `${urlPre}/batchmove`
+        return api.put(url, {
+            ids,
+            category_id
+        })
+    }
+
+    // 设置管理员
+    setLesson({
+        id,
+        data
+    }) {
+        let url = `${urlPre}/${id}/setlesson`
+        return api.put(url, data).then(ret => {
+            if (ret.code) {
+                return Promise.reject(ret)
+            }
+        })
+    }
+
+    // 禁用管理员
+    offline({
+        id,
+        role_id,
+        name,
+        mobile,
+        email,
+        password,
+        sex,
+        avatar,
+        address,
+        disabled
+    }) {
+        let url = `${urlPre}/update/${id}`
+        console.log('进入offline(id)')
+        return api.post(url, {
+            id,
+            role_id,
+            name,
+            mobile,
+            email,
+            password,
+            sex,
+            avatar,
+            address,
+            disabled
+        })
+    }
+
+    // 启用管理员
+    online(id) {
+        let url = `${urlPre}/update/${id}`
+        return api.post(url, {
+            disabled: 0
+        })
+    }
+
+    // 获取添加编辑课程上传图片的url
+    getUploadUrl({
+        image,
+        alias
+    }) {
+        let url = `${urlPre}/upload`
+        return api.post(url, {
+            image,
+            alias
+        }).then((ret) => {
+            return ret.data
+        })
+    }
+}
+export default new govService()

@@ -1,0 +1,61 @@
+%content-container {
+    padding: 15px;
+    position: relative;
+    border: 1px solid #ededed;
+    border-radius: 5px;
+    background: #fff;
+
+    &:after {
+        content: '';
+        clear: both;
+        display: block;
+    }
+
+    .pagin {
+        float: right;
+        margin-top: 15px;
+    }
+
+    // 底部的管理按钮 比如批量删除
+    .bottom-manage {
+        margin-top: 15px;
+    }
+}
+
+// 右上角按钮的容器样式
+%right-top-btnContainer{
+    position: absolute;
+    right: 0;
+    top: -50px;
+    &.header-button {
+        > .el-button {
+            i {
+                margin-right: 5px;
+                &:before {
+                    position: relative;
+                    top: -1px;
+                }
+            }
+        }
+    }
+}
+
+// 常用颜色定义
+.text-blue {
+    color: #20A0FF
+}
+.text-light-blue {
+  color: #58B7FF
+}
+.text-dark-blue {
+    color: #1D8CE0
+}
+.text-success{
+    color: #13CE66
+}
+.text-warning{
+    color: #F7BA2A
+}
+.text-danger{
+    color: #FF4949
+}

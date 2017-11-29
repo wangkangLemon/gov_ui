@@ -1,0 +1,29 @@
+{
+  "code": 0,
+  "message": "",
+  "data": {
+    "data": [
+      {
+        "id": 9,
+        "name": "白城市同泰药业有限公司",
+        "contact": "陆晨亮",
+        "mobile": "18004369817",
+        "area": "",
+        "status": 0,
+        "update_time_name": "2017-09-28 06:38:52",
+        "update_time_unix": 1506551932
+      },
+      {
+        "id": 6,
+        "name": "广元芝心大药房连锁有限公司",
+        "contact": "武亮",
+        "mobile": "18398775285",
+        "area": "",
+        "status": 0,
+        "update_time_name": "2017-09-28 03:16:31",
+        "update_time_unix": 1506539791
+      }
+    ],
+    "total": 2
+  }
+}

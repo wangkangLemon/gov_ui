@@ -1,0 +1,119 @@
+// 我是工业
+import * as api from '../api'
+import config from '../../utils/config'
+const url = {
+    urlOrigin: '/company',            // 通过企业Id搜索企业
+    urlPre: '/company/agent',
+    urlSearch: '/company/search'      // 通过企业名称搜索企业
+}
+Object.keys(url).map((key) => {
+    url[key] = config.apiHost + url[key]
+})
+class AgentService {
+    search ({
+        keyword = '',  // 关键词：匹配企业名称
+        area = '',     // 负责区域：传 省份名称
+        category = 'self', // 类型： self 我是工业，agent 我是代理
+        status = -1,   // 状态：-1 全部，0 关联中，1 待确认，2 已拒绝，3 已解除，4 已放弃
+        page = 1,
+        pagesize = 10,
+    }) {
+        let finalUrl = url.urlPre + '/search'
+        return api.get(finalUrl, {
+            keyword,
+            area,
+            category,
+            status,
+            page,
+            pagesize,
+        }, false).then((ret) => {
+            return ret.data
+        })
+    }
+
+    // 获取
+    get (id) {
+        let finalUrl = `${url.urlOrigin}/${id}`
+        return api.get(finalUrl).then((ret) => {
+            return ret.data
+        })
+    }
+
+    // 添加关联
+    create ({
+        company_id = 0,
+        company_name = '',
+     }) {
+        return api.post(url.urlPre, {
+            company_id,
+            company_name
+        }).then((ret) => {
+            if (ret.code) {
+                return Promise.reject(ret)
+            }
+        })
+    }
+
+    // 解除关联，工业主动解除，要判断是否有计划在投放中
+    disconnect(agent_company_id) {
+        let finalUrl = `${url.urlPre}/${agent_company_id}/disconnect`
+        return api.put(finalUrl, {}).then((ret) => {
+            if (ret.code) {
+                return Promise.reject(ret)
+            }
+        })
+    }
+
+    // 重新关联，只有工业可以操作
+    reconnect(agent_company_id) {
+        let finalUrl = `${url.urlPre}/${agent_company_id}/reconnect`
+        return api.put(finalUrl, {}).then((ret) => {
+            if (ret.code) {
+                return Promise.reject(ret)
+            }
+        })
+    }
+
+    // 放弃关联，代理商还未确认之前
+    drop(agent_company_id) {
+        let finalUrl = `${url.urlPre}/${agent_company_id}/drop`
+        return api.put(finalUrl, {}).then((ret) => {
+            if (ret.code) {
+                return Promise.reject(ret)
+            }
+        })
+    }
+
+    // 设置负责区域
+    setArea ({
+        agent_company_id = 0,
+        area = '',
+         }) {
+        let finalUrl = `${url.urlPre}/${agent_company_id}/area`
+        return api.put(finalUrl, {
+            area
+        }).then((ret) => {
+            if (ret.code) {
+                return Promise.reject(ret)
+            }
+        })
+    }
+
+    getCompanyByName ({
+        keyword,
+        page = 1,
+        pagesize = 10,
+        category = 1
+    }) {
+        return api.get(url.urlSearch, {
+            keyword,
+            category,
+            page,
+            pagesize
+        }).then((ret) => {
+            return ret.data
+        })
+    }
+}
+
+export default new AgentService()
