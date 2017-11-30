@@ -1,5 +1,5 @@
 <template>
-    <keep-alive exclude=" sys-form ">
+    <keep-alive exclude=" data-form ">
         <router-view></router-view>
     </keep-alive>
 </template>

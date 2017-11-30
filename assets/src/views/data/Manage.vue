@@ -116,12 +116,12 @@
                     <label>姓名</label>
                     <el-input class="name" @change="getData" v-model="search.user_name"></el-input>
                 </section>
-                <section>
+                <!--<section>
                     <label>账号</label>
                     <el-input class="name" @change="getData" v-model="search.name"></el-input>
-                </section>
+                </section>-->
                 <section>
-                    <i>企业</i>
+                    <i>部门</i>
                     <CompanySelect  :change="getData" v-model="search.company_id"
                                     v-on:change="val=>search.company_id=val">
                     </CompanySelect>
@@ -129,9 +129,8 @@
                 <section>
                     <i>角色</i>
                     <el-select clearable v-model="search.role" @change="getData">
-                        <el-option label="连锁管理员" value="company"></el-option>
-                        <el-option label="区域管理员" value="region"></el-option>
-                        <el-option label="店长" value="department"></el-option>
+                        <el-option label="普通管理员" value="0"></el-option>
+                        <el-option label="超级管理员" value="1"></el-option>
                     </el-select>
                 </section>
                 <DateRange title="登录时间" :start="search.createTime" :end="search.endTime"
@@ -151,11 +150,11 @@
                         min-width="100"
                         label="姓名">
                 </el-table-column>
-                <el-table-column
+                <!--<el-table-column
                         prop="account"
                         label="账号"
                         min-width="200">
-                </el-table-column>
+                </el-table-column>-->
                 <el-table-column
                         prop="company_name"
                         min-width="180"
@@ -263,8 +262,8 @@
                     user_name: this.search.user_name,
                     company_id: this.search.company_id,
                     role: this.search.role,
-                    time_start: this.search.createTime,
-                    time_end: this.search.endTime,
+                    date_start: this.search.createTime,
+                    date_end: this.search.endTime,
                 }).then((ret) => {
                     this.total = ret.total
                     this.manageData = ret.data

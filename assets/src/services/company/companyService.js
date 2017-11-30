@@ -496,11 +496,11 @@ class CompanyService {
                         page,
                         pagesize,
                         store_id,
-                        start_date,
-                        end_date,
+                        date_start,
+                        date_end,
                     }) {
         let finalUrl = `${urlPre}/stat/search/company`
-        return api.get(finalUrl, {page, pagesize, store_id, start_date, end_date}).then((ret) => {
+        return api.get(finalUrl, {page, pagesize, store_id, date_start, date_end}).then((ret) => {
             return ret.data
         })
     }
@@ -508,11 +508,11 @@ class CompanyService {
     // 企业活跃情况 图表信息
     getCompanyStatChart ({
                             store_id,
-                            start_date,
-                            end_date,
+                            date_start,
+                            date_end,
                         }) {
         let finalUrl = `${urlPre}/stat/chart`
-        return api.get(finalUrl, {store_id, start_date, end_date}).then((ret) => {
+        return api.get(finalUrl, {store_id, date_start, date_end}).then((ret) => {
             return ret.data
         })
     }

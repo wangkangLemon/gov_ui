@@ -65,8 +65,8 @@ export default {
         },
         //gov登录日志
          {
-            path: 'company/manage',
-            name: 'analysis-company-manage',
+            path: 'user-loginlog',
+            name: 'data-user-loginlog',
             component: resolve => {
                 require.ensure([], () => {
                     resolve(require('../views/data/Manage.vue'))
@@ -79,21 +79,21 @@ export default {
         },
         //课程观看日志
         {
-            path: 'company/stat',
-            name: 'analysis-company-stat',
+            path: 'course-history',
+            name: 'data-course-history',
             component: resolve => {
                 require.ensure([], () => {
                     resolve(require('../views/data/companyStat/Index.vue'))
                 })
             },
             meta: {
-                title: '行为统计',
+                title: '课程观看日志',
                 noback: true
             }
         },
         {
             path: 'company/stat/view',
-            name: 'analysis-company-stat-view',
+            name: 'data-company-stat-view',
             component: resolve => {
                 require.ensure([], () => {
                     resolve(require('../views/data/companyStat/View.vue'))

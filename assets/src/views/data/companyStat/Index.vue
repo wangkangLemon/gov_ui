@@ -39,7 +39,7 @@
 
 <template>
     <article id="analysis-company-stat">
-        <el-tabs v-model="fetchParam.date" @tab-click="fetchDate">
+        <!--<el-tabs v-model="fetchParam.date" @tab-click="fetchDate">
             <el-tab-pane label="昨日" name="yesterday"></el-tab-pane>
             <el-tab-pane label="上周" name="prevweek"></el-tab-pane>
             <el-tab-pane label="上月" name="prevmonth"></el-tab-pane>
@@ -52,12 +52,12 @@
             </DateRange>
         </div>
         <el-button type="warning" class="export" @click="exportClick"><i class="iconfont icon-iconfontexcel"></i>
-            <i>导出</i></el-button>
+            <i>导出</i></el-button>-->
 
         <article class="table-container">
             <article class="search">
                 <section>
-                    <i>连锁</i>
+                    <i>部门</i>
                     <StoreSelect :type="2" v-model="fetchParam.companySelect"
                                            v-on:change="val=>fetchParam.companySelect=val"
                                            :change="fetchData">
@@ -69,40 +69,40 @@
                       :data="tableData"
                       :fit="true"
                       border>
-                <el-table-column v-if=" type == 0" label="企业名称" min-width="200">
+                <el-table-column v-if=" type == 0" label="部门名称" min-width="200">
                     <template scope="scope">
                         <el-button type="text"
-                                   @click="$router.push({name:'analysis-company-stat-view', query:{ store_id: scope.row.company_id }})">
-                            <i> {{scope.row.company_name}}</i>
+                                   @click="$router.push({name:'analysis-company-stat-view', query:{ gov_id: scope.row.company_id }})">
+                            <i> {{scope.row.gov_name}}</i>
                         </el-button>
                     </template>
                 </el-table-column>
-                <el-table-column
+                <!--<el-table-column
                         prop="active_user"
                         min-width="100"
                         label="活跃店员数量">
-                </el-table-column>
+                </el-table-column>-->
                 <el-table-column
-                        prop="course_user"
+                        prop="user_id"
                         min-width="100"
-                        label="学习人数">
+                        label="用户">
                 </el-table-column>
                 <el-table-column
-                        prop="testing_user"
+                        prop="gov_name"
                         min-width="100"
-                        label="考试人数">
+                        label="部门">
                 </el-table-column>
                 <el-table-column
-                        prop="testing_number"
+                        prop="category_name"
                         min-width="100"
-                        label="考试次数">
+                        label="课程分类	">
                 </el-table-column>
                 <el-table-column
-                        prop="private_number"
+                        prop="course_name"
                         min-width="100"
-                        label="私有课数量">
+                        label="课程">
                 </el-table-column>
-                <el-table-column
+                <!--<el-table-column
                         prop="private_testing"
                         min-width="100"
                         label="私有课考试次数">
@@ -111,7 +111,7 @@
                         prop="private_testing_user"
                         min-width="100"
                         label="私有课考试人数">
-                </el-table-column>
+                </el-table-column>-->
             </el-table>
 
             <el-pagination class="pagin"
@@ -155,7 +155,7 @@
             this.type = parseInt(this.$route.query.type) || 0
             this.fetchParam.course_id = this.$route.query.course_id
             this.fetchParam.department_id = this.$route.query.department_id
-            this.fetchParam.store_id = this.$route.query.store_id
+            this.fetchParam.gov_id = this.$route.query.gov_id
             // 页面加载一次
             this.fetchData()
 
@@ -186,7 +186,7 @@
                 return govService.getCompanyStat({
                     page: this.fetchParam.page,
                     page_size: this.fetchParam.page_size,
-                    store_id: this.fetchParam.companySelect,
+                    gov_id: this.fetchParam.companySelect,
                     stat_date: this.fetchParam.stat_date,
                 }).then((ret) => {
                     this.loadingData = false
@@ -214,7 +214,7 @@
             type: void 0,
             course_id: void 0,
             department_id: void 0,
-            store_id: void 0,
+            gov_id: void 0,
             companySelect: '',
             stat_date: '',
             stat_day: ''

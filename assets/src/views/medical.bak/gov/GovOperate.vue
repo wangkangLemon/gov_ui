@@ -62,12 +62,12 @@
                 <el-form-item prop="zip" label="邮编" :label-width="formLabelWidth">
                     <el-input v-model="form.zip" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item prop="url" label="企业网址" :label-width="formLabelWidth">
+                <!--<el-form-item prop="url" label="企业网址" :label-width="formLabelWidth">
                     <el-input v-model="form.url" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item prop="description" label="企业介绍" :label-width="formLabelWidth">
                     <el-input type="textarea" :rows="3" v-model="form.description" auto-complete="off"></el-input>
-                </el-form-item>
+                </el-form-item>-->
                
             </el-form>
             <div slot="footer" class="dialog-footer">

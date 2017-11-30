@@ -331,7 +331,8 @@
             getMenutree() {
                 setTimeout(() => {
 
-                    this.menuTree = [{
+                    this.menuTree = [
+                        {
                             "id": 2,
                             "menu_name": "医政管理",
                             "menu_node": "/medical",
@@ -373,26 +374,26 @@
                                 "pid": 2,
                                 "level": 1,
                                 "items": []
-                            }],
-                            "items": [{
+                            },
+                            {
                                 "id": 15,
                                 "menu_name": "gov登录日志",
-                                "menu_node": "/user/loginlog",
+                                "menu_node": "/data/user-loginlog",
                                 "remark": "",
                                 "pid": 2,
                                 "level": 1,
                                 "items": []
-                            }],
-                            "items": [{
+                            },
+                            {
                                 "id": 16,
                                 "menu_name": "课程观看日志",
-                                "menu_node": "/course/history",
+                                "menu_node": "/data/course-history",
                                 "remark": "",
                                 "pid": 2,
                                 "level": 1,
                                 "items": []
-                            }],
-                            "items": [{
+                            },
+                            {
                                 "id": 13,
                                 "menu_name": "课时记录",
                                 "menu_node": "/course/log",
@@ -400,7 +401,7 @@
                                 "pid": 2,
                                 "level": 1,
                                 "items": []
-                            }],
+                            }]
                         },
                         {
                             "id": 2,

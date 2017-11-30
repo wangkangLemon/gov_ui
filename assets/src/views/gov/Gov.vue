@@ -1,4 +1,4 @@
-<!--企业列表-->
+<!--部门列表-->
 <style lang="scss" rel='stylesheet/scss'>
     @import "../../utils/mixins/common";
     @import "../../utils/mixins/topSearch";
@@ -29,7 +29,7 @@
 <template>
     <article class="gov-index">
         <!--详情-->
-        <el-dialog size="small" v-if="details != null" class="show-detail" v-model="showDetail" title="企业信息">
+        <el-dialog size="small" v-if="details != null" class="show-detail" v-model="showDetail" title="部门信息">
             <div class="info">
                 <h2>
                     {{details.name}}
@@ -38,13 +38,13 @@
                 <p><i class="title">联系人：</i><span class="value">{{details.concact || '无'}}</span></p>
                 <p><i class="title">联系人手机：</i><span class="value">{{details.mobile || '无'}}</span></p>
                 <p><i class="title">联系人邮箱：</i><span class="value">{{details.email || '无'}}</span></p>
-                <p><i class="title">企业电话：</i><span class="value">{{details.tel || '无'}}</span></p>
+                <p><i class="title">部门电话：</i><span class="value">{{details.tel || '无'}}</span></p>
                 <p><i class="title">传真：</i><span class="value">{{details.fax || '无'}}</span></p>
                 <p><i class="title">上级部门：</i><span class="value">{{details.parent_name || '无'}}</span></p>
                 <p><i class="title">地址：</i><span class="value">{{details.address || '无'}}</span></p>
                 <p><i class="title">邮编：</i><span class="value">{{details.zip || '无'}}</span></p>
-                <p><i class="title">企业网址：</i><span class="value">{{details.url || '无'}}</span></p>
-                <p><i class="title">企业介绍：</i><span class="value">{{details.description || '无'}}</span></p>
+                <!--<p><i class="title">部门网址：</i><span class="value">{{details.url || '无'}}</span></p>
+                <p><i class="title">部门介绍：</i><span class="value">{{details.description || '无'}}</span></p>-->
             </div>
             <!--<div slot="footer" class="dialog-footer">-->
             <!--<el-button type="primary" @click="showDetail = false">关 闭</el-button>-->
@@ -90,7 +90,7 @@
             </el-table-column>
             <el-table-column width="100" prop="concact" label="联系人">
             </el-table-column>
-            <el-table-column width="150" prop="tel" label="手机">
+            <el-table-column width="150" prop="mobile" label="手机">
             </el-table-column>
             <el-table-column width="180" prop="email" label="邮箱">
             </el-table-column>
@@ -189,7 +189,7 @@
                 this.currentPage = 1
                 this.fetchParam = clearFn()
             },
-            // 修改企业信息
+            // 修改部门信息
             editGov(index, row) {
                 this.$router.push({
                     name: 'gov-edit',

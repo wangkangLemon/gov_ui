@@ -259,11 +259,11 @@ class govService {
                            pagesize,
                            gov_id,
                            course_id,
-                           time_start = '',
-                           time_end = '',
+                           date_start = '',
+                           date_end = '',
                        }) {
         let finalUrl = `${urlPre}/testing/lists`
-        return api.get(finalUrl, {page, pagesize, gov_id, course_id, time_start, time_end}).then((ret) => {
+        return api.get(finalUrl, {page, pagesize, gov_id, course_id, date_start, date_end}).then((ret) => {
             return ret.data
         })
     }
@@ -298,9 +298,70 @@ class govService {
         return api.put(finalUrl, {logo})
     }
 
+//----------------------------------------------gov登录日志---------------------------------------------------------------------------------
 
+    // 管理员综合统计情况
+    getCompanyManageStat () {
+        let finalUrl = `${urlPre}/user/loginlog/lists`
+        return api.get(finalUrl).then((ret) => {
+            return ret.data
+        })
+    }
+    // 管理员活跃情况
+    getCompanyManage({
+                         page,
+                         page_size,
+                         name = '',
+                         user_name = '',
+                         company_id,
+                         role = '',
+                         date_start = '',
+                         date_end = '',
+                     }) {
+        let finalUrl = `${urlPre}/user/loginlog/lists`
+        return api.get(finalUrl, {page, page_size, name, user_name, company_id, role, date_start, date_end}).then((ret) => {
+            return ret.data
+        })
+    }
+//------------------------------------------------课程观看日志---------------------------------------------------------------------------
+    // 企业活跃情况
+    getCompanyStat ({
+                      page,
+                      page_size,
+                      gov_id,
+                      stat_date,
+                  }) {
+        let finalUrl = `${urlPre}/course/history/lists`
+        return api.get(finalUrl, {page, page_size, gov_id, stat_date}).then((ret) => {
+            return ret.data
+        })
+    }
 
+    // 企业活跃情况 详细内容
+    getCompanyStatView ({
+                        page,
+                        page_size,
+                        gov_id,
+                        date_start,
+                        date_end,
+                    }) {
+        let finalUrl = `${urlPre}/course/history/lists`
+        return api.get(finalUrl, {page, page_size, gov_id, date_start, date_end}).then((ret) => {
+            return ret.data
+        })
+    }
 
+    // 企业活跃情况 图表信息
+    getCompanyStatChart ({
+                            gov_id,
+                            date_start,
+                            date_end,
+                        }) {
+        let finalUrl = `${urlPre}/stat/chart`
+        return api.get(finalUrl, {gov_id, date_start, date_end}).then((ret) => {
+            return ret.data
+        })
+    }
 
 
 

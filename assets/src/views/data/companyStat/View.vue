@@ -62,9 +62,9 @@
 
         <article class="table-container">
             <article class="search">
-                <DateRange title="日期" :start="fetchParam.start_date" :end="fetchParam.end_date"
-                           v-on:changeStart="val=> fetchParam.start_date=val"
-                           v-on:changeEnd="val=> fetchParam.end_date=val"
+                <DateRange title="日期" :start="fetchParam.date_start" :end="fetchParam.date_end"
+                           v-on:changeStart="val=> fetchParam.date_start=val"
+                           v-on:changeEnd="val=> fetchParam.date_end=val"
                            :change="fetchData">
                 </DateRange>
             </article>
@@ -312,8 +312,8 @@
                     page: this.fetchParam.page,
                     page_size: this.fetchParam.page_size,
                     store_id: this.$route.query.store_id,
-                    start_date: this.fetchParam.start_date,
-                    end_date: this.fetchParam.end_date,
+                    date_start: this.fetchParam.date_start,
+                    date_end: this.fetchParam.date_end,
                 }).then((ret) => {
                     this.total = ret.total
                     this.tableData = ret.data
@@ -321,8 +321,8 @@
                 }),
                 govService.getCompanyStatChart({
                     store_id: this.$route.query.store_id,
-                    start_date: this.fetchParam.start_date,
-                    end_date: this.fetchParam.end_date,
+                    date_start: this.fetchParam.date_start,
+                    date_end: this.fetchParam.date_end,
                 }).then((ret) => {
                     this.chartData = ret.data
                     this.chartData.forEach((item) => {
@@ -361,8 +361,8 @@
             page_size: 15,
             type: void 0,
             store_id: void 0,
-            start_date: '',
-            end_date: '',
+            date_start: '',
+            date_end: '',
         }
     }
 </script>

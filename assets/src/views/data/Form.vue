@@ -98,7 +98,7 @@
     import UploadImg from '../component/upload/UploadImg.vue'
     import courseService from '../../services/course/courseService.js'
     export default {
-        name: 'sys-form',
+        name: 'data-form',
         components: {
             vTags, UploadImg
         },
