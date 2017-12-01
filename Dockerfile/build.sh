@@ -6,7 +6,7 @@ ENV=$2
 if [ "${ENV}" == "" ];then
   ENV="dev"
 fi
-BIN_NAME="yxt-sys" # 生成二进制文件文件名，也是docker镜像名称
+BIN_NAME="yxt-gov-ui" # 生成二进制文件文件名，也是docker镜像名称
 BIN=${PRJ_ROOT}/bin/${BIN_NAME} # 生成二进制文件路径
 BIN_DOCKER="sudo docker " # docker二进制文件路径
 HUB="hub.docker.vodjk.com:5000/yxt"  # 镜像hub地址
