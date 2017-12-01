@@ -145,11 +145,7 @@
                     :data="manageData"
                     stripe
                     style="width: 100%">
-                <el-table-column
-                        prop="user_name"
-                        min-width="100"
-                        label="姓名">
-                </el-table-column>
+      
                 <!--<el-table-column
                         prop="account"
                         label="账号"
@@ -158,11 +154,16 @@
                 <el-table-column
                         prop="company_name"
                         min-width="180"
-                        label="所属企业">
+                        label="所属部门">
+                </el-table-column>
+                <el-table-column
+                        prop="user_name"
+                        min-width="100"
+                        label="姓名">
                 </el-table-column>
                 <el-table-column
                         prop="role_name"
-                        min-width="180"
+                        min-width="120"
                         label="角色">
                 </el-table-column>
                 <el-table-column
@@ -176,9 +177,9 @@
                         label="登录IP">
                 </el-table-column>
                 <el-table-column
-                        prop="agent"
+                        prop="device"
                         min-width="180"
-                        label="浏览器">
+                        label="登陆设备">
                 </el-table-column>
             </el-table>
             <div class="block">

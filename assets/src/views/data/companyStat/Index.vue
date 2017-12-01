@@ -69,49 +69,49 @@
                       :data="tableData"
                       :fit="true"
                       border>
-                <el-table-column v-if=" type == 0" label="部门名称" min-width="200">
+                <!--<el-table-column v-if=" type == 0" label="部门名称" min-width="120">
                     <template scope="scope">
                         <el-button type="text"
                                    @click="$router.push({name:'analysis-company-stat-view', query:{ gov_id: scope.row.company_id }})">
                             <i> {{scope.row.gov_name}}</i>
                         </el-button>
                     </template>
-                </el-table-column>
+                </el-table-column>-->
                 <!--<el-table-column
                         prop="active_user"
                         min-width="100"
                         label="活跃店员数量">
                 </el-table-column>-->
                 <el-table-column
-                        prop="user_id"
-                        min-width="100"
-                        label="用户">
-                </el-table-column>
-                <el-table-column
                         prop="gov_name"
                         min-width="100"
                         label="部门">
                 </el-table-column>
                 <el-table-column
+                        prop="user_id"
+                        min-width="100"
+                        label="用户">
+                </el-table-column>
+                <el-table-column
                         prop="category_name"
                         min-width="100"
-                        label="课程分类	">
+                        label="课程类别	">
                 </el-table-column>
                 <el-table-column
                         prop="course_name"
                         min-width="100"
-                        label="课程">
-                </el-table-column>
-                <!--<el-table-column
-                        prop="private_testing"
-                        min-width="100"
-                        label="私有课考试次数">
+                        label="课程名称">
                 </el-table-column>
                 <el-table-column
-                        prop="private_testing_user"
+                        prop="progress"
                         min-width="100"
-                        label="私有课考试人数">
-                </el-table-column>-->
+                        label="观看进度">
+                </el-table-column>
+                <el-table-column
+                        prop="date"
+                        min-width="100"
+                        label="观看时间">
+                </el-table-column>
             </el-table>
 
             <el-pagination class="pagin"

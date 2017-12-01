@@ -90,17 +90,17 @@
             </el-table-column>
             <el-table-column width="100" prop="concact" label="联系人">
             </el-table-column>
-            <el-table-column width="150" prop="mobile" label="手机">
+            <el-table-column width="130" prop="mobile" label="手机">
             </el-table-column>
-            <el-table-column width="180" prop="email" label="邮箱">
+            <el-table-column width="220" prop="email" label="邮箱">
             </el-table-column>
             <el-table-column width="180" prop="adddate" label="创建时间">
             </el-table-column>
-            <el-table-column prop="operate" label="操作" width="213">
+            <el-table-column prop="operate" label="操作" width="190">
                 <template scope="scope">
                     <router-link :to="{path: '/medical/user/'+ scope.row.id }">
                         <el-button type="text" size="small" @click="adminPage(scope.$index, scope.row)">
-                            管理员
+                            管理员 &nbsp;&nbsp;
                         </el-button>
                     </router-link>
                     <el-button type="text" size="small" @click="showFn(scope.$index, scope.row)">
