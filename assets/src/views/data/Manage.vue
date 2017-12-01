@@ -71,7 +71,7 @@
 <template>
     <article class="analysis-company-manage">
         <el-card class="box-card">
-            <section class="course-analytics" v-if="statData != null">
+            <!--<section class="course-analytics" v-if="statData != null">
                 <div>
                     <div>
                         <i>今日登陆</i>
@@ -110,27 +110,27 @@
                         <p>{{statData.month_num}}</p>
                     </div>
                 </div>
-            </section>
+            </section>-->
             <section class="search">
-                <section>
+                <!--<section>
                     <label>姓名</label>
-                    <el-input class="name" @change="getData" v-model="search.user_name"></el-input>
-                </section>
+                    <el-input class="name" @change="getData" v-model="search.name"></el-input>
+                </section>-->
                 <!--<section>
                     <label>账号</label>
                     <el-input class="name" @change="getData" v-model="search.name"></el-input>
                 </section>-->
                 <section>
                     <i>部门</i>
-                    <CompanySelect  :change="getData" v-model="search.company_id"
-                                    v-on:change="val=>search.company_id=val">
+                    <CompanySelect  :change="getData" v-model="search.gov_id"
+                                    v-on:change="val=>search.gov_id=val">
                     </CompanySelect>
                 </section>
                 <section>
                     <i>角色</i>
-                    <el-select clearable v-model="search.role" @change="getData">
-                        <el-option label="普通管理员" value="0"></el-option>
-                        <el-option label="超级管理员" value="1"></el-option>
+                    <el-select clearable v-model="search.role_id" @change="getData">
+                        <el-option label="管理员" value="1"></el-option>
+                        <el-option label="部门人员" value="0"></el-option>
                     </el-select>
                 </section>
                 <DateRange title="登录时间" :start="search.createTime" :end="search.endTime"
@@ -204,8 +204,8 @@
         return {
             name: '',
             user_name: '',
-            company_id: '',
-            role: '',
+            gov_id: '',
+            role_id: '',
             createTime: '',
             endTime: '',
         }
@@ -229,11 +229,11 @@
             }
         },
         mounted () {
-            govService.getCompanyManageStat().then((ret) => {
-                this.statData = ret.data
-            }).then(() => {
-                xmview.setContentLoading(false)
-            })
+            // govService.getCompanyManageStat().then((ret) => {
+            //     this.statData = ret.data
+            // }).then(() => {
+            //     xmview.setContentLoading(false)
+            // })
         },
         activated () {
             this.getData().then(() => {
@@ -260,8 +260,8 @@
                     page_size: this.pageSize,
                     name: this.search.name,
                     user_name: this.search.user_name,
-                    company_id: this.search.company_id,
-                    role: this.search.role,
+                    gov_id: this.search.gov_id,
+                    role_id: this.search.role_id,
                     date_start: this.search.createTime,
                     date_end: this.search.endTime,
                 }).then((ret) => {

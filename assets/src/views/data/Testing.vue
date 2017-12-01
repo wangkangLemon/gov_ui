@@ -36,10 +36,10 @@
                     <CompanySelect :change="getData" v-model="search.gov_id" v-on:change="val=>this.search.gov_id=val">
                     </CompanySelect>
                 </section>
-                <section>
+                <!--<section>
                     <i>课程</i>
                     <DepSelect v-model="search.department_id" :change="getData"></DepSelect>
-                </section>
+                </section>-->
                 <DateRange title="发送时间" :start="search.createTime" :end="search.endTime" v-on:changeStart="val=> search.createTime=val" v-on:changeEnd="val=> search.endTime=val"
                     :change="getData">
                 </DateRange>
@@ -61,7 +61,7 @@
                 </div>
             </el-dialog>
             <el-table v-loading="loading" border :data="testingData" stripe style="width: 100%">
-                <el-table-column prop="course_id" min-width="200" label="课程">
+                <el-table-column prop="course_name" min-width="200" label="课程">
                 </el-table-column>
                 <el-table-column prop="grade" label="课程数量" min-width="100">
                 </el-table-column>

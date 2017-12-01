@@ -116,7 +116,7 @@
                     <div class="login-header">
                         <el-col :offset="1" :span="20" class="title">
                             <h1><img src="../../../assets/images/logo.png"/>医线通</h1>
-                            <p>登录到系统管理平台</p>
+                            <p>登录到政府管理平台</p>
                         </el-col>
                         <div class="icon">
                             <i class="iconfont icon-signin"></i>

@@ -4,9 +4,9 @@ const urlPre = config.apiHost + '/user'
 
 class sysService {
     //拿到数据 
-    fetchData ({pagesize, page}) {
+    fetchData ({pagesize, page, name}) {
         let url = urlPre + '/lists'
-        return api.get(url,{pagesize, page}).then(ret => {
+        return api.get(url,{pagesize, page, name}).then(ret => {
             if (ret.code == 0) {
                 return ret
             } else {
@@ -29,9 +29,9 @@ class sysService {
     }
 
     // 创建
-    create({ role_id, name, mobile, email, password }) {
+    create({ role_id, area_id, gov_id, name, mobile, email, password }) {
         let url = urlPre + '/create'
-        return api.post(url, { role_id, name, mobile, email, password }).then(ret => {
+        return api.post(url, { role_id, area_id, gov_id, name, mobile, email, password }).then(ret => {
             if (ret.code == 0) {
                 return ret.data
             } else {
@@ -41,9 +41,9 @@ class sysService {
         })
     }
     // 更新
-    update({ id, role_id, name, mobile, email, password, sex, avatar, address }) {
+    update({ id, role_id, avatar, password, area_id, gov_id, name, nickname, mobile, email, sex, address }) {
         let url = `${urlPre}/edit/${id}`
-        return api.post(url, { role_id, name, mobile, email, password, sex, avatar, address }).then(ret => {
+        return api.post(url, { role_id, avatar, password, area_id, gov_id, name, nickname, mobile, email, sex, address }).then(ret => {
             if (ret.code) {
                 return Promise.reject(ret)
             }

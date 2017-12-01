@@ -393,15 +393,16 @@
                                 "level": 1,
                                 "items": []
                             },
-                            {
-                                "id": 13,
-                                "menu_name": "课时记录",
-                                "menu_node": "/course/log",
-                                "remark": "",
-                                "pid": 2,
-                                "level": 1,
-                                "items": []
-                            }]
+                            // {
+                            //     "id": 13,
+                            //     "menu_name": "课时记录",
+                            //     "menu_node": "/course/log",
+                            //     "remark": "",
+                            //     "pid": 2,
+                            //     "level": 1,
+                            //     "items": []
+                            // }
+                            ]
                         },
                         {
                             "id": 2,

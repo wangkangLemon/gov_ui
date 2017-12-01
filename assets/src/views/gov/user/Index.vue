@@ -2,6 +2,7 @@
 <style lang='scss' rel='stylesheet/scss'>
 @import "../../../utils/mixins/common";
 @import "../../../utils/mixins/topSearch";
+@import "../../../utils/mixins/showDetail";
 
 #medical-index-container {
     @extend %content-container;
@@ -37,16 +38,39 @@
 
 <template>
     <article id="medical-index-container">
-        <!--<section class="manage-container">
-            <el-button type="primary" icon="plus" @click="$router.push({ name:'medical-add',params:{sys_type:'add'}})">
-                <i>添加管理员</i>
+        <!--详情-->
+        <el-dialog class="show-detail" title="查看管理员" v-model="showDetail">
+            <div class="avatar">
+                <img :src="{url:clerkDetail.avatar, sex: clerkDetail.sex} | defaultAvatar" />
+            </div>
+            <div class="info">
+                <h2>{{clerkDetail.name}}({{clerkDetail.company}})</h2>
+                <p><i class="title">所属部门：</i><span class="value">{{clerkDetail.gov_name}}</span></p>
+                <p><i class="title">Mobile：</i> <span class="value">{{clerkDetail.mobile}}</span></p>
+                <p><i class="title">Email：</i> <span class="value">{{clerkDetail.email}}</span></p>
+                <p>
+                    <i class="title">状态：</i>
+                    <span class="value">
+                        <el-tag type="success" v-if="!clerkDetail.disabled">正常</el-tag>
+                        <el-tag type="danger" v-else="clerkDetail.disabled">异常</el-tag>
+                    </span>
+                </p>
+                <p><i class="title">性别：</i> <span class="value">{{clerkDetail.sex ? '男' : '女'}}</span></p>
+                <p><i class="title">生日：</i> <span class="value">{{clerkDetail.birthday}}</span></p>
+                <p><i class="title">地址：</i> <span class="value">{{clerkDetail.address}}</span></p>
+                <p><i class="title">注册时间：</i><span class="value">{{clerkDetail.create_time_name}}</span></p>
+            </div>
+        </el-dialog>
+        <section class="manage-container">
+            <el-button type="primary" icon="plus" @click="$router.push({ name:'person-add',params:{sys_type:'add'}})">
+                <i>添加人员</i>
             </el-button>
-        </section>-->
+        </section>
 
         <article class="search">
             <section>
-                <i>管理员姓名</i>
-                <el-input v-model="keyWord" placeholder="请输入姓名"></el-input>
+                <i>姓名</i>
+                <el-input v-model="fetchParam.name" placeholder="请输入姓名"   @keyup.enter.native="fetchData" ></el-input>
             </section>
         </article>
         
@@ -56,20 +80,11 @@
             <el-table-column type="selection"></el-table-column>
             <el-table-column min-width="200" prop="name" label="姓名" v-if="data">
             </el-table-column>
-            <el-table-column min-width="200" prop="role_id" label="角色">
-                <template scope="scope">
-                    <span v-if="scope.row.role_id==1">超级管理员</span>
-                    <span v-else-if="scope.row.role_id==2">系统管理员</span>
-                    <span v-else-if="scope.row.role_id==3">编辑人员</span>
-                    <span v-else-if="scope.row.role_id==4">实习生</span>
-                    <span v-else-if="scope.row.role_id==6">普通管理员</span>
-                    <span v-else-if="scope.row.role_id==7">设计师</span>
-                    <span v-else-if="scope.row.role_id==8">高级设计师</span>
-                </template>
+            <el-table-column min-width="200" prop="gov_name" label="部门">
             </el-table-column>
             <el-table-column min-width="200" prop="mobile" label="手机">
             </el-table-column>
-            <el-table-column min-width="200" prop="email" label="邮箱">
+            <el-table-column min-width="200" prop="adddate" label="创建时间">
             </el-table-column>
             <el-table-column width="100" label="状态">
                 <template scope="scope">
@@ -83,7 +98,10 @@
                     <!--<el-button @click="showFn(scope.$index, scope.row)" type="text" size="small">详情
                     </el-button>-->
                     <el-button type="text" size="small" @click="checkClerkDetail(scope.$index, scope.row)">
-                            详情
+                           详情
+                    </el-button>
+                    <el-button type="text" size="small" @click="editUser(scope.$index, scope.row)">
+                            修改
                     </el-button>
                     <el-button v-if="scope.row.disabled == 0" @click="offline(scope.$index, scope.row)" type="text" size="small">
                         <i>禁用</i>
@@ -92,7 +110,6 @@
                         <i>启用</i>
                     </el-button>
                     <el-button @click="del(scope.$index, scope.row)" type="text" size="small">删除</el-button>
-
                 </template>
             </el-table-column>
         </el-table>
@@ -121,6 +138,7 @@ function getFetchParam() {
         page: 1,
         pagesize: 15,
         disabled:0,
+        name,
     }
 }
 
@@ -135,25 +153,46 @@ export default {
             data: [], // 表格数据
             dataCache:[],
             total: 0,
-            keyWord:'',
+            name:'',
             dialogVisible: false,
             selectedIds: [], // 被选中的数据id集合
             fetchParam: getFetchParam(),
             dialogTree: {
                 isShow: false,
                 selectedId: void 0,
-            }
+            },
+            showDetail: false,     // 是否显示详情对话框
+            // 查看管理员详情
+            clerkDetail: {
+                name: '',          // 姓名
+                mobile: '',        // 手机
+                pass: '',          // 密码
+                address: '',       // 地址
+                sex: 0,            // 性别
+                birthday: '',          // 生日
+                create_time_name: ''
+            },
+
         }
     },
     activated () {
         this.fetchData()
     },
     methods: {
+         // 修改人员信息
+            editUser(index, row) {
+                this.$router.push({
+                    name: 'person-edit',
+                    params: {
+                        id: row.id
+                    }
+                })
+            },
        // 查看管理员详情
         checkClerkDetail (index, row) {
             this.showDetail = true
             companyUserService.userDetail(row.id).then((ret) => {
-                this.clerkDetail = ret.data
+                this.clerkDetail = ret
             })
         },
         userInfo () {
@@ -247,7 +286,7 @@ export default {
     computed: {
         tableData(){
             var arr = this.dataCache.filter(v=>{
-                return v.name.indexOf(this.keyWord)>=0
+                return v.name.indexOf(this.name)>=0
             })
             return arr
         }

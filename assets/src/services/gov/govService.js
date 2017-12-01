@@ -38,6 +38,40 @@ class govService {
             return ret.data
         })
     }
+    // gov - list
+     getGovSelectList({
+        // id = '',
+        // name = '',
+        // category = '',
+        // pagesize = '',
+        // page = '',
+        // pid = '',
+        // province_id = '',
+        // city_id = '',
+        // area_id = '',
+        // town_id = '',
+        // village_id = '',
+        // deleted = '',
+    }) {
+        let finalUrl = urlPre + '/gov/lists'
+        return api.get(finalUrl, {
+            // id,
+            // name,
+            // category,
+            // page,
+            // pagesize,
+            // pid,
+            // province_id,
+            // city_id,
+            // area_id,
+            // town_id,
+            // village_id,
+            // deleted,
+        }, false).then((ret) => {
+            alert(22)
+            return ret.data
+        })
+    }
 
     // category - 0-企业 1-工业 2-连锁 
     postSelectList({
@@ -188,14 +222,14 @@ class govService {
     
      // 企业管理员查询接口
     govAdminList({
-        // keyword,
+        name,
         gov_id,
         page,
         pagesize
     }) {
         let finalUrl = `${urlPre1}/user/lists`
         return api.get(finalUrl, {
-            // keyword,
+            name,
             gov_id,
             page,
             pagesize
@@ -205,14 +239,14 @@ class govService {
     }
     // 企业管理员查询接口
     govAdmin({
-        // keyword,
+        name,
         gov_id,
         page,
         pagesize
     }) {
         let finalUrl = `${urlPre1}/user/get/${gov_id}`
         return api.get(finalUrl, {
-            // keyword,
+            name,
             page,
             pagesize
         }).then((ret) => {
@@ -268,24 +302,36 @@ class govService {
         })
     }
 
+    // 获取课程任务统计数据
+    getCompanyAppCourseTaskDetail ({
+                                     gov_id,
+                                     department_id,
+                                     type,
+                                 }) {
+        let finalUrl = `${urlPre}/app/coursetask/detail`
+        return api.get(finalUrl, {gov_id, department_id, type}).then((ret) => {
+            return ret.data
+        })
+    }
 
+//--------------------------------------------------logo----------------------------------------------------------
     
     // 上传企业logo
-    CompanyLogoUpload ({company_id, image, alias}) {
-        let finalUrl = `${config.apiHost}/com/${company_id}/mobile/logo/upload`
+    CompanyLogoUpload ({gov_id, image, alias}) {
+        let finalUrl = `${config.apiHost}/com/${gov_id}/mobile/logo/upload`
         return api.post(finalUrl, {image, alias}).then((ret) => {
             return ret.data
         })
     }
 
     // 获取企业logo
-    // getCompanyLogo ({company_id}) {
-    //     let finalUrl = `${config.apiHost}/com/${company_id}/mobile/logo`
+    // getCompanyLogo ({gov_id}) {
+    //     let finalUrl = `${config.apiHost}/com/${gov_id}/mobile/logo`
     //     return api.get(finalUrl).then((ret) => {
     //         return ret.data
     //     })
     // }
-    getCompanyLogo ({company_id}) {
+    getCompanyLogo ({gov_id}) {
         let finalUrl = `${urlPre}/app/setting`
         return api.get(finalUrl).then((ret) => {
             return ret.data
@@ -293,8 +339,8 @@ class govService {
     }
 
     // 设置企业logo
-    setCompanyLogo ({company_id, logo}) {
-        let finalUrl = `${config.apiHost}/com/${company_id}/mobile/logo`
+    setCompanyLogo ({gov_id, logo}) {
+        let finalUrl = `${config.apiHost}/com/${gov_id}/mobile/logo`
         return api.put(finalUrl, {logo})
     }
 
@@ -313,13 +359,13 @@ class govService {
                          page_size,
                          name = '',
                          user_name = '',
-                         company_id,
-                         role = '',
+                         gov_id,
+                         role_id = '',
                          date_start = '',
                          date_end = '',
                      }) {
         let finalUrl = `${urlPre}/user/loginlog/lists`
-        return api.get(finalUrl, {page, page_size, name, user_name, company_id, role, date_start, date_end}).then((ret) => {
+        return api.get(finalUrl, {page, page_size, name, user_name, gov_id, role_id, date_start, date_end}).then((ret) => {
             return ret.data
         })
     }

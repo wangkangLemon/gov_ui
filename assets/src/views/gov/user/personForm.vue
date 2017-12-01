@@ -24,6 +24,9 @@
         .submit-form {
         width: 45%;
         padding: 20px;
+            .select{
+                width: 100%;
+            }
             .subButton {
                 text-align: center;
             }
@@ -46,41 +49,50 @@
         </section>     
         <section class="submit-form">   
             <el-form label-width="120px" ref="form" :rules="rules" :model="fetchParam">
-            <!--<el-form-item label="角色" prop="role_id" :fetch-suggestions="querySearch">
-                <el-select v-model="fetchParam.role_id" placeholder="请输入角色">
-                    <el-option  v-for="item in role_list" :key="item.id" :label="item.role_name" :value="item.id"></el-option>
-                </el-select>
-            </el-form-item>-->
-            <el-form-item label="姓名" prop="name">
-                <el-input v-model.name="fetchParam.name"></el-input>
-            </el-form-item>
-            <el-form-item label="昵称" prop="price">
-                <el-input v-model.address="fetchParam.nickname"></el-input>
-            </el-form-item>
-            <!--<el-form-item label="性别" prop="sex">
-                <el-radio-group v-model="fetchParam.sex">
-                    <el-radio :label="1">男</el-radio>
-                    <el-radio :label="2">女</el-radio>
-                </el-radio-group>
-            </el-form-item>-->
-            <el-form-item label="手机号" prop="mobile">
-                <el-input v-model.mobile="fetchParam.mobile"></el-input>
-            </el-form-item>
-            <!--<el-form-item label="邮箱"  prop="email">
-                <el-input v-model.email="fetchParam.email"></el-input>
-            </el-form-item>-->
-            <el-form-item label="密码" prop="password">
-                <el-input v-model.password="fetchParam.password" auto-complete="off" type="password" key=""  placeholder="密码、不修改请留空"></el-input>
-            </el-form-item>
-            <!--<el-form-item label="地址" prop="price">
-                <el-input v-model.address="fetchParam.address"></el-input>
-            </el-form-item>-->
-            <el-form-item label="" >
-                <!--<el-button @click="$router.push({ name:'medical-index'})">取消</el-button>-->
-                <div>
-                <el-button type="primary" @click="btnNextClick">确认</el-button>
-                </div>
-            </el-form-item>
+                
+                <el-form-item label="姓名" prop="name">
+                    <el-input v-model.name="fetchParam.name"></el-input>
+                </el-form-item>
+                <el-form-item label="昵称" prop="price">
+                    <el-input v-model.address="fetchParam.nickname"></el-input>
+                </el-form-item>
+                <!--<el-form-item label="性别" prop="sex">
+                    <el-radio-group v-model="fetchParam.sex">
+                        <el-radio :label="1">男</el-radio>
+                        <el-radio :label="2">女</el-radio>
+                    </el-radio-group>
+                </el-form-item>-->
+                <el-form-item label="手机号" prop="mobile">
+                    <el-input v-model.mobile="fetchParam.mobile"></el-input>
+                </el-form-item>
+                <!--<el-form-item label="邮箱"  prop="email">
+                    <el-input v-model.email="fetchParam.email"></el-input>
+                </el-form-item>-->
+                <el-form-item label="密码" prop="password" v-if="this.$route.params.id">
+                    <el-input v-model.password="fetchParam.password" auto-complete="off" type="password" key=""  placeholder="密码、不修改请留空"></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="password" v-else>
+                    <el-input v-model.password="fetchParam.password" auto-complete="off" type="password" key=""  ></el-input>
+                </el-form-item>
+                <el-form-item label="角色" prop="role_id" :fetch-suggestions="querySearch">
+                    <el-select class="select" v-model="fetchParam.role_id" placeholder="请输入角色">
+                        <el-option  v-for="item in  role_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="部门" prop="gov_id" :fetch-suggestions="querySearch">
+                    <el-select class="select" v-model="fetchParam.gov_id" placeholder="请选择部门">
+                        <el-option  v-for="item in  gov_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+                <!--<el-form-item label="地址" prop="price">
+                    <el-input v-model.address="fetchParam.address"></el-input>
+                </el-form-item>-->
+                <el-form-item label="" >
+                    <!--<el-button @click="$router.push({ name:'medical-index'})">取消</el-button>-->
+                    <div>
+                    <el-button type="primary" @click="btnNextClick">确认</el-button>
+                    </div>
+                </el-form-item>
             </el-form>
         </section>
     </main>
@@ -89,9 +101,21 @@
 <script>
     import userService from '../../../services/gov/userService.js'
     import mineService from '../../../services/base/mineService'
-    import role_mService from '../../../services/gov/role_mService.js'
+    import govService from '../../../services/gov/govService.js'
     import ImagEcropperInput from '../../component/upload/ImagEcropperInput.vue'
     import clone from 'clone'
+
+    function clearFn() {
+        return {
+            typeSelect: '',
+            provinceSelect: '',
+            citySelect: '',
+            areaSelect: '',
+            townSelect: '',
+            villageSelect: '',
+            name: ''
+        }
+    }
     export default {
         name: 'user-form',
         components: {
@@ -107,14 +131,26 @@
                     index: -1
                 },
                 fetchParam: getOriginData(),
+                // passValue: true,
+                role_list:[
+                    {
+                        name: '管理员',
+                        id: 1
+                    },
+                    {
+                        name: '部门人员',
+                        id: 0
+                    },
+                ],
                 rules: {
                     role_id: { required: true, message: '请输入角色'},
+                    gov_id:{ required: true },
                     name: { required: true, message: '请输入姓名'},
                     sex: { required: true },
                     mobile: { pattern: /^1[34578]\d{9}$/, required: true, type: 'string', message: '请输入正确的手机号', trigger: 'blur' },
                     email: { pattern: /^\w+([-+.]\w+)*@\w+([-+.]\w+)*.\w+([-+.]\w+)*$/, required: true, message: '请输入邮箱地址', trigger: 'blur' },
                     // password: {  pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$/,required: true, message: '请输入包含数字和字母且大于6位的密码', trigger: 'blur' },
-                    password: {trigger: 'blur' },
+                    password: { required: !this.$route.params.id, message:  !this.$route.params.id?'请输入密码':'密码、不修改请留空', trigger: 'blur' },
             },
                 multi: {
                     data: [{
@@ -122,12 +158,13 @@
                     }],
                 },
                 resultData: [],
-                role_list:[],
+                gov_list:[],
             }
         },
         created() {
             xmview.setContentLoading(false);
                 if (this.$route.params.id != undefined) {    //路由id传递
+                    // this.passValue = false
                     userService.getAdminInfo(this.$route.params.id).then((ret) => {
                         this.fetchParam = ret
                         console.log(ret)
@@ -135,10 +172,16 @@
                     })
                 } 
             //暂时不获取角色列表       
-            // this.getrole()
+             this.getrole()
             this.loadingData=false;
         },
+        activated () {
+            this.getrole()
+        },
         methods: {
+            // passFn(){
+            //     return this.$route.params.id != undefined?false:true
+            // },
             // 裁切后的回调
             cropperFn(data, ext) {
                 mineService.uploadAvatar({
@@ -155,8 +198,8 @@
             
             //获取角色组下拉列表
             getrole(val){
-                role_mService.fetchData().then((ret)=>{
-                 this.role_list=ret.data;
+                govService.getSelectList({pagesize:-1}).then((ret)=>{
+                 this.gov_list=ret;
                 })
             },
 
@@ -180,7 +223,7 @@
                             index: -1
                         }
                         if (!this.fetchParam.id) this.fetchParam.id = ret.id;
-                        this.$router.push({'name': 'gov-admin'})
+                        this.$router.push({'name': 'user-index'})
                     })
                 })
             },
@@ -216,7 +259,17 @@
             password: '',
             address: '',
             id: 0,
-            sex: 1
+            sex: 1,
+            gov_id: void 0,
+
+            typeSelect: '',
+            provinceSelect: '',
+            citySelect: '',
+            areaSelect: '',
+            townSelect: '',
+            villageSelect: '',
+            pid: void -1,
+
         }
     }
 

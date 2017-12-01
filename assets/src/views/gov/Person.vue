@@ -84,16 +84,14 @@
                 <el-button type="primary" @click="submit('form')">确 定</el-button>
             </div>
         </el-dialog>
-
         <section class="add">
             <el-button icon="plus" type="primary" @click="addAdmin">添加</el-button>
         </section>
-
         <div class="main-container">
             <section class="search">
                 <section>
                     <i>姓名</i>
-                    <el-input  @keyup.enter.native="getData" class="name" v-model="search.name" placeholder="请输入姓名"></el-input>
+                    <el-input @change="getData" class="name" v-model="search.name" placeholder="请输入姓名"></el-input>
                 </section>
             </section>
             <el-table border v-loading="loading" :data="adminData">
@@ -255,7 +253,7 @@
                     this.addForm = true
                 // })
             },
-            // 修改管理员信息
+            // 修改人员信息
             editUser(index, row) {
                 this.$router.push({
                     name: 'user-edit',
