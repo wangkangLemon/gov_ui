@@ -3,7 +3,7 @@ _env:
         _name : "base"
         _res  :
             - !R.vars
-                PRJ_NAME : "admin_ui"
+                PRJ_NAME : "gov_api"
             - !R.include
                 _path  :
                     - "./_rg/base.yaml"

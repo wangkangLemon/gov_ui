@@ -1,7 +1,7 @@
 _dev:
     - !C.project
-        name : "admin_ui"
-        root : "${HOME}/devspace/admin_ui"
+        name : "gov_api"
+        root : "${HOME}/devspace/gov_api"
     - !C.version
         file : "./version.txt"
     - !C.git
