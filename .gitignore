@@ -22,7 +22,6 @@ run.log
 _rg/.rigger-ng-v2.data
 .DS_Store
 node_modules/
-config/index.js
 npm-debug.log
 yarn-debug.log
 yarn-error.log
