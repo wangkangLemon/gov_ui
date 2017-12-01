@@ -155,7 +155,7 @@
         },
         computed: {
             getID () {
-                return this.$route.params.id
+                return this.$route.params.gov_id
             }
         },
         activated () {
@@ -179,6 +179,7 @@
             if (this.getID == undefined) {
                 this.form = {
                     id: void 0,
+                    gov_id:void 0,
                     category: '', // 类型
                     pid:'', //上级部门                    
                     province_id : '', // 省
@@ -225,7 +226,8 @@
                         this.form.pid = this.form.area_id || this.form.city_id || this.form.province_id
            
                         if (this.getID) {
-                            this.form.id = this.getID
+
+                            this.form.gov_id = this.getID
                             reqFn = govService.updateGov
                             msg = '修改成功'
                         }

@@ -54,7 +54,7 @@
             <el-form-item label="姓名" prop="name">
                 <el-input v-model.name="fetchParam.name"></el-input>
             </el-form-item>
-            <el-form-item label="昵称" prop="price">
+            <el-form-item label="昵称" prop="nickname">
                 <el-input v-model.address="fetchParam.nickname"></el-input>
             </el-form-item>
             <!--<el-form-item label="性别" prop="sex">
@@ -196,6 +196,7 @@
                 let result = [{
                     id: 0,
                     name: '',
+                    nickname: '',
                     sort: 0,
                     deleted: false,
                     lessons: []
