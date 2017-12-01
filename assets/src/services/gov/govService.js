@@ -286,6 +286,14 @@ class govService {
         })
     }
 
+     // 删除管理员接口
+    delAdmin ({
+                  id
+              }) {
+        let finalUrl = `${urlPre}/user/delete/${id}`
+        return api.get(finalUrl)
+    }
+
 
      // 获取成绩管理统计列表
     getGovTestingData({
