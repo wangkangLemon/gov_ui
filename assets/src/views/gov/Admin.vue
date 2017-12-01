@@ -229,9 +229,9 @@
                 console.log(this.$route.params.gov_id)
                 return this.$route.params.gov_id
             },
-            category () {  //1 系统 2 政府
-                return parseInt(this.$route.query.category)
-            }
+            // category () {  //1 系统 2 政府
+            //     return parseInt(this.$route.query.category)
+            // }
         },
         activated () {
              this.getData().then(() => {
