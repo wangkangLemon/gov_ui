@@ -29,9 +29,9 @@ class dataService {
     }
 
     // 创建
-    create({ id, category_id, ref_type, ref_id, ref_sync, title, image, url, desc, adddate, tags, tags_color, sort }) {
+    create({ id, category_id, ref_type, ref_id, ref_sync, title, image, url, desc, addate, tags, tags_color, sort }) {
         let url1 = urlPre + '/create'
-        return api.post(url1, { id, category_id, ref_type, ref_id, ref_sync, title, image, url, desc, adddate, tags, tags_color, sort }).then(ret => {
+        return api.post(url1, { id, category_id, ref_type, ref_id, ref_sync, title, image, url, desc, addate, tags, tags_color, sort }).then(ret => {
             if (ret.code == 0) {
                  xmview.showTip('success',ret.message)
                 return ret.data
@@ -42,9 +42,9 @@ class dataService {
         })
     }
     // 更新
-    edit({ id, category_id, ref_type, ref_id, ref_sync, title, image, url, desc, adddate, tags, tags_color, sort }) {
+    edit({ id, category_id, ref_type, ref_id, ref_sync, title, image, url, desc, addate, tags, tags_color, sort }) {
         let url1 = `${urlPre}/edit/${id}`
-        return api.post(url1, { id, category_id, ref_type, ref_id, ref_sync, title, image, url, desc, adddate, tags, tags_color, sort }).then(ret => {
+        return api.post(url1, { id, category_id, ref_type, ref_id, ref_sync, title, image, url, desc, addate, tags, tags_color, sort }).then(ret => {
             if (ret.code == 0) {
                  xmview.showTip('success',ret.message)
                 return ret.data

@@ -69,12 +69,11 @@
             <!--<el-form-item label="邮箱"  prop="email">
                 <el-input v-model.email="fetchParam.email"></el-input>
             </el-form-item>-->
+
             <el-form-item label="密码" prop="password">
                 <el-input v-model.password="fetchParam.password" auto-complete="off" type="password" key=""  placeholder="密码、不修改请留空"></el-input>
             </el-form-item>
-            <!--<el-form-item label="地址" prop="price">
-                <el-input v-model.address="fetchParam.address"></el-input>
-            </el-form-item>-->
+            
             <el-form-item label="" >
                 <!--<el-button @click="$router.push({ name:'medical-index'})">取消</el-button>-->
                 <div>
@@ -180,7 +179,8 @@
                             index: -1
                         }
                         if (!this.fetchParam.id) this.fetchParam.id = ret.id;
-                        this.$router.push({'name': 'gov-admin'})
+                        // this.$router.push({'name': 'gov-admin'})
+                        xmview.setContentBack(true)
                     })
                 })
             },

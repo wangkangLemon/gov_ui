@@ -23,6 +23,7 @@ class DepartmentService {
             return ret.data
         })
     }
+    
     //   // 课程搜索
     // search_cate({ id, name, category_type, pid, level, ended, disabled, page, pagesize}) {
     //     let url = urlPre + '/category/lists'
@@ -46,7 +47,7 @@ class DepartmentService {
     // 删除部门
     depDelete(userID) {
         let finalUrl = `${urlPre}/${userID}`
-        return api.del(finalUrl, {}).then((ret) => {
+        return api.get(finalUrl, {}).then((ret) => {
             if (ret.code) {
                 return Promise.reject(ret)
             }

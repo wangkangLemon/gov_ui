@@ -42,19 +42,22 @@
                 <el-form-item label="手机号码" :label-width="formLabelWidth">
                     <el-input v-model="form.mobile" :disabled="true" type="number" placeholder="手机号码" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱" :label-width="formLabelWidth">
+                <!--<el-form-item label="邮箱" :label-width="formLabelWidth">
                     <el-input v-model="form.email" :disabled="true" placeholder="邮箱" auto-complete="off"></el-input>
-                </el-form-item>
+                </el-form-item>-->
                 <el-form-item prop="name" label="名字" :label-width="formLabelWidth">
                     <el-input v-model="form.name" placeholder="名字" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item prop="address" label="地址" :label-width="formLabelWidth">
-                    <el-input v-model="form.address" placeholder="地址" auto-complete="off"></el-input>
+                <el-form-item prop="nickname" label="昵称" :label-width="formLabelWidth">
+                    <el-input v-model="form.nickname" placeholder="昵称" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item prop="sex" label="称谓" :label-width="formLabelWidth">
+                <!--<el-form-item prop="address" label="地址" :label-width="formLabelWidth">
+                    <el-input v-model="form.address" placeholder="地址" auto-complete="off"></el-input>
+                </el-form-item>-->
+                <!--<el-form-item prop="sex" label="称谓" :label-width="formLabelWidth">
                     <el-radio class="radio" v-model="form.sex" :label="1">先生</el-radio>
                     <el-radio class="radio" v-model="form.sex" :label="0">女士</el-radio>
-                </el-form-item>
+                </el-form-item>-->
                 <el-form-item class="subButton">
                     <el-button type="primary" @click="submit('form')">提交修改</el-button>
                 </el-form-item>
@@ -77,11 +80,13 @@ export default {
         return {
             imgUrl: '',
             form: {
+                id: void 0,
                 mobile: '',
                 email: '',
                 name: '',
                 address: '',
-                sex: 0
+                sex: 0,
+                nickname:''
             },
             rules: {
                 name: { required: true, message: '必须填写', trigger: 'blur' }
@@ -91,6 +96,7 @@ export default {
     },
     created() {
         this.form = authUtils.getUserInfo()
+
         if (!this.form.avatar) {
             this.imgUrl = filterUtils.defaultAvatar({ url: '', sex: this.form.sex })
         } else {
@@ -103,7 +109,8 @@ export default {
         cropperFn(data, ext) {
             mineService.uploadAvatar({
                 avatar: data,
-                alias: `${Date.now()}${ext}`
+                alias: `${Date.now()}${ext}`,
+                id: this.form.id
             }).then((ret) => {
                 xmview.showTip('success', '上传成功')
                 this.imgUrl = data

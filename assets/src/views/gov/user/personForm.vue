@@ -65,15 +65,13 @@
                 <el-form-item label="手机号" prop="mobile">
                     <el-input v-model.mobile="fetchParam.mobile"></el-input>
                 </el-form-item>
-                <!--<el-form-item label="邮箱"  prop="email">
-                    <el-input v-model.email="fetchParam.email"></el-input>
-                </el-form-item>-->
-                <el-form-item label="密码" prop="password" v-if="this.$route.params.id">
+
+                <!--<el-form-item label="密码" prop="password" v-if="this.$route.params.id">
                     <el-input v-model.password="fetchParam.password" auto-complete="off" type="password" key=""  placeholder="密码、不修改请留空"></el-input>
-                </el-form-item>
-                <el-form-item label="密码" prop="password" v-else>
+                </el-form-item>-->
+                <!--<el-form-item label="密码" prop="password" v-else>
                     <el-input v-model.password="fetchParam.password" auto-complete="off" type="password" key=""  ></el-input>
-                </el-form-item>
+                </el-form-item>-->
 
                 <el-form-item label="部门" prop="gov_id" :fetch-suggestions="querySearch">
                     <el-select class="select" v-model="fetchParam.gov_id" placeholder="请选择部门">
@@ -85,9 +83,6 @@
                         <el-option  v-for="item in  role_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
-                <!--<el-form-item label="地址" prop="price">
-                    <el-input v-model.address="fetchParam.address"></el-input>
-                </el-form-item>-->
                 <el-form-item label="" >
                     <!--<el-button @click="$router.push({ name:'medical-index'})">取消</el-button>-->
                     <div>

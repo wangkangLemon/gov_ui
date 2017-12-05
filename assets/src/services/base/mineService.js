@@ -4,14 +4,18 @@ import config from '../../utils/config'
 const urlPre = config.apiHost + '/mine'
 class MineService {
     // 修改个人信息
-    updateProfile({ name, address, sex }) {
-        let url = `${urlPre}/profile`
-        return api.put(url, { name, address, sex })
+    // updateProfile({ name, address, sex }) {
+    //     let url = `${urlPre}/profile`
+    //     return api.post(url, { name, address, sex })
+    // }
+    updateProfile({ id, name, address, sex, nickname }) {
+        let url = `${config.apiHost}/user/edit/${id}`
+        return api.post(url, { name, address, sex, nickname })
     }
 
     // 上传头像
-    uploadAvatar({ avatar, alias }) {
-        let url = `${urlPre}/profile/avatar`
+    uploadAvatar({ avatar, alias, id }) {
+        let url = `${config.apiHost}/user/edit/${id}`
         return api.post(url, { avatar, alias }).then((ret) => {
             if (ret.code) {
                 return Promise.reject(ret)
@@ -32,7 +36,7 @@ class MineService {
     // 修改公司信息
     modifyCompany({ name, concact, mobile, email, tel, fax, province, city, area, address, zip, url, description }) {
         let finalUrl = `${urlPre}/company`
-        return api.put(finalUrl, {
+        return api.post(finalUrl, {
             name,
             concact,
             mobile,
@@ -56,7 +60,7 @@ class MineService {
     // 修改密码
     modifyPassword({ origin_password, new_password, re_password }) {
         let url = `${urlPre}/password`
-        return api.put(url, { origin_password, new_password, re_password }).then((ret) => {
+        return api.post(url, { origin_password, new_password, re_password }).then((ret) => {
             if (ret.code) {
                 return Promise.reject(ret)
             }
@@ -82,7 +86,7 @@ class MineService {
     // 绑定邮箱或者手机
     bindOrChangeTwo({ type, code, receiver }) {
         let url = `${urlPre}/two-step/code/bind`
-        return api.put(url, { type, code, receiver }).then((ret) => {
+        return api.post(url, { type, code, receiver }).then((ret) => {
             return ret.data.userTwoStepAuthToken
         })
     }

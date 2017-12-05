@@ -152,12 +152,12 @@
                         min-width="200">
                 </el-table-column>-->
                 <el-table-column
-                        prop="company_name"
+                        prop="gov_name"
                         min-width="180"
                         label="所属部门">
                 </el-table-column>
                 <el-table-column
-                        prop="user_name"
+                        prop="name"
                         min-width="100"
                         label="姓名">
                 </el-table-column>
@@ -167,12 +167,12 @@
                         label="角色">
                 </el-table-column>
                 <el-table-column
-                        prop="login_time_name"
+                        prop="update"
                         min-width="180"
                         label="登录时间">
                 </el-table-column>
                 <el-table-column
-                        prop="login_ip_name"
+                        prop="ip"
                         min-width="180"
                         label="登录IP">
                 </el-table-column>
@@ -258,7 +258,7 @@
                 this.loading = true
                 return govService.getCompanyManage({
                     page: this.currentPage,
-                    page_size: this.pageSize,
+                    pagesize: this.pageSize,
                     name: this.search.name,
                     user_name: this.search.user_name,
                     gov_id: this.search.gov_id,
@@ -267,7 +267,7 @@
                     date_end: this.search.endTime,
                 }).then((ret) => {
                     this.total = ret.total
-                    this.manageData = ret.data
+                    this.manageData = ret
                 }).then(() => {
                     this.loading = false
                 })

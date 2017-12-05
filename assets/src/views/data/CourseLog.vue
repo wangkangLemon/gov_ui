@@ -1,7 +1,7 @@
 <!--课程分析-->
 <style lang='scss' rel='stylesheet/scss'>
-    @import "../../../utils/mixins/common";
-    @import "../../../utils/mixins/topSearch";
+    @import "../../utils/mixins/common";
+    @import "/../../utils/mixins/topSearch";
 
     #analysis-company-stat {
 
@@ -128,11 +128,11 @@
 </template>
 
 <script>
-    import govService from '../../../services/gov/govService.js'
-    import CourseSelect from '../../component/select/Course.vue'
-    import DepSelect from '../../component/select/Department.vue'
-    import StoreSelect from '../../component/select/IndustryCompany.vue'
-    import DateRange from '../../component/form/DatePicker.vue'
+    import govService from '../../services/gov/govService.js'
+    import CourseSelect from '../component/select/Course.vue'
+    import DepSelect from '../component/select/Department.vue'
+    import StoreSelect from '../component/select/IndustryCompany.vue'
+    import DateRange from '../component/form/DatePicker.vue'
 
     export default{
         filters: {

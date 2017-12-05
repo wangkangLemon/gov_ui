@@ -19,7 +19,7 @@ export default {
                 })
             },
             meta: {
-                title: '医政',
+                title: '医政 - 部门',
                 noback: true
             }
         },
@@ -147,7 +147,5 @@ export default {
                 noback: false
             }
         },
- 
-    
     ]
 }

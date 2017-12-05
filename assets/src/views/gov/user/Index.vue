@@ -72,8 +72,18 @@
                 <i>姓名</i>
                 <el-input v-model="fetchParam.name" placeholder="请输入姓名"   @keyup.enter.native="fetchData" ></el-input>
             </section>
+            <!--<section>
+                <i>角色</i>
+                <el-select clearable v-model="search.role_id" @change="getData">
+                    <el-option label="管理员" value="1"></el-option>
+                    <el-option label="部门人员" value="0"></el-option>
+                </el-select>
+            </section>-->
+            <!--<section>
+                <i>联系方式</i>
+                <el-input v-model="fetchParam.name" placeholder="请输入姓名"   @keyup.enter.native="fetchData" ></el-input>
+            </section>-->
         </article>
-        
 
         <el-table class="data-table" v-loading="loadingData" :data="tableData" :fit="true" @select="selectRow" @select-all="selectRow" border>
             
@@ -84,7 +94,7 @@
             </el-table-column>
             <el-table-column min-width="200" prop="mobile" label="手机">
             </el-table-column>
-            <el-table-column min-width="200" prop="adddate" label="创建时间">
+            <el-table-column min-width="200" :formatter="Time" label="创建时间">
             </el-table-column>
             <el-table-column width="100" label="状态">
                 <template scope="scope">
@@ -179,6 +189,12 @@ export default {
         this.fetchData()
     },
     methods: {
+        //过滤时间
+            dataFilter(){
+
+
+            },
+
          // 修改人员信息
             editUser(index, row) {
                 this.$router.push({
@@ -282,10 +298,32 @@ export default {
                 })
             })
         },
+        
+        Time(row, column, cellValue){
+              return  this.timeFilter(row.addate) 
+        },
+        timeFilter( addate){
+            let time
+            this.dataCache.forEach(v=> {
+                    time = v.addate.split(" ")[0]
+                }, this);
+            return time
+        },
+
     },
     computed: {
+        // timeFilter(row, column, cellValue){
+        //      let arr = this.dataCache.map(e=>{
+        //          console.log(e)
+        //        e.addate = e.addate.split(" ")[0]
+        //     //    return v
+        //     })
+        //    return arr
+        // },
+
+        
         tableData(){
-            var arr = this.dataCache.filter(v=>{
+            let arr = this.dataCache.filter(v=>{
                 return v.name.indexOf(this.name)>=0
             })
             return arr

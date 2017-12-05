@@ -73,7 +73,7 @@
                 </el-table-column>
                 <el-table-column prop="passed" label="通过人数"  min-width="180">
                 </el-table-column>
-                <el-table-column prop="adddate" min-width="180" label="创建时间">
+                <el-table-column prop="addate" min-width="180" label="创建时间">
                 </el-table-column>
             </el-table>
             <div class="block">
@@ -133,6 +133,8 @@
             })
         },
         methods: {
+
+            // 处理用户名 
             User(row, column, cellValue){
                return  this.idFormat(row.user_id) 
             },
@@ -154,7 +156,7 @@
                     gov_id: this.govID
                 }).then((ret) => {
                     this.userList = ret
-                    //拿到数据后怎么根据id 把name 对应给user_id
+                    //拿到数据后根据id 把name 对应给user_id
                     this.loading = false
                     // message.pid=this.$store.state.index.secPid    
                 })

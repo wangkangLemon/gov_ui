@@ -1,6 +1,6 @@
 import * as api from '../api'
 import config from '../../utils/config'
-const urlPre = config.apiHost 
+const urlPre = config.apiHost
 const urlPre1 = config.apiHost
 
 class govService {
@@ -39,7 +39,7 @@ class govService {
         })
     }
     // gov - list
-     getGovSelectList({
+    getGovSelectList({
         // id = '',
         // name = '',
         // category = '',
@@ -219,20 +219,22 @@ class govService {
             }
         })
     }
-    
-     // 企业管理员查询接口
+
+    // 企业管理员查询接口
     govAdminList({
         name,
         gov_id,
         page,
-        pagesize
+        pagesize,
+        role_id
     }) {
         let finalUrl = `${urlPre1}/user/lists`
         return api.get(finalUrl, {
             name,
             gov_id,
             page,
-            pagesize
+            pagesize,
+            role_id
         }).then((ret) => {
             return ret.data
         })
@@ -286,48 +288,66 @@ class govService {
         })
     }
 
-     // 删除管理员接口
-    delAdmin ({
-                  id
-              }) {
+    // 删除管理员接口
+    delAdmin({
+        id
+    }) {
         let finalUrl = `${urlPre}/user/delete/${id}`
         return api.get(finalUrl)
     }
 
 
-     // 获取成绩管理统计列表
+    // 获取成绩管理统计列表
     getGovTestingData({
-                           page,
-                           pagesize,
-                           gov_id,
-                           course_id,
-                           date_start = '',
-                           date_end = '',
-                       }) {
+        page,
+        pagesize,
+        gov_id,
+        course_id,
+        date_start = '',
+        date_end = '',
+    }) {
         let finalUrl = `${urlPre}/testing/lists`
-        return api.get(finalUrl, {page, pagesize, gov_id, course_id, date_start, date_end}).then((ret) => {
+        return api.get(finalUrl, {
+            page,
+            pagesize,
+            gov_id,
+            course_id,
+            date_start,
+            date_end
+        }).then((ret) => {
             return ret.data
         })
     }
 
     // 获取课程任务统计数据
-    getCompanyAppCourseTaskDetail ({
-                                     gov_id,
-                                     department_id,
-                                     type,
-                                 }) {
+    getCompanyAppCourseTaskDetail({
+        gov_id,
+        department_id,
+        type,
+    }) {
         let finalUrl = `${urlPre}/app/coursetask/detail`
-        return api.get(finalUrl, {gov_id, department_id, type}).then((ret) => {
+        return api.get(finalUrl, {
+            gov_id,
+            department_id,
+            type
+        }).then((ret) => {
             return ret.data
         })
     }
 
-//--------------------------------------------------logo----------------------------------------------------------
-    
+    //--------------------------------------------------logo----------------------------------------------------------
+
     // 上传企业logo
-    CompanyLogoUpload ({gov_id, image, alias}) {
+    CompanyLogoUpload({
+        gov_id,
+        image,
+        alias
+    }) {
         let finalUrl = `${config.apiHost}/com/${gov_id}/mobile/logo/upload`
-        return api.post(finalUrl, {image, alias}).then((ret) => {
+        return api.post(finalUrl, {
+            image,
+            alias
+        }).then((ret) => {
             return ret.data
         })
     }
@@ -339,7 +359,9 @@ class govService {
     //         return ret.data
     //     })
     // }
-    getCompanyLogo ({gov_id}) {
+    getCompanyLogo({
+        gov_id
+    }) {
         let finalUrl = `${urlPre}/app/setting`
         return api.get(finalUrl).then((ret) => {
             return ret.data
@@ -347,15 +369,20 @@ class govService {
     }
 
     // 设置企业logo
-    setCompanyLogo ({gov_id, logo}) {
+    setCompanyLogo({
+        gov_id,
+        logo
+    }) {
         let finalUrl = `${config.apiHost}/com/${gov_id}/mobile/logo`
-        return api.put(finalUrl, {logo})
+        return api.put(finalUrl, {
+            logo
+        })
     }
 
-//----------------------------------------------gov登录日志---------------------------------------------------------------------------------
+    //----------------------------------------------gov登录日志---------------------------------------------------------------------------------
 
     // 管理员综合统计情况
-    getCompanyManageStat () {
+    getCompanyManageStat() {
         let finalUrl = `${urlPre}/user/loginlog/lists`
         return api.get(finalUrl).then((ret) => {
             return ret.data
@@ -363,56 +390,82 @@ class govService {
     }
     // 管理员活跃情况
     getCompanyManage({
-                         page,
-                         page_size,
-                         name = '',
-                         user_name = '',
-                         gov_id,
-                         role_id = '',
-                         date_start = '',
-                         date_end = '',
-                     }) {
+        page,
+        pagesize,
+        name = '',
+        user_name = '',
+        gov_id,
+        role_id = '',
+        date_start = '',
+        date_end = '',
+    }) {
         let finalUrl = `${urlPre}/user/loginlog/lists`
-        return api.get(finalUrl, {page, page_size, name, user_name, gov_id, role_id, date_start, date_end}).then((ret) => {
+        return api.get(finalUrl, {
+            page,
+            pagesize,
+            name,
+            user_name,
+            gov_id,
+            role_id,
+            date_start,
+            date_end
+        }).then((ret) => {
             return ret.data
         })
     }
-//------------------------------------------------课程观看日志---------------------------------------------------------------------------
-    // 企业活跃情况
-    getCompanyStat ({
-                      page,
-                      page_size,
-                      gov_id,
-                      stat_date,
-                  }) {
-        let finalUrl = `${urlPre}/course/history/lists`
-        return api.get(finalUrl, {page, page_size, gov_id, stat_date}).then((ret) => {
-            return ret.data
-        })
-    }
+    //------------------------------------------------课程观看日志---------------------------------------------------------------------------
+    // // 企业活跃情况
+    // getCourseHistory ({
+    //                   page,
+    //                   pagesize,
+    //                   gov_id,
+    //                   stat_date,
+    //               }) {
+    //     let finalUrl = `${urlPre}/course/history/lists`
+    //     alert(2222)
+    //     return api.get(finalUrl, {page, pagesize, gov_id, stat_date}).then((ret) => {
+    //         return ret.data
+    //     })
+    // }
 
-    // 企业活跃情况 详细内容
-    getCompanyStatView ({
-                        page,
-                        page_size,
-                        gov_id,
-                        date_start,
-                        date_end,
-                    }) {
+    // 课程观看情况 详细内容
+    getCourseHistory({
+        page,
+        pagesize,
+        user_id,
+        gov_id,
+        category_id,
+        course_id,
+        date_start,
+        date_end,
+    }) {
         let finalUrl = `${urlPre}/course/history/lists`
-        return api.get(finalUrl, {page, page_size, gov_id, date_start, date_end}).then((ret) => {
+        return api.get(finalUrl, {
+            page,
+            pagesize,
+            user_id,
+            gov_id,
+            category_id,
+            course_id,
+            date_start,
+            date_end,
+        }).then((ret) => {
             return ret.data
         })
     }
 
     // 企业活跃情况 图表信息
-    getCompanyStatChart ({
-                            gov_id,
-                            date_start,
-                            date_end,
-                        }) {
+    getCompanyStatChart({
+        gov_id,
+        date_start,
+        date_end,
+    }) {
         let finalUrl = `${urlPre}/stat/chart`
-        return api.get(finalUrl, {gov_id, date_start, date_end}).then((ret) => {
+        return api.get(finalUrl, {
+            gov_id,
+            date_start,
+            date_end
+        }).then((ret) => {
             return ret.data
         })
     }
@@ -523,10 +576,10 @@ class govService {
         // console.log(url)
         return api.get(url, {}).then(ret => {
             if (ret.code == 0) {
-                 xmview.showTip('success',ret.message)
+                xmview.showTip('success', ret.message)
                 return ret.data
             } else {
-                xmview.showTip('error',ret.message)
+                xmview.showTip('error', ret.message)
                 return Promise.reject(ret)
             }
         })

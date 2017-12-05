@@ -68,7 +68,7 @@
                 <i>名称：</i>
                 <el-input @keyup.enter.native="getData" v-model="fetchParam.name" auto-complete="off"></el-input>
             </section>
-            <DateRange title="创建时间" :start="fetchParam.adddate" :end="fetchParam.update" v-on:changeStart="val=> fetchParam.adddate = val"
+            <DateRange title="创建时间" :start="fetchParam.addate" :end="fetchParam.update" v-on:changeStart="val=> fetchParam.addate = val"
                 v-on:changeEnd="val=> fetchParam.update = val" :change="getData">
             </DateRange>
         </section>
@@ -87,7 +87,7 @@
             </el-table-column>
             <el-table-column width="180" prop="email" label="邮箱">
             </el-table-column>
-            <el-table-column width="180" prop="adddate" label="创建时间">
+            <el-table-column width="180" prop="addate" label="创建时间">
             </el-table-column>
             <el-table-column prop="operate" label="操作" width="180">
                 <template scope="scope">
@@ -154,7 +154,7 @@
                 pageSize: 15,
                 govData: [],
                 fetchParam: {
-                    adddate: this.$route.query.yesterday == undefined ? '' : this.$route.query.yesterday,
+                    addate: this.$route.query.yesterday == undefined ? '' : this.$route.query.yesterday,
                     update: this.$route.query.yesterday == undefined ? '' : this.$route.query.yesterday,
                     typeSelect: '',
                     provinceSelect: '',

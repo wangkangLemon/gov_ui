@@ -29,9 +29,9 @@
                 <img :src="{url:clerkDetail.avatar, sex: clerkDetail.sex} | defaultAvatar" />
             </div>
             <div class="info">
-                <h2>{{clerkDetail.name}}({{clerkDetail.company}})</h2>
+                <h2>{{clerkDetail.name}}</h2>
                 <p><i class="title">所属部门：</i><span class="value">{{clerkDetail.gov_name}}</span></p>
-                <p><i class="title">Mobile：</i> <span class="value">{{clerkDetail.mobile}}</span></p>
+                <p><i class="title">手机号</i> <span class="value">{{clerkDetail.mobile}}</span></p>
                 <p><i class="title">Email：</i> <span class="value">{{clerkDetail.email}}</span></p>
                 <p>
                     <i class="title">状态：</i>
@@ -226,7 +226,7 @@
         },
         computed: {
             govID () { 
-                console.log(this.$route.params.gov_id)
+                // console.log(this.$route.params.gov_id)
                 return this.$route.params.gov_id
             },
             // category () {  //1 系统 2 政府
@@ -238,11 +238,6 @@
                 xmview.setContentLoading(false)
             })
         },
-        // created () {
-        //     this.getData().then(() => {
-        //         xmview.setContentLoading(false)
-        //     })
-        // },
         methods: {
             addAdmin () {
                 // departmentService.getDepartment({
@@ -270,16 +265,15 @@
                     page: this.currentPage,
                     pagesize: this.pageSize,
                     name: this.search.name,
-                    gov_id: this.govID
+                    gov_id: this.govID,
+                    role_id:1
                 }).then((ret) => {
                     this.adminData = ret
                     this.total = ret.total
                     this.loading = false
                 
                     this.$store.dispatch('saveUserList',ret)  
-                    console.log(this.$store.state.index.userList  )
-
-                    // message.pid=this.$store.state.index.secPid    
+                    // console.log(this.$store.state.index.userList  )
                 })
             },
             // 查看管理员详情
@@ -287,7 +281,6 @@
                 this.showDetail = true
                 companyUserService.userDetail(row.id).then((ret) => {
                     this.clerkDetail = ret
-                    console.log(ret)
                 })
             },
             handleDelete (index, row) {

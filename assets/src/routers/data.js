@@ -33,7 +33,7 @@ export default {
                 })
             },
             meta: {
-                title: '数据分析',
+                title: '数据分析 - 成绩管理 ',
                 noback: true
             }
         },
@@ -73,7 +73,7 @@ export default {
                 })
             },
             meta: {
-                title: '管理员',
+                title: '数据分析 - 登录日志 ',
                 noback: true
             }
         },
@@ -87,7 +87,7 @@ export default {
                 })
             },
             meta: {
-                title: '课程观看日志',
+                title: '数据分析 - 课程观看日志',
                 noback: true
             }
         },
@@ -105,6 +105,18 @@ export default {
             }
         },
         //课时记录
-
+        {
+            path: 'course-log',
+            name: 'data-course-log',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/data/CourseLog.vue'))
+                })
+            },
+            meta: {
+                title: '数据分析 - 课时记录',
+                noback: true
+            }
+        },
     ]
 }

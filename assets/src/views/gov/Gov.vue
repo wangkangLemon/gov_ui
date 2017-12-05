@@ -71,28 +71,26 @@
                     </el-option>
                 </el-select>
             </section>-->
+
             <section>
                 <i>部门名称：</i>
                 <el-input @keyup.enter.native="getData" v-model="fetchParam.name" auto-complete="off"></el-input>
             </section>
+  
             <!--<DateRange title="创建时间" :start="fetchParam.addate" :end="fetchParam.update" v-on:changeStart="val=> fetchParam.addate = val"
                 v-on:changeEnd="val=> fetchParam.update = val" :change="getData">
             </DateRange>-->
         </section>
         <el-table v-loading="loading" border :data="govData" stripe style="width: 100%">
-            <el-table-column prop="name" label="部门名称" min-width="150">
+            <el-table-column prop="name" label="部门名称" min-width="180">
                 <template scope="scope">
                     <el-tag type="gray">{{govType[scope.row.category]}}</el-tag>
                     {{scope.row.name}}
                 </template>
             </el-table-column>
-            <el-table-column prop="parent_name" label="上级部门" width="180">
+            <el-table-column width="120" prop="concact" label="联系人">
             </el-table-column>
-            <el-table-column width="100" prop="concact" label="联系人">
-            </el-table-column>
-            <el-table-column width="130" prop="mobile" label="手机">
-            </el-table-column>
-            <el-table-column width="220" prop="email" label="邮箱">
+            <el-table-column width="170" prop="mobile" label="手机">
             </el-table-column>
             <el-table-column width="180" prop="addate" label="创建时间">
             </el-table-column>
@@ -243,24 +241,7 @@
                 this.getData()
             },
             getData() {
-                // if(this.fetchParam.province_id) {
-                //             this.fetchParam.pid = this.fetchParam.province_id
-                //             console.log( 'this.fetchParam.province_id='+ this.fetchParam.province_id)
-                //             if(this.fetchParam.province_id && this.fetchParam.city_id){
-                //                  this.fetchParam.pid = this.fetchParam.city_id
-                //                  console.log( 'this.fetchParam.city_id='+ this.fetchParam.city_id)
-                //                  if(this.fetchParam.province_id && this.fetchParam.city_id && this.fetchParam.area_id){
-                //                     this.fetchParam.pid = this.fetchParam.area_id
-                //                     console.log( 'this.fetchParam.area_id='+ this.fetchParam.area_id)
-                //                     if(this.fetchParam.province_id && this.fetchParam.city_id && this.fetchParam.area_id && this.fetchParam.town_id){
-                //                         this.fetchParam.pid = this.fetchParam.town_id
-                //                         if(this.fetchParam.province_id && this.fetchParam.city_id && this.fetchParam.area_id && this.fetchParam.town_id && this.fetchParam.village_id){
-                //                             this.fetchParam.pid = this.fetchParam.village_id
-                //                         }
-                //                     }
-                //                 }
-                //             }
-                //         }
+
                 this.loading = true
                 return govService.getSelectList({
                     pagesize: this.pageSize,

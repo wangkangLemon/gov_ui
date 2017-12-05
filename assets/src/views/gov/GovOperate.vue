@@ -20,13 +20,13 @@
     <article class="gov-operate-container">
         <section>
             <el-form class="addForm" :model="form" :rules="rules" ref="form" :label-width="formLabelWidth">
-                <el-form-item prop="category" label="部门类型">
+                <!--<el-form-item prop="category" label="部门类型">
                     <el-select v-model="form.category">
                         <el-option v-for="(item, index) in govTypes"
                                    :label="item.name" :value="item.id" :key="item.id">
                         </el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item>-->
                 <!--<el-form-item label="地区" :label-width="formLabelWidth">
                     <Region :province="form.province_id"
                             :city="form.city_id"
@@ -115,7 +115,7 @@
                 formLabelWidth: '120px',
                 form: {
                     id: void 0,
-                    category: '', // 类型
+                    category: 2, // 类型
                     pid:'', //上级部门                    
                     province_id : '', // 省
                     city_id: '',  // 市
@@ -140,15 +140,15 @@
                         {required: true, message: '必填项', trigger: 'blur'}
                     ],
                     concact: [
-                        {required: true, message: '必填项', trigger: 'blur'}
+                        { message: '必填项', trigger: 'blur'}
                     ],
                     mobile: [
-                        {required: true, message: '必填项', trigger: 'blur'},
-                        {validator: validateMobile, trigger: 'blur'}
+                        { message: '必填项', trigger: 'blur'},
+                        { validator: validateMobile, trigger: 'blur'}
                     ],
                     email: [
-                        {required: true, message: '必填项', trigger: 'blur'},
-                        {validator: validateEmail, trigger: 'blur'}
+                        { message: '必填项', trigger: 'blur'},
+                        { validator: validateEmail, trigger: 'blur'}
                     ]
                 },
             }
@@ -180,7 +180,7 @@
                 this.form = {
                     id: void 0,
                     gov_id:void 0,
-                    category: '', // 类型
+                    category: 2, // 类型
                     pid:'', //上级部门                    
                     province_id : '', // 省
                     city_id: '',  // 市
@@ -231,7 +231,6 @@
                             reqFn = govService.updateGov
                             msg = '修改成功'
                         }
-                        console.log(this.form)
                         reqFn(this.form).then(() => {
                             xmview.showTip('success', msg)
                         }).then(() => {

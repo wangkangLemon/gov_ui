@@ -181,10 +181,10 @@
             </el-col>
             <el-col :span="6">
                 <!--<h2>{{ userInfo.gov }}</h2>-->
-                <h2>医线通</h2>
+                <h2> {{userInfo.gov_name}}</h2>
             </el-col>
             <el-col :span="8" class="header-right">
-                <div><i class="iconfont icon-bell"></i> <em>消息</em></div>
+                <!--<div><i class="iconfont icon-bell"></i> <em>消息</em></div>
                 <el-dropdown trigger="click" @command="handleFeedback">
                     <span class="el-dropdown-link feedback">
                         <i class="iconfont icon-service"></i> <em>问题反馈</em> <i class="el-icon-caret-bottom el-icon--right"></i>
@@ -193,17 +193,16 @@
                         <el-dropdown-item command="index">我的反馈</el-dropdown-item>
                         <el-dropdown-item command="add">提交问题</el-dropdown-item>
                     </el-dropdown-menu>
-                </el-dropdown>
+                </el-dropdown>-->
                 <el-dropdown trigger="click" @command="handleNickname">
                     <span class="el-dropdown-link nickname">
-                        <!--<img :src="{url: userInfo.avatar, sex: userInfo.sex} | defaultAvatar"> {{userInfo.name}} <i-->
                         <img :src="{url: userInfo.avatar, sex: userInfo.sex} | defaultAvatar"> {{userInfo.name}} <i
                               class="el-icon-caret-bottom el-icon--right"></i>
                       </span>
                     <el-dropdown-menu slot="dropdown" class="nickname-dropdown">
                         <el-dropdown-item command="profile">个人信息</el-dropdown-item>
                         <el-dropdown-item command="password">修改密码</el-dropdown-item>
-                        <el-dropdown-item command="safeset">安全设置</el-dropdown-item>
+                        <!--<el-dropdown-item command="safeset">安全设置</el-dropdown-item>-->
                         <el-dropdown-item :divided="true"></el-dropdown-item>
                         <el-dropdown-item command="loginout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
@@ -223,7 +222,7 @@
             </el-row>
             <el-row class="header" type="flex">
                 <el-col :span="8" :offset="2">
-                    <h2>医线通</h2>
+                    <h2> {{userInfo.gov_name}}</h2>
                 </el-col>
                 <el-col :span="24" class="header-right">
                     <div><i class="iconfont icon-xiaoxizhongxin"></i> <em></em></div>
@@ -232,7 +231,7 @@
                         <span class="el-dropdown-link nickname">
                         <img :src="{url: userInfo.avatar, sex: userInfo.sex} | defaultAvatar"><i
                               class="el-icon-caret-bottom el-icon--right"></i>
-                      </span>
+                        </span>
                         <el-dropdown-menu slot="dropdown" class="nickname-dropdown">
                             <el-dropdown-item command="profile">个人信息</el-dropdown-item>
                             <el-dropdown-item command="password">修改密码</el-dropdown-item>
@@ -377,7 +376,7 @@
                             },
                             {
                                 "id": 15,
-                                "menu_name": "gov登录日志",
+                                "menu_name": "登录日志",
                                 "menu_node": "/data/user-loginlog",
                                 "remark": "",
                                 "pid": 2,
@@ -393,15 +392,15 @@
                                 "level": 1,
                                 "items": []
                             },
-                            // {
-                            //     "id": 13,
-                            //     "menu_name": "课时记录",
-                            //     "menu_node": "/course/log",
-                            //     "remark": "",
-                            //     "pid": 2,
-                            //     "level": 1,
-                            //     "items": []
-                            // }
+                            {
+                                "id": 13,
+                                "menu_name": "课时记录",
+                                "menu_node": "/data/course-log",
+                                "remark": "",
+                                "pid": 2,
+                                "level": 1,
+                                "items": []
+                            }
                             ]
                         },
                         {
