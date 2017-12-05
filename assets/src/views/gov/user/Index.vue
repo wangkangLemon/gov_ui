@@ -72,17 +72,17 @@
                 <i>姓名</i>
                 <el-input v-model="fetchParam.name" placeholder="请输入姓名"   @keyup.enter.native="fetchData" ></el-input>
             </section>
-            <!--<section>
+            <section>
                 <i>角色</i>
-                <el-select clearable v-model="search.role_id" @change="getData">
+                <el-select clearable v-model="fetchParam.role_id" @change="fetchData">
                     <el-option label="管理员" value="1"></el-option>
                     <el-option label="部门人员" value="0"></el-option>
                 </el-select>
-            </section>-->
-            <!--<section>
-                <i>联系方式</i>
-                <el-input v-model="fetchParam.name" placeholder="请输入姓名"   @keyup.enter.native="fetchData" ></el-input>
-            </section>-->
+            </section>
+            <section>
+                <i>手机号</i>
+                <el-input v-model="fetchParam.mobile" placeholder="请输入手机号"   @keyup.enter.native="fetchData" ></el-input>
+            </section>
         </article>
 
         <el-table class="data-table" v-loading="loadingData" :data="tableData" :fit="true" @select="selectRow" @select-all="selectRow" border>
@@ -149,6 +149,8 @@ function getFetchParam() {
         pagesize: 15,
         disabled:0,
         name,
+        mobile: void 0,
+        role_id:void 0,
     }
 }
 
