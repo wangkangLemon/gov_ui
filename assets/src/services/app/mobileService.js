@@ -6,18 +6,23 @@ import config from '../..//utils/config'
 const urlPre = config.apiHost
 
 class MobileService {
-    uploadboot ({company_id, image}) {
-        let finalUrl = `${config.apiHost}/com/${company_id}/mobile/boot/upload`
-        return api.post(finalUrl, {company_id, image, alias: +new Date() + '.png'}, false)
+    // uploadboot ({gov_id, image}) {
+    //     let finalUrl = `${config.apiHost}/com/${gov_id}/mobile/boot/upload`
+    //     return api.post(finalUrl, {gov_id, image, alias: +new Date() + '.png'}, false)
+    // }
+
+    uploadboot ({gov_id, image}) {
+        let finalUrl = `${config.apiHost}/app/setting`
+        return api.post(finalUrl, {gov_id, image, alias: +new Date() + '.png'}, false)
     }
     // 获取启动图
-    // getBoot ({company_id}) {
+    // getBoot ({gov_id}) {
     //     let finalUrl = `${urlPre}/boot`
     //     return api.get(finalUrl).then((ret) => {
     //         return ret.data
     //     })
     // }
-    getBoot ({company_id}) {
+    getBoot ({gov_id}) {
         let finalUrl = `${urlPre}/app/setting`
         return api.post(finalUrl).then((ret) => {
             return ret.data
@@ -25,9 +30,9 @@ class MobileService {
     }
 
     // 更新启动图
-    updateBoot ({company_id, image, url, status}) {
-        let finalUrl = `${urlPre}/boot`
-        return api.put(finalUrl, {image, url, status})
+    updateBoot ({gov_id, banner,logo_app_boot, url, status}) {
+        let finalUrl = `${urlPre}/app/setting`
+        return api.post(finalUrl, {banner,logo_app_boot, url, status})
     }
     // 查询接口
     menuSearch ({page, page_size}) {
@@ -39,12 +44,12 @@ class MobileService {
     // 应用导航方案
     applyMenu (id) {
         let finalUrl = `${urlPre}/menu/scheme/${id}/enable`
-        return api.put(finalUrl)
+        return api.post(finalUrl)
     }
     // 克隆导航
     menuClone (id) {
         let finalUrl = `${urlPre}/menu/scheme/${id}/copy`
-        return api.put(finalUrl)
+        return api.post(finalUrl)
     }
     // 删除导航方案
     menuDelete (id) {
@@ -61,7 +66,7 @@ class MobileService {
     // 更新方案
     updateMenu ({info, scheme_id}) {
         let finalUrl = `${urlPre}/menu/scheme/${scheme_id}`
-        return api.put(finalUrl, info)
+        return api.post(finalUrl, info)
     }
     // -------------------导航管理部分-------------
     // 获取方案列表
@@ -138,7 +143,7 @@ class MobileService {
     // 更新功能
     updateModule ({scheme_id, module_id, type, type_id, url, name, icon, notify, notify_node, notify_icon, notify_text}) {
         let finalUrl = `${urlPre}/menuscheme/${scheme_id}/module/${module_id}`
-        return api.put(finalUrl, {type, type_id, url, name, icon, notify, notify_node, notify_icon, notify_text})
+        return api.post(finalUrl, {type, type_id, url, name, icon, notify, notify_node, notify_icon, notify_text})
     }
     // 上传功能图标
     uploadModuleScheme ({image, alias, scheme_id}) {

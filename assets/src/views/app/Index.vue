@@ -75,6 +75,7 @@
 
                         <ImagEcropperInput :isRound="true" :aspectRatio="1" :confirmFn="cropperFn"
                                            class="upload-btn"></ImagEcropperInput>
+
                     </span>
                 </td>
             </tr>
@@ -94,6 +95,8 @@
     import config from '../../utils/config'
     import govService from '../../services/gov/govService.js'
     import {fillImgPath} from '../../utils/filterUtils'
+    import commonService from '../../services/commonService.js'
+
     export default{
         filters: {
             fillImgPath
@@ -101,27 +104,32 @@
         data () {
             return {
                 imgData: '',
-                companyID: authUtils.getUserInfo().company_id,
+                uploadImgUrl: '',
+                govID: authUtils.getUserInfo().gov_id,
                 mobileTitle:'',
             }
         },
         activated () {
-            govService.getCompanyLogo({company_id: this.companyID}).then((ret) => {
-                console.log(ret)
-                // console.log(  config.apiHost )
+            govService.getCompanyLogo({gov_id: this.govID}).then((ret) => {
                 this.mobileTitle=ret.name
-                this.imgData = ret.logo.indexOf(config.apiHost) > -1 ? ret.logo : config.apiHost + ret.logo //存在要检索的字符串值
+                // console.log(ret.logo)
+                // console.log(config.apiHost + ret.logo)
+
+                // this.imgData = ret.logo.indexOf(config.apiHost) > -1 ? ret.logo : config.apiHost + ret.logo //存在要检索的字符串值
+                this.imgData = ret.logo //存在要检索的字符串值
             }).then(() => {
                 xmview.setContentLoading(false)
             })
+
         },
         methods: {
-            // 裁切后的回调
+
+            // 裁切后的回调  这是可裁剪的上传图片方法
             cropperFn(data, ext) {
-                govService.CompanyLogoUpload({
-                    company_id: this.companyID,
+                commonService.commonUploadImageBase({
                     image: data,
-                    alias: `${Date.now()}${ext}`
+                    extpath:'logo'
+                    // alias: `${Date.now()}${ext}`
                 }).then((ret) => {
                     this.imgData = ret.url
                     xmview.showTip('success', '上传成功')
@@ -131,7 +139,7 @@
             },
             submit() {
                 govService.setCompanyLogo({
-                    company_id: this.companyID,
+                    gov_id: this.govID,
                     logo: this.imgData
                 }).then(() => {
                     xmview.showTip('success', '修改成功')
@@ -140,6 +148,6 @@
                 })
             }
         },
-        components: {ImagEcropperInput}
+        components: {ImagEcropperInput},
     }
 </script>

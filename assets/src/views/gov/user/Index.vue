@@ -44,10 +44,9 @@
                 <img :src="{url:clerkDetail.avatar, sex: clerkDetail.sex} | defaultAvatar" />
             </div>
             <div class="info">
-                <h2>{{clerkDetail.name}}({{clerkDetail.company}})</h2>
+                <h2>{{clerkDetail.name}}</h2>
                 <p><i class="title">所属部门：</i><span class="value">{{clerkDetail.gov_name}}</span></p>
-                <p><i class="title">Mobile：</i> <span class="value">{{clerkDetail.mobile}}</span></p>
-                <p><i class="title">Email：</i> <span class="value">{{clerkDetail.email}}</span></p>
+                <p><i class="title">手机号：</i> <span class="value">{{clerkDetail.mobile}}</span></p>
                 <p>
                     <i class="title">状态：</i>
                     <span class="value">
@@ -58,7 +57,7 @@
                 <!--<p><i class="title">性别：</i> <span class="value">{{clerkDetail.sex ? '男' : '女'}}</span></p>-->
                 <p><i class="title">生日：</i> <span class="value">{{clerkDetail.birthday}}</span></p>
                 <p><i class="title">地址：</i> <span class="value">{{clerkDetail.address}}</span></p>
-                <p><i class="title">注册时间：</i><span class="value">{{clerkDetail.create_time_name}}</span></p>
+                <p><i class="title">注册时间：</i><span class="value">{{clerkDetail.addate}}</span></p>
             </div>
         </el-dialog>
         <section class="manage-container">
@@ -87,7 +86,8 @@
 
         <el-table class="data-table" v-loading="loadingData" :data="tableData" :fit="true" @select="selectRow" @select-all="selectRow" border>
             
-            <el-table-column type="selection"></el-table-column>
+            <!--<el-table-column type="selection"></el-table-column> 左侧选择按钮-->
+
             <el-table-column min-width="200" prop="name" label="姓名" v-if="data">
             </el-table-column>
             <el-table-column min-width="200" prop="gov_name" label="部门">
@@ -129,10 +129,10 @@
         </el-pagination>
 
         <!--底部的批量删除和移动两个按钮-->
-        <div class="bottom-manage">
+        <!--<div class="bottom-manage">
             <el-button :disabled='selectedIds.length < 1' @click="dialogTree.isShow = true">移动到</el-button>
             <el-button :disabled='selectedIds.length < 1' @click="delMulti">批量删除</el-button>
-        </div>
+        </div>-->
 
     </article>
 </template>
@@ -150,7 +150,7 @@ function getFetchParam() {
         disabled:0,
         name,
         mobile: void 0,
-        role_id:void 0,
+        role_id: void -1,
     }
 }
 
@@ -182,7 +182,7 @@ export default {
                 address: '',       // 地址
                 sex: 0,            // 性别
                 birthday: '',          // 生日
-                create_time_name: ''
+                addate: ''
             },
 
         }
@@ -191,21 +191,15 @@ export default {
         this.fetchData()
     },
     methods: {
-        //过滤时间
-            dataFilter(){
-
-
-            },
-
-         // 修改人员信息
-            editUser(index, row) {
-                this.$router.push({
-                    name: 'person-edit',
-                    params: {
-                        id: row.id
-                    }
-                })
-            },
+     // 修改人员信息
+        editUser(index, row) {
+            this.$router.push({
+                name: 'person-edit',
+                params: {
+                    id: row.id
+                }
+            })
+        },
        // 查看管理员详情
         checkClerkDetail (index, row) {
             this.showDetail = true
@@ -302,12 +296,11 @@ export default {
         },
         
         Time(row, column, cellValue){
-            console.log(row.addate)
               return  this.timeFilter(row.addate) 
         },
         timeFilter( addate){
             let time
-            this.dataCache.forEach(v=> {
+            this.dataCache.forEach(v=> {3
                     time = addate.split(" ")[0]
                 }, this);
             return time

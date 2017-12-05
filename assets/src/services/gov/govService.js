@@ -343,7 +343,7 @@ class govService {
         image,
         alias
     }) {
-        let finalUrl = `${config.apiHost}/com/${gov_id}/mobile/logo/upload`
+        let finalUrl = `${config.apiHost}/app/setting`
         return api.post(finalUrl, {
             image,
             alias
@@ -359,6 +359,7 @@ class govService {
     //         return ret.data
     //     })
     // }
+
     getCompanyLogo({
         gov_id
     }) {
@@ -373,8 +374,8 @@ class govService {
         gov_id,
         logo
     }) {
-        let finalUrl = `${config.apiHost}/com/${gov_id}/mobile/logo`
-        return api.put(finalUrl, {
+        let finalUrl = `${config.apiHost}/app/setting`
+        return api.post(finalUrl, {
             logo
         })
     }
@@ -598,7 +599,7 @@ class govService {
     // 批量删除管理员
     deleteMulty(ids) {
         let url = `${urlPre}/batchdel`
-        return api.put(url, {
+        return api.post(url, {
             ids
         })
     }
@@ -609,7 +610,7 @@ class govService {
         category_id
     }) {
         let url = `${urlPre}/batchmove`
-        return api.put(url, {
+        return api.post(url, {
             ids,
             category_id
         })
@@ -621,7 +622,7 @@ class govService {
         data
     }) {
         let url = `${urlPre}/${id}/setlesson`
-        return api.put(url, data).then(ret => {
+        return api.post(url, data).then(ret => {
             if (ret.code) {
                 return Promise.reject(ret)
             }

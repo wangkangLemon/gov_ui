@@ -263,7 +263,7 @@
                         </div>
                         <ul class="chats">
                             <li class="left">
-                                <span class="date-time">{{ data.create_time_name }}</span>
+                                <span class="date-time">{{ data.addate }}</span>
                                 <a href="#" class="name">{{ data.user_name }}</a>
                                 <a href="javascript:;" class="image"><img alt=""
                                                                           :src="{ url: data.user_avatar, sex: data.user_sex } | defaultAvatar "></a>
@@ -277,7 +277,7 @@
 
                             <li :class="{left: item.user_id == data.user_id, right: item.user_id != data.user_id }"
                                 v-for="item in replies" :key="item.id">
-                                <span class="date-time">{{ item.create_time_name }}</span>
+                                <span class="date-time">{{ item.addate }}</span>
                                 <a href="#" class="name">{{ item.user_name }}</a>
                                 <a href="javascript:;" class="image"><img alt=""
                                                                           :src="{ url: item.user_avatar, sex: item.user_sex } | defaultAvatar "></a>
@@ -409,7 +409,7 @@
                     upload_group: [],
                     status: 0,
                     create_time: 0,
-                    create_time_name: '',
+                    addate: '',
                 },
                 replies: [],
                 form: {

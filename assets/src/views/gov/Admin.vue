@@ -43,7 +43,7 @@
                 <!--<p><i class="title">性别：</i> <span class="value">{{clerkDetail.sex ? '男' : '女'}}</span></p>-->
                 <p><i class="title">生日：</i> <span class="value">{{clerkDetail.birthday}}</span></p>
                 <p><i class="title">地址：</i> <span class="value">{{clerkDetail.address}}</span></p>
-                <p><i class="title">注册时间：</i><span class="value">{{clerkDetail.create_time_name}}</span></p>
+                <p><i class="title">注册时间：</i><span class="value">{{clerkDetail.addate}}</span></p>
             </div>
         </el-dialog>
         <!--添加/编辑表单-->
@@ -181,7 +181,7 @@
                     address: '',       // 地址
                     sex: 0,            // 性别
                     birthday: '',          // 生日
-                    create_time_name: ''
+                    addate: ''
                 },
                 departmentData: [],
 //                companyID: this.$route.params.company_id,

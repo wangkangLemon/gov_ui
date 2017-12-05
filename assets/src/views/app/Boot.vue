@@ -109,6 +109,7 @@
     import ImagEcropperInput from '../component/upload/ImagEcropperInput.vue'
     import mobileService from '../../services/app/mobileService.js'
     import authUtils from '../../utils/authUtils'
+    import commonService from '../../services/commonService.js'
     export default{
         data() {
             return {
@@ -121,18 +122,19 @@
                 },
                 rules: {
                     logo_app_priority: [
-                        {type: 'number', required: true, message: '请选择展示方式', trigger: 'blur'}
+                        {type: 'number', message: '请选择展示方式', trigger: 'blur'}
                     ],
                 }
             }
         },
         activated () {
             this.user = authUtils.getUserInfo()
-            mobileService.getBoot({company_id: this.user.company_id}).then((ret) => {
+            mobileService.getBoot({gov_id: this.user.gov_id}).then((ret) => {
                 console.log(ret)
-                this.imgData = ret.image
+                this.imgData = ret.banner
+                // this.banner = ret.banner
                 this.form = {
-                    logo_app_boot: ret.url,
+                    logo_app_boot: ret.logo_app_boot,
                     logo_app_priority: ret.status
                 }
             }).then(() => {
@@ -143,7 +145,7 @@
             cropperFn(data) {
                 this.uploadingImg = true
                 // 上传图片
-                mobileService.uploadboot({company_id: this.user.company_id, image: data}).then(ret => {
+                commonService.commonUploadImageBase({gov_id: this.user.gov_id, image: data,extpath:'banner'}).then(ret => {
                     this.imgData = ret.url
                 }).then(() => {
                     xmview.showTip('success', '上传成功')
@@ -157,9 +159,9 @@
                 this.$refs['ruleForm'].validate((valid) => {
                     if (valid) {
                         mobileService.updateBoot({
-                            company_id: this.user.company_id,
-                            image: this.imgData,
-                            url: this.form.logo_app_boot,
+                            gov_id: this.user.gov_id,
+                            banner: this.imgData,
+                            logo_app_boot: this.form.logo_app_boot,
                             status: this.form.logo_app_priority
                         }).then((ret) => {
                             xmview.showTip('success', '提交成功')

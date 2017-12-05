@@ -205,8 +205,11 @@
             },
             // 删除 GOV部门
             deleteGov(index, row) {
-                govService.deleteGov(row.id).then((ret) => {
-                    this.govData.splice(index, 1) //删除选中项
+                 xmview.showDialog(`你将要删除部门 <span style="color:red">${row.name}</span>  此操作不可恢复确认吗?`, () => {
+                    govService.deleteGov(row.id).then(() => {
+                        this.govData.splice(index, 1)//删除选中项
+                        row.deleted = 1
+                    })
                 })
             },
             adminPage(index, item) {
@@ -225,7 +228,7 @@
             // 添加
             add() {
                 this.$router.push({
-                    name: 'gov-add'
+                    name: 'gov-add',
                 })
             },
             handleSizeChange(val) {

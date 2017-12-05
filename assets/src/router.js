@@ -7,10 +7,10 @@ import data from './routers/data'              // 数据分析模块
 import base from './routers/base'              // 基础模块
 import app from './routers/app'                // 设置模块
 
-import course from './routers/course'          // 培训模块
-import finance from './routers/finance'        // 财务模块
-import company from './routers/company'        // 企业模块
-import sys from './routers/sys'                // 系统模块
+// import course from './routers/course'          // 培训模块
+// import finance from './routers/finance'        // 财务模块
+// import company from './routers/company'        // 企业模块
+// import sys from './routers/sys'                // 系统模块
 
 
 import authUtils from './utils/authUtils'
@@ -72,13 +72,13 @@ const routes = [{
             // ============ 基础模块 ==================
             ...base,
             // ============ 培训模块 ==================
-            course,
+            // course,
             // ============ 财务模块 ==================
-            finance,
+            // finance,
             // ============ 企业模块 ==================
-            ...company,
+            // ...company,
             // ============ 系统模块 ==================
-            sys,
+            // sys,
             // ============ 数据分析模块 ==============
             data,
             // ============ 客户端模块 ==================

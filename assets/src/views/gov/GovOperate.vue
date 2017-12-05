@@ -99,7 +99,8 @@
                 callback()
             }
             return {
-                govID: authUtils.getUserInfo().gov_id,
+                govID: void 0, //新建的时候
+                getID: void 0,
                 pid: void 0,
                 province_id: void 0,
                 city_id: void 0,
@@ -144,35 +145,37 @@
                     ],
                     mobile: [
                         { message: '必填项', trigger: 'blur'},
-                        { validator: validateMobile, trigger: 'blur'}
+                        // { validator: validateMobile, trigger: 'blur'}
                     ],
                     email: [
                         { message: '必填项', trigger: 'blur'},
-                        { validator: validateEmail, trigger: 'blur'}
+                        // { validator: validateEmail, trigger: 'blur'}
                     ]
                 },
             }
         },
         computed: {
-            getID () {
-                return this.$route.params.gov_id
+            getGovID () {
+                return authUtils.getUserInfo().gov_id
             }
         },
         activated () {
-            // console.log('this.govID='+this.govID)
-            _this = this
+            this.govID = this.getGovID
+            let _this = this
+            console.log('this.govID='+this.getGovID)
+
             // 调用govid 拿到提交表单需要的其他id
-            govService.getGovInfo(this.govID).then((ret) => {
-                if(ret.pid!== 0 ) this.form.pid = ret.pid
-                if(ret.province_id!== 0 ) this.form.province_id = ret.province_id
-                if(ret.city_id!== 0 ) this.form.city_id = ret.city_id
-                if(ret.area_id!== 0 ) this.form.area_id = ret.area_id
-                if(ret.town_id!== 0 ) this.form.town_id = ret.town_id
-                if(ret.village_id!== 0 ) this.form.village_id = ret.village_id
-                if(this.govID = ret.province_id || ret.city_id || ret.area_id || ret.town_id || ret.village_id){
+            govService.getGovInfo(_this.govID).then((ret) => {
+                if(ret.pid!== 0 ) _this.form.pid = ret.pid
+                if(ret.province_id!== 0 ) _this.form.province_id = ret.province_id
+                if(ret.city_id!== 0 ) _this.form.city_id = ret.city_id
+                if(ret.area_id!== 0 ) _this.form.area_id = ret.area_id
+                if(ret.town_id!== 0 ) _this.form.town_id = ret.town_id
+                if(ret.village_id!== 0 ) _this.form.village_id = ret.village_id
+                if(_this.govID = ret.province_id || ret.city_id || ret.area_id || ret.town_id || ret.village_id){
                     
                 }
-                // console.log( this.form.province_id,this.form.city_id,this.form.area_id,this.form.town_id ,this.form.village_id )
+                console.log( this.form.province_id,this.form.city_id,this.form.area_id,this.form.town_id ,this.form.village_id )
                 xmview.setContentLoading(false)
             })
             // console.log('getID='+this.getID)
@@ -185,7 +188,7 @@
                     province_id : '', // 省
                     city_id: '',  // 市
                     area_id: '',  // 区
-                    town_id: '',  //乡镇                       -----
+                    town_id: '',  //乡镇                       ----- 
                     village_id: '', // 街道                    -----
                     name: '', // 名称
                     concact: '', // 联系人
@@ -224,9 +227,10 @@
                         let reqFn = govService.addGov
                         let msg = '添加成功'
                         this.form.pid = this.form.area_id || this.form.city_id || this.form.province_id
-           
+                        // console.log(this.form)
+                        // console.log(this.form.pid)
                         if (this.getID) {
-
+                            // console.log(this.getID)
                             this.form.gov_id = this.getID
                             reqFn = govService.updateGov
                             msg = '修改成功'
