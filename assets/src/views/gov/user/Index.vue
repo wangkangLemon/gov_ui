@@ -300,12 +300,13 @@ export default {
         },
         
         Time(row, column, cellValue){
+            console.log(row.addate)
               return  this.timeFilter(row.addate) 
         },
         timeFilter( addate){
             let time
             this.dataCache.forEach(v=> {
-                    time = v.addate.split(" ")[0]
+                    time = addate.split(" ")[0]
                 }, this);
             return time
         },
