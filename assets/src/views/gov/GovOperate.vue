@@ -99,8 +99,8 @@
                 callback()
             }
             return {
-                govID: void 0, //新建的时候
-                getID: void 0,
+                govID: void 0, //新建的时候拿到其他id
+                ID: void 0, //编辑id
                 pid: void 0,
                 province_id: void 0,
                 city_id: void 0,
@@ -157,6 +157,10 @@
         computed: {
             getGovID () {
                 return authUtils.getUserInfo().gov_id
+            },
+            getID(){
+                console.log(this.$route.params.id)
+                return this.$route.params.id
             }
         },
         activated () {

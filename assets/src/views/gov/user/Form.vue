@@ -180,7 +180,8 @@
                         }
                         if (!this.fetchParam.id) this.fetchParam.id = ret.id;
                         // this.$router.push({'name': 'gov-admin'})
-                        xmview.setContentBack(true)
+                        // xmview.setContentBack(true)
+                        this.$router.go(-1)
                     })
                 })
             },

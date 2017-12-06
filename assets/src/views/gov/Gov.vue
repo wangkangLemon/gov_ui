@@ -192,7 +192,7 @@
                 this.$router.push({
                     name: 'gov-edit',
                     params: {
-                        gov_id: row.id
+                        id: row.id
                     }
                 })
             },

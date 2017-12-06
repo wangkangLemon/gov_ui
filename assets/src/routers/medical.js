@@ -37,7 +37,7 @@ export default {
             }
         },
         {
-            path: 'edit/:gov_id',
+            path: 'edit/:id',
             name: 'gov-edit',
             component: resolve => {
                 require.ensure([], () => {

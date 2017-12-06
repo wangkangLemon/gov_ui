@@ -88,13 +88,13 @@
             
             <!--<el-table-column type="selection"></el-table-column> 左侧选择按钮-->
 
-            <el-table-column min-width="200" prop="name" label="姓名" v-if="data">
+            <el-table-column min-width="150" prop="name" label="姓名" v-if="data">
             </el-table-column>
             <el-table-column min-width="200" prop="gov_name" label="部门">
             </el-table-column>
-            <el-table-column min-width="200" prop="mobile" label="手机">
+            <el-table-column min-width="170" prop="mobile" label="手机">
             </el-table-column>
-            <el-table-column min-width="200" :formatter="Time" label="创建时间">
+            <el-table-column min-width="170" :formatter="Time" label="创建时间">
             </el-table-column>
             <el-table-column width="100" label="状态">
                 <template scope="scope">
