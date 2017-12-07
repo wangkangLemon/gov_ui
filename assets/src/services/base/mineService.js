@@ -58,9 +58,21 @@ class MineService {
     }
 
     // 修改密码
-    modifyPassword({ origin_password, new_password, re_password }) {
-        let url = `${urlPre}/password`
-        return api.post(url, { origin_password, new_password, re_password }).then((ret) => {
+    // modifyPassword({ origin_password, new_password, re_password }) {
+    //     let url = `${urlPre}/password`
+    //     return api.post(url, { origin_password, new_password, re_password }).then((ret) => {
+    //         if (ret.code) {
+    //             return Promise.reject(ret)
+    //         }
+    //     })
+    // }
+
+
+    
+    // 更新 id, role_id, avatar, password, area_id, gov_id, name, nickname, mobile, email, sex, address
+    modifyPassword({ id, passwd }) {
+        let url = `${config.apiHost}/user/edit/${id}`
+        return api.post(url, { passwd }).then(ret => {
             if (ret.code) {
                 return Promise.reject(ret)
             }

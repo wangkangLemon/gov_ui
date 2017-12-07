@@ -67,6 +67,7 @@
 </template>
 <script>
 import mineService from '../../../services/base/mineService'
+import commonService from '../../../services/commonService.js'
 import ImagEcropperInput from '../../component/upload/ImagEcropperInput.vue'
 import * as filterUtils from '../../../utils/filterUtils'
 import authUtils from '../../../utils/authUtils'
@@ -100,14 +101,15 @@ export default {
         if (!this.form.avatar) {
             this.imgUrl = filterUtils.defaultAvatar({ url: '', sex: this.form.sex })
         } else {
-            this.imgUrl = this.form.avatar.indexOf(config.apiHost) > -1 ? this.form.avatar : config.apiHost + this.form.avatar
+            // this.imgUrl = this.form.avatar.indexOf(config.apiHost) > -1 ? this.form.avatar : config.apiHost + this.form.avatar
+            this.imgUrl = this.form.avatar 
         }
         xmview.setContentLoading(false)
     },
     methods: {
         // 裁切后的回调
         cropperFn(data, ext) {
-            mineService.uploadAvatar({
+            commonService.commonUploadImageBase({
                 avatar: data,
                 alias: `${Date.now()}${ext}`,
                 id: this.form.id
