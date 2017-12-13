@@ -104,7 +104,7 @@
                 pid: void 0,
                 province_id: void 0,
                 city_id: void 0,
-                area_id: void 0,
+                area_id: null,
                 town_id: void 0,
                 village_id: void 0,
                 govTypes: [ // 部门类型
@@ -170,6 +170,7 @@
 
             // 调用govid 拿到提交表单需要的其他id
             govService.getGovInfo(_this.govID).then((ret) => {
+                console.log(ret)
                 if(ret.pid!== 0 ) _this.form.pid = ret.pid
                 if(ret.province_id!== 0 ) _this.form.province_id = ret.province_id
                 if(ret.city_id!== 0 ) _this.form.city_id = ret.city_id
@@ -230,7 +231,7 @@
                         this.form = Object.assign(this.form, this.sign)
                         let reqFn = govService.addGov
                         let msg = '添加成功'
-                        this.form.pid = this.form.area_id || this.form.city_id || this.form.province_id
+                        this.form.pid = this.form.village_id||this.form.town_id||this.form.area_id || this.form.city_id || this.form.province_id
                         // console.log(this.form)
                         // console.log(this.form.pid)
                         if (this.getID) {
@@ -239,6 +240,7 @@
                             reqFn = govService.updateGov
                             msg = '修改成功'
                         }
+                        console.log(this.form)
                         reqFn(this.form).then(() => {
                             xmview.showTip('success', msg)
                         }).then(() => {
