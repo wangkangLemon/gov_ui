@@ -96,11 +96,11 @@
             </el-table-column>
             <el-table-column prop="operate" label="操作" width="190">
                 <template scope="scope">
-                    <router-link :to="{path: '/medical/user/'+ scope.row.id }">
-                        <el-button type="text" size="small" @click="adminPage(scope.$index, scope.row)">
-                            管理员 &nbsp;&nbsp;
-                        </el-button>
-                    </router-link>
+                    <!--<router-link :to="{path: '/medical/user/'+ scope.row.id }">-->
+                    <el-button type="text" size="small" @click="adminPage(scope.$index, scope.row)">
+                        管理员 
+                    </el-button>
+                    <!--</router-link>-->
                     <el-button type="text" size="small" @click="showFn(scope.$index, scope.row)">
                         详情
                     </el-button>
