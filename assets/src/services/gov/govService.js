@@ -401,6 +401,7 @@ class govService {
         date_end = '',
     }) {
         let finalUrl = `${urlPre}/user/loginlog/lists`
+        // let finalUrl = `${config.apiHost}/report/userlogin/lists`
         return api.get(finalUrl, {
             page,
             pagesize,

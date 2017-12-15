@@ -66,8 +66,6 @@
                 <el-table-column prop="grade" label="课程数量" min-width="100">
                 </el-table-column>
                 <el-table-column prop="user_id"  :formatter="User" label="管理员"  min-width="180">
-                    
-
                 </el-table-column>
                 <el-table-column prop="score" label="分值"  min-width="180">
                 </el-table-column>

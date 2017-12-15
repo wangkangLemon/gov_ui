@@ -107,20 +107,19 @@ let authUtils = {
         }, 1000 * 10)
         refreshIntervalId = setInterval(() => {
             authUtils.refreshToken()
-        // }, 1000 * 60 * 20) // 20分钟一请求
-        }, 1000 * 60 * 40) // 20分钟一请求
+        }, 1000 * 60 * 30) // 30分钟一请求
     },
     refreshToken () {
-        // let userinfo = authUtils.getUserInfo()
-        // if (userinfo && userinfo.id) {
-        //     authApi.refreshToken(userinfo.id).then((ret) => {
-        //         authUtils.setAuthToken(ret.data.auth_token)
-        //     })
-        // } else {
-        //     if (xmrouter.history.current.name === 'login') { 
-        //         return 
-        //     }
-        // }
+        let userinfo = authUtils.getUserInfo()
+        if (userinfo && userinfo.id) {
+            authApi.refreshToken(userinfo.id).then((ret) => {
+                authUtils.setAuthToken(ret.data.token)
+            })
+        } else {
+            if (xmrouter.history.current.name === 'login') { 
+                return 
+            }
+        }
     },
     clearAuthRefreshToken () {
         refreshIntervalId && clearInterval(refreshIntervalId)
