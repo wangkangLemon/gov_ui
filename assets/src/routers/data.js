@@ -69,7 +69,7 @@ export default {
             name: 'data-user-loginlog',
             component: resolve => {
                 require.ensure([], () => {
-                    resolve(require('../views/data/Manage.vue'))
+                    resolve(require('../views/data/UserLoginlog.vue'))
                 })
             },
             meta: {
@@ -115,6 +115,21 @@ export default {
             },
             meta: {
                 title: '数据分析 - 课时记录',
+                noback: true
+            }
+        },
+        
+        //注册登陆统计
+         {
+            path: 'report-userlogin',
+            name: 'data-report-userlogin',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/data/ReportUserlogin.vue'))
+                })
+            },
+            meta: {
+                title: '数据分析 - 注册登陆统计 ',
                 noback: true
             }
         },

@@ -401,7 +401,6 @@ class govService {
         date_end = '',
     }) {
         let finalUrl = `${urlPre}/user/loginlog/lists`
-        // let finalUrl = `${config.apiHost}/report/userlogin/lists`
         return api.get(finalUrl, {
             page,
             pagesize,
@@ -411,6 +410,24 @@ class govService {
             role_id,
             date_start,
             date_end
+        }).then((ret) => {
+            return ret.data
+        })
+    }
+
+     // 注册登陆统计
+    getReportUserlogin({
+        page,
+        pagesize,
+        gov_id,
+        level,
+    }) {
+        let finalUrl = `${config.apiHost}/report/userlogin/lists`
+        return api.get(finalUrl, {
+            page,
+            pagesize,
+            gov_id,
+            level,
         }).then((ret) => {
             return ret.data
         })

@@ -400,6 +400,15 @@
                                 "pid": 2,
                                 "level": 1,
                                 "items": []
+                            },
+                            {
+                                "id": 17,
+                                "menu_name": "注册登陆统计",
+                                "menu_node": "/data/report-userlogin",
+                                "remark": "",
+                                "pid": 2,
+                                "level": 1,
+                                "items": []
                             }
                             ]
                         },
