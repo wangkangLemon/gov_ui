@@ -115,29 +115,19 @@
                 <!--<section>
                     <label>姓名</label>
                     <el-input class="name" @change="getData" v-model="search.name"></el-input>
-                </section>-->
-                <!--<section>
-                    <label>账号</label>
-                    <el-input class="name" @change="getData" v-model="search.name"></el-input>
-                </section>-->
+                    </section>-->
+    
                 <section>
                     <i>部门</i>
                     <CompanySelect  :change="getData" v-model="search.gov_id"
                                     v-on:change="val=>search.gov_id=val">
                     </CompanySelect>
                 </section>
-                <section>
-                    <i>角色</i>
-                    <el-select clearable v-model="search.role_id" @change="getData">
-                        <el-option label="管理员" value="1"></el-option>
-                        <el-option label="部门人员" value="0"></el-option>
-                    </el-select>
-                </section>
-                <DateRange title="登录时间" :start="search.createTime" :end="search.endTime"
+                <!--<DateRange title="登录时间" :start="search.createTime" :end="search.endTime"
                            v-on:changeStart="val=> search.createTime=val"
                            v-on:changeEnd="val=> search.endTime=val"
                            :change="getData">
-                </DateRange>
+                    </DateRange>-->
             </section>
             <el-table
                     v-loading="loading"
@@ -151,35 +141,22 @@
                         label="账号"
                         min-width="200">
                 </el-table-column>-->
-                <el-table-column
-                        prop="gov_name"
+                <!--<el-table-column
                         min-width="180"
-                        label="所属部门">
-                </el-table-column>
+                        label="所属部门" >
+                        <template scope="scope">
+                            <span>{{scope.row.gov_name? scope.row.gov_name: "暂无部门"}}</span>
+                        </template>
+                </el-table-column>-->
                 <el-table-column
-                        prop="name"
-                        min-width="100"
-                        label="姓名">
-                </el-table-column>
-                <el-table-column
-                        prop="role_name"
-                        min-width="120"
-                        label="角色">
-                </el-table-column>
-                <el-table-column
-                        prop="update"
+                        prop="user_cnt"
                         min-width="180"
-                        label="登录时间">
+                        label="注册人数">
                 </el-table-column>
                 <el-table-column
-                        prop="ip"
+                        prop="logined_cnt"
                         min-width="180"
-                        label="登录IP">
-                </el-table-column>
-                <el-table-column
-                        prop="device"
-                        min-width="180"
-                        label="登陆设备">
+                        label="登录人数">
                 </el-table-column>
             </el-table>
             <div class="block">
@@ -230,6 +207,7 @@
                 search: clearFn(),
                 level: void 0,
                 govID: authUtils.getUserInfo().gov_id,
+                govLevel: authUtils.getUserInfo().gov_level,
             }
         },
         mounted () {
@@ -242,6 +220,8 @@
         activated () {
             console.log(authUtils.getUserInfo())
             this.search.gov_id = this.govID
+            this.search.level = Number(this.govLevel) + 1
+            console.log(this.search.level)
             this.getData().then(() => {
                 xmview.setContentLoading(false)
             })
@@ -271,7 +251,7 @@
                     role_id: this.search.role_id,
                     date_start: this.search.createTime,
                     date_end: this.search.endTime,
-                    level:this.level,
+                    level:this.search.level,
                 }).then((ret) => {
                     this.total = ret.total
                     this.manageData = ret

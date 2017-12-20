@@ -87,13 +87,15 @@
     import CompanySelect from '../component/select/IndustryCompany.vue'
     import DepSelect from '../component/select/Department.vue'
     import govService from '../../services/gov/govService.js'
+    import authUtils from '../../utils/authUtils'
 
     function clearFn() {
         return {
             gov_id: '',
             createTime: '',
             endTime: '',
-            department_id: ''
+            department_id: '',
+            level: void 0,
         }
     }
     export default {
@@ -114,7 +116,9 @@
                 showDepartment: false,
                 courseTaskDepartment: null,
                 search: clearFn(),
-                userList:[]
+                userList:[],
+                govID: authUtils.getUserInfo().gov_id,
+                
                 
             }
         },
@@ -126,6 +130,7 @@
             xmview.setContentLoading(false)
         },
         activated() {
+            this.search.gov_id = this.govID
             this.getData().then(() => {
                 xmview.setContentLoading(false)
             })
@@ -151,7 +156,8 @@
                     page: this.currentPage,
                     pagesize: this.pageSize,
                     keyword: this.search.name,
-                    gov_id: this.govID
+                    gov_id: this.govID,
+                    
                 }).then((ret) => {
                     this.userList = ret
                     //拿到数据后根据id 把name 对应给user_id
@@ -207,6 +213,7 @@
                     department_id: this.search.department_id,
                     time_start: this.search.createTime,
                     time_end: this.search.endTime,
+                    course_id:this.search.course_id
                 }).then((ret) => {
                     this.total = ret.total
                     this.testingData = ret

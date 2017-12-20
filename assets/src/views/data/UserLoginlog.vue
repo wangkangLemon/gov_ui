@@ -162,9 +162,11 @@
                         label="姓名">
                 </el-table-column>
                 <el-table-column
-                        prop="role_name"
                         min-width="120"
                         label="角色">
+                        <template scope="scope">
+                            <span>{{scope.row.role_id === 1 ? '管理员' : '部门人员'}}</span>
+                        </template>
                 </el-table-column>
                 <el-table-column
                         prop="update"
