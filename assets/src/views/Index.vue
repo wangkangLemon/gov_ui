@@ -392,15 +392,15 @@
                                 "level": 1,
                                 "items": []
                             },
-                            {
-                                "id": 13,
-                                "menu_name": "课时记录",
-                                "menu_node": "/data/course-log",
-                                "remark": "",
-                                "pid": 2,
-                                "level": 1,
-                                "items": []
-                            },
+                            // {
+                            //     "id": 13,
+                            //     "menu_name": "课时记录",
+                            //     "menu_node": "/data/course-log",
+                            //     "remark": "",
+                            //     "pid": 2,
+                            //     "level": 1,
+                            //     "items": []
+                            // },
                             {
                                 "id": 17,
                                 "menu_name": "注册登陆统计",
@@ -439,6 +439,61 @@
                                 }
                             ]
                         },
+                        {
+                            "id": 18,
+                            "menu_name": "公告管理",
+                            "menu_node": "/announce",
+                            "remark": "",
+                            "pid": 0,
+                            "level": 0,
+                            "items": [{
+                                    "id": 19,
+                                    "menu_name": "公告列表",
+                                    "menu_node": "/announce/lists",
+                                    "remark": "",
+                                    "pid": 2,
+                                    "level": 1,
+                                    "items": []
+                                },
+                                {
+                                    "id": 20,
+                                    "menu_name": "公告发送",
+                                    "menu_node": "/announce/send",
+                                    "remark": "",
+                                    "pid": 2,
+                                    "level": 1,
+                                    "items": []
+                                },
+                                {
+                                    "id": 21,
+                                    "menu_name": "公告联系人",
+                                    "menu_node": "/announce/contacts",
+                                    "remark": "",
+                                    "pid": 2,
+                                    "level": 1,
+                                    "items": []
+                                }
+                            ]
+                        },
+                        {
+                            "id": 22,
+                            "menu_name": "审核管理",
+                            "menu_node": "/review",
+                            "remark": "",
+                            "pid": 0,
+                            "level": 0,
+                            "items": [{
+                                    "id": 23,
+                                    "menu_name": "课程审核",
+                                    "menu_node": "/review/course",
+                                    "remark": "",
+                                    "pid": 2,
+                                    "level": 1,
+                                    "items": []
+                                },
+                            ]
+                        },
+
                      // {
                         //     "id": 1,
                         //     "menu_name": "系统设置",

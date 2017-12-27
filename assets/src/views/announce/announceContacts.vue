@@ -1,8 +1,8 @@
 <!--部门人员管理-->
 <style lang='scss' rel='stylesheet/scss'>
-@import "../../../utils/mixins/common";
-@import "../../../utils/mixins/topSearch";
-@import "../../../utils/mixins/showDetail";
+@import "../../utils/mixins/common";
+@import "../../utils/mixins/topSearch";
+@import "../../utils/mixins/showDetail";
 
 #medical-index-container {
     @extend %content-container;
@@ -73,8 +73,7 @@
             </section>
             <section>
                 <i>角色</i>
-                <el-select clearable v-model="fetchParam.role_id" placeholder="请选择" @change="fetchData" :clearable="true">
-                    <el-option label="全部" :value="-1"></el-option>
+                <el-select clearable v-model="fetchParam.role_id" @change="fetchData">
                     <el-option label="管理员" value="1"></el-option>
                     <el-option label="部门人员" value="0"></el-option>
                 </el-select>
@@ -126,7 +125,7 @@
         </el-table>
 
         <!--底部的page -->
-        <el-pagination class="pagin" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="fetchParam.page" :page-size="fetchParam.pagesize" :page-sizes="[15, 30, 60, 100]" layout="sizes,total, prev, pager, next" :total="100">
+        <el-pagination class="pagin" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="fetchParam.page" :page-size="fetchParam.pagesize" :page-sizes="[15, 30, 60, 100]" layout="sizes,total, prev, pager, next" :total="total">
         </el-pagination>
 
         <!--底部的批量删除和移动两个按钮-->
@@ -139,9 +138,9 @@
 </template>
 
 <script>
-import userService from '../../../services/gov/userService.js'
-import DateRange from '../../component/form/DateRangePicker.vue'
-import companyUserService from '../../../services/gov/companyUserService.js'
+import userService from '../../services/gov/userService.js'
+import DateRange from '../component/form/DateRangePicker.vue'
+import companyUserService from '../../services/gov/companyUserService.js'
 
 function getFetchParam() {
     return {
@@ -151,7 +150,7 @@ function getFetchParam() {
         disabled:0,
         name,
         mobile: void 0,
-        role_id: null,
+        role_id: void -1,
     }
 }
 
@@ -185,7 +184,6 @@ export default {
                 birthday: '',          // 生日
                 addate: ''
             },
-            
 
         }
     },
@@ -229,9 +227,6 @@ export default {
             this.fetchData()
         },
         fetchData(val) {
-            if(this.fetchParam.role_id == null){
-                    this.fetchParam.role_id = -1
-                }
             this.loadingData = true
             return userService.fetchData(this.fetchParam).then((ret) => {
                 this.dataCache = ret.data

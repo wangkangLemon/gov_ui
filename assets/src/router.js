@@ -6,6 +6,8 @@ import medical from './routers/medical'        // 医政模块
 import data from './routers/data'              // 数据分析模块
 import base from './routers/base'              // 基础模块
 import app from './routers/app'                // 设置模块
+import announce from './routers/announce'      // 公告模块
+import review from './routers/review'      // 审核模块
 
 // import course from './routers/course'          // 培训模块
 // import finance from './routers/finance'        // 财务模块
@@ -85,6 +87,10 @@ const routes = [{
             app,
             // ============ 医政模块 ==================
             medical,
+            // ============ 公告模块 ==================
+            announce,
+            // ============ 模块 ==================
+            review,
         ]
     },
     { // 登录

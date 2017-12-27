@@ -5,9 +5,8 @@
 <!--:on-remove="file => form.images.splice(form.images.indexOf(file.response.data.url),1)" ></UploadImg>-->
 <style lang="scss" rel="stylesheet/scss">
     @import "../../../utils/mixins/mixins";
-
     .component-upload-uploadimages {
-        height: 100px;
+        height: auto !important;
         .el-upload-list__item,
         .el-upload--picture-card {
             width: 100px;
@@ -29,9 +28,11 @@
                    :on-error="handleRemove"
                    :on-preview="handlePreview"
                    :on-remove="handleRemove"
-                   :file-list="imgList"
+                   :file-list="imgList" 
+                   :limit="2" 
                    accept="image/jpg,image/jpeg,image/png,image/gif">
-            <i v-if="showUploadBtn" class="el-icon-plus"></i>
+            <!--<i v-if="showUploadBtn" class="el-icon-plus"></i>-->
+            <i class="el-icon-plus"></i>
         </el-upload>
         <el-dialog v-model="dialogVisible" size="tiny">
             <img width="100%" :src="dialogImageUrl" alt="">
@@ -58,7 +59,7 @@
             // 允许上传多少个文件，默认只允许上传一个
             fileNum: {
                 type: Number,
-                default: 1
+                default: 9
             },
         },
         data () {
@@ -69,18 +70,19 @@
                 headers: void 0,
                 host: config.apiHost,
                 uploadBtn: null, // 上传按钮
-                multiple: false,
+                multiple: true,
                 imgList: [],
+
             }
         },
         watch: {
             'imgList' (val) {
-                console.log('imgList', val)
+                // console.log(this.apiHost)
                 if (val.length >= this.fileNum && val[0].url) {
-                    console.log('hide btn')
+                    // console.log('hide btn')
                     this.uploadBtn.style.display = 'none'
                 } else {
-                    console.log('show btn')
+                    // console.log('show btn')
                     this.uploadBtn.style.display = 'inline-block'
                 }
             }
@@ -103,16 +105,23 @@
                 this.dialogVisible = true
             },
             handleRemove (file, fileList) {
-                console.log('handleRemove', file, fileList)
+                // console.log('handleRemove', file, fileList)
                 this.onRemove && this.onRemove(file, fileList)
                 this.imgList = fileList
-                this.$refs.container.querySelector('.el-upload__input').value = null
+                // this.$refs.container.querySelector('.el-upload__input').value = null
             },
             handleSuccess (response, file, fileList) {
-                console.log('handleSuccess', response, file, fileList)
+                // console.log( response)
+                // console.log('handleSuccess', response, file, fileList)
+
                 if (response.code == 0) {
-                    this.onSuccess && this.onSuccess(response, file, fileList)
-                    this.imgList = fileList
+                    this.onSuccess && this.onSuccess( response)
+              
+                    // this.dialogImageUrl = '';
+                    // this.dialogVisible = false;
+                    this.imgList = fileList   
+                    // console.table(this.imgList);
+                  
                 } else {
                     xmview.showTip('error', response.message)
                 }

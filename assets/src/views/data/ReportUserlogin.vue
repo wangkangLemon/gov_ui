@@ -141,13 +141,13 @@
                         label="账号"
                         min-width="200">
                 </el-table-column>-->
-                <!--<el-table-column
+                <el-table-column
                         min-width="180"
                         label="所属部门" >
                         <template scope="scope">
                             <span>{{scope.row.gov_name? scope.row.gov_name: "暂无部门"}}</span>
                         </template>
-                </el-table-column>-->
+                </el-table-column>
                 <el-table-column
                         prop="user_cnt"
                         min-width="180"

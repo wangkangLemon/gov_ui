@@ -1,8 +1,8 @@
 <!--部门人员管理-->
 <style lang='scss' rel='stylesheet/scss'>
-@import "../../../utils/mixins/common";
-@import "../../../utils/mixins/topSearch";
-@import "../../../utils/mixins/showDetail";
+@import "../../utils/mixins/common";
+@import "../../utils/mixins/topSearch";
+@import "../../utils/mixins/showDetail";
 
 #medical-index-container {
     @extend %content-container;
@@ -39,25 +39,25 @@
 <template>
     <article id="medical-index-container">
         <!--详情-->
-        <el-dialog class="show-detail" title="查看管理员" v-model="showDetail">
+        <el-dialog class="show-detail" title="查看公告" v-model="showDetail">
             <div class="avatar">
-                <img :src="{url:clerkDetail.avatar, sex: clerkDetail.sex} | defaultAvatar" />
+                <img :src="{url:clerkDetail.images, sex: clerkDetail.sex} | defaultAvatar" />
             </div>
             <div class="info">
                 <h2>{{clerkDetail.name}}</h2>
+                <p><i class="title">内容：</i><span class="value">{{clerkDetail.content}}</span></p>
+                <br>
                 <p><i class="title">所属部门：</i><span class="value">{{clerkDetail.gov_name}}</span></p>
-                <p><i class="title">手机号：</i> <span class="value">{{clerkDetail.mobile}}</span></p>
-                <p>
+                <!--<p>
                     <i class="title">状态：</i>
                     <span class="value">
                         <el-tag type="success" v-if="!clerkDetail.disabled">正常</el-tag>
                         <el-tag type="danger" v-else="clerkDetail.disabled">异常</el-tag>
                     </span>
-                </p>
+                </p>-->
                 <!--<p><i class="title">性别：</i> <span class="value">{{clerkDetail.sex ? '男' : '女'}}</span></p>-->
-                <p><i class="title">生日：</i> <span class="value">{{clerkDetail.birthday}}</span></p>
-                <p><i class="title">地址：</i> <span class="value">{{clerkDetail.address}}</span></p>
-                <p><i class="title">注册时间：</i><span class="value">{{clerkDetail.addate}}</span></p>
+                <p><i class="title">发布人员：</i> <span class="value">{{clerkDetail.user_name}}</span></p>
+                <p><i class="title">创建时间：</i><span class="value">{{clerkDetail.addate}}</span></p>
             </div>
         </el-dialog>
         <section class="manage-container">
@@ -68,65 +68,65 @@
 
         <article class="search">
             <section>
-                <i>姓名</i>
+                <i>标题</i>
                 <el-input v-model="fetchParam.name" placeholder="请输入姓名"   @keyup.enter.native="fetchData" ></el-input>
             </section>
-            <section>
+            <!--<section>
                 <i>角色</i>
-                <el-select clearable v-model="fetchParam.role_id" placeholder="请选择" @change="fetchData" :clearable="true">
-                    <el-option label="全部" :value="-1"></el-option>
+                <el-select clearable v-model="fetchParam.role_id" @change="fetchData">
                     <el-option label="管理员" value="1"></el-option>
                     <el-option label="部门人员" value="0"></el-option>
                 </el-select>
-            </section>
-            <section>
+            </section>-->
+            <!--<section>
                 <i>手机号</i>
                 <el-input v-model="fetchParam.mobile" placeholder="请输入手机号"   @keyup.enter.native="fetchData" ></el-input>
-            </section>
+            </section>-->
         </article>
 
         <el-table class="data-table" v-loading="loadingData" :data="tableData" :fit="true" @select="selectRow" @select-all="selectRow" border>
             
             <!--<el-table-column type="selection"></el-table-column> 左侧选择按钮-->
 
-            <el-table-column min-width="150" prop="name" label="姓名" v-if="data">
+            <el-table-column min-width="250" prop="name" label="标题" v-if="data">
             </el-table-column>
-            <el-table-column min-width="200" prop="gov_name" label="部门">
+            <el-table-column min-width="250" prop="name" label="内容" v-if="data">
             </el-table-column>
-            <el-table-column min-width="170" prop="mobile" label="手机">
+            <el-table-column min-width="150" prop="user_name" label="发布人员" v-if="data">
             </el-table-column>
             <el-table-column min-width="170" :formatter="Time" label="创建时间">
             </el-table-column>
-            <el-table-column width="100" label="状态">
+
+            <!--<el-table-column width="100" label="状态">
                 <template scope="scope">
                     <el-tag v-if="scope.row.deleted == 1">已删除</el-tag>
                     <el-tag v-else-if="scope.row.deleted == 0&&scope.row.disabled == 0" type="success">正常</el-tag>
                     <el-tag v-else>禁用</el-tag>
                 </template>
-            </el-table-column>
-            <el-table-column fixed="right" width="207" label="操作">
+            </el-table-column>-->
+            <el-table-column fixed="right" width="180" label="操作">
                 <template scope="scope">
                     <!--<el-button @click="showFn(scope.$index, scope.row)" type="text" size="small">详情
                     </el-button>-->
                     <el-button type="text" size="small" @click="checkClerkDetail(scope.$index, scope.row)">
-                           详情
+                           查看公告
                     </el-button>
-                    <el-button type="text" size="small" @click="editUser(scope.$index, scope.row)">
+                    <!--<el-button type="text" size="small" @click="editUser(scope.$index, scope.row)">
                             修改
-                    </el-button>
-                    <el-button v-if="scope.row.disabled == 0" @click="offline(scope.$index, scope.row)" type="text" size="small">
+                    </el-button>-->
+                    <!--<el-button v-if="scope.row.disabled == 0" @click="offline(scope.$index, scope.row)" type="text" size="small">
                         <i>禁用</i>
                     </el-button>
                     <el-button v-else @click="online(scope.$index, scope.row)" type="text" size="small">
                         <i>启用</i>
-                    </el-button>
-                    <el-button @click="del(scope.$index, scope.row)" type="text" size="small">删除</el-button>
+                    </el-button>-->
+                    <!--<el-button @click="del(scope.$index, scope.row)" type="text" size="small">删除</el-button>-->
                 </template>
             </el-table-column>
         </el-table>
 
         <!--底部的page -->
-        <el-pagination class="pagin" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="fetchParam.page" :page-size="fetchParam.pagesize" :page-sizes="[15, 30, 60, 100]" layout="sizes,total, prev, pager, next" :total="100">
+        <el-pagination class="pagin" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="fetchParam.page" :page-size="fetchParam.pagesize" :page-sizes="[15, 30, 60, 100]" layout="sizes,total, prev, pager, next" :total="total">
         </el-pagination>
 
         <!--底部的批量删除和移动两个按钮-->
@@ -139,9 +139,9 @@
 </template>
 
 <script>
-import userService from '../../../services/gov/userService.js'
-import DateRange from '../../component/form/DateRangePicker.vue'
-import companyUserService from '../../../services/gov/companyUserService.js'
+import announceService from '../../services/announce/announceService.js'
+import DateRange from '../component/form/DateRangePicker.vue'
+import companyUserService from '../../services/gov/companyUserService.js'
 
 function getFetchParam() {
     return {
@@ -151,7 +151,7 @@ function getFetchParam() {
         disabled:0,
         name,
         mobile: void 0,
-        role_id: null,
+        role_id: void -1,
     }
 }
 
@@ -185,7 +185,6 @@ export default {
                 birthday: '',          // 生日
                 addate: ''
             },
-            
 
         }
     },
@@ -193,19 +192,11 @@ export default {
         this.fetchData()
     },
     methods: {
-     // 修改人员信息
-        editUser(index, row) {
-            this.$router.push({
-                name: 'person-edit',
-                params: {
-                    id: row.id
-                }
-            })
-        },
+    
        // 查看管理员详情
         checkClerkDetail (index, row) {
             this.showDetail = true
-            companyUserService.userDetail(row.id).then((ret) => {
+            announceService.getAnnounceDetail(row.id).then((ret) => {
                 this.clerkDetail = ret
             })
         },
@@ -229,19 +220,16 @@ export default {
             this.fetchData()
         },
         fetchData(val) {
-            if(this.fetchParam.role_id == null){
-                    this.fetchParam.role_id = -1
-                }
             this.loadingData = true
-            return userService.fetchData(this.fetchParam).then((ret) => {
-                this.dataCache = ret.data
+            return announceService.getAnnounceListsData(this.fetchParam).then((ret) => {
+                this.dataCache = ret
                 this.total = ret.total
                 this.loadingData = false
                 xmview.setContentLoading(false)     
             })
         },
         search(val){
-               return userService.search(this.fetchParam).then((ret) => {
+               return announceService.search(this.fetchParam).then((ret) => {
             })
         },      
         // 单行被选中
@@ -252,53 +240,7 @@ export default {
             })
             this.selectedIds = ret
         },
-        // 禁用
-        offline(index, row) {
-            if(row.deleted == 0){
-                xmview.showDialog(`你将要禁用管理员 <span style="color:red">${row.name}</span> 确认吗?`, () => {
-                    row.disabled = 1
-                    userService.offline(row).then((ret) => {
-                    })
-                })
-            }else{
-                 xmview.showDialog(`管理员 <span style="color:red">${row.name}</span> 已删除，无法禁用！`)
-            }
-        },
-        // 启用
-        online(index, row) {
-            if(row.deleted == 0){
-                xmview.showDialog(`你将要启用管理员<span style="color:red">${row.name}</span> 确认吗?`, () => {
-                    row.disabled = 0
-                    userService.online(row).then((ret) => {
-                    })
-                })
-            }else{
-                 xmview.showDialog(`管理员 <span style="color:red">${row.name}</span> 已删除，无法启用！`)
-            }
-            
-        },
-        // 单条删除
-        del(index, row) {
-            xmview.showDialog(`你将要删除管理员 <span style="color:red">${row.name}</span>  此操作不可恢复确认吗?`, () => {
-                userService.delete(row.id).then(() => {
-                    this.dataCache.splice(index, 1)//删除选中项
-                    row.deleted = 1
-                    xmview.showTip('success', '操作成功')
-                })
-            })
-        },
-        // 批量删除
-        delMulti() {
-            xmview.showDialog(`你将要删除选中的项目，操作不可恢复确认吗?`, () => {
-                userService.deleteMulty(this.selectedIds.join(',')).then(() => {
-                    xmview.showTip('success', '操作成功')
-                    this.dialogTree.isShow = false
-                    setTimeout(() => {
-                        this.fetchData()  // 重新刷新数据
-                    }, 300)
-                })
-            })
-        },
+       
         
         Time(row, column, cellValue){
               return  this.timeFilter(row.addate) 
