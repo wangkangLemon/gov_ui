@@ -1,7 +1,7 @@
 <!--公开课管理-->
 <style lang='scss' rel='stylesheet/scss'>
-    @import "../../utils/mixins/common";
-    @import "../../utils/mixins/topSearch";
+    @import "../../../utils/mixins/common";
+    @import "../../../utils/mixins/topSearch";
 
     #course-manage-public-container {
         @extend %content-container;
@@ -53,11 +53,11 @@
 
             <section>
                 <i>状态</i>
-                <el-select v-model="fetchParam.audited" placeholder="未选择" @change="fetchData" :clearable="true">
+                <el-select v-model="fetchParam.status" placeholder="未选择" @change="fetchData" :clearable="true">
                     <el-option label="全部" value="-1"></el-option>
-                    <el-option label="已审核" value="2"></el-option>
-                    <el-option label="审核不通过 " value="3"></el-option>
-                    <el-option label="未审核 " value="1"></el-option>
+                    <el-option label="正常" value="0"></el-option>
+                    <el-option label="禁用 " value="1"></el-option>
+                    <el-option label="视频转码中" value="2"></el-option>
                 </el-select>
             </section>
 
@@ -98,15 +98,10 @@
             <el-table-column width="80" prop="limit_time" label="限时">
             </el-table-column>
             <el-table-column width="100" label="状态">
-                <!--<template scope="scope">
-                    <el-tag v-if="scope.row.audited == 0" type="success">正常</el-tag>
-                    <el-tag v-else-if="scope.row.audited == 2" type="primary">转码中</el-tag>
-                    <el-tag v-else>已禁用 </el-tag>
-                </template>-->
                 <template scope="scope">
-                    <el-tag v-if="scope.row.audited == 2" type="success">已审核</el-tag>
-                    <el-tag v-else-if="scope.row.audited == 1" type="primary">未审核</el-tag>
-                    <el-tag v-else>审核未通过 </el-tag>
+                    <el-tag v-if="scope.row.status == 0" type="success">正常</el-tag>
+                    <el-tag v-else-if="scope.row.status == 2" type="primary">转码中</el-tag>
+                    <el-tag v-else>已禁用 </el-tag>
                 </template>
             </el-table-column>
             <el-table-column width="190" prop="addate" label="创建时间">
@@ -115,21 +110,23 @@
                 <template scope="scope">
                     <!--<el-button @click="preview(scope.$index, scope.row)" type="text" size="small">预览</el-button>-->
                     <el-button @click="$router.push({name: 'course-manage-addCourse', params: {courseInfo: scope.row}, query: {id: scope.row.contentid}})"
-                        type="text" size="small">查看
+                        type="text" size="small">编辑
+                        <!--a-->
                     </el-button>
-                    <el-button @click="audit(scope.$index, scope.row)" type="text" size="small">
-                        <i>{{ scope.row.audited == 1 ? '审核通过 ' : '审核不通过 ' }}</i>
+                    <el-button @click="offline(scope.$index, scope.row)" type="text" size="small">
+                        <i>{{ scope.row.status == 1 ? '正常 ' : '禁用 ' }}</i>
                     </el-button>
                     <el-button @click="del(scope.$index, scope.row)" type="text" size="small">删除</el-button>
-                    <!--<el-button v-if="scope.row.subject_num > 0" @click="$router.push({name:'course-manage-course-answer-analysis', params:{id:scope.row.id}})"
+                    <el-button v-if="scope.row.subject_num > 0" @click="$router.push({name:'course-manage-course-answer-analysis', params:{id:scope.row.id}})"
                         type="text" size="small">答案分析
-                    </el-button>-->
+                        <!--ff-->
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
 
         <el-pagination class="pagin" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="fetchParam.page"
-            :page-size="fetchParam.pagesize" :page-sizes="[15, 30, 60, 100, 130, 160, 200]" layout="sizes,total, prev, pager, next" :total="total">
+            :page-size="fetchParam.pagesize" :page-sizes="[15, 30, 60, 100, 130, 160, 200]"  layout="sizes,total, prev, pager, next" :total="total">
         </el-pagination>
 
         <!--底部的批量删除和移动两个按钮-->
@@ -159,11 +156,11 @@
 </template>
 
 <script>
-    import courseService from '../../services/course/courseService.js'
-    import DateRange from '../component/form/DateRangePicker.vue'
-    import CourseCategorySelect from '../component/select/CourseCategory.vue'
+    import courseService from '../../../services/course/courseService.js'
+    import DateRange from '../../component/form/DateRangePicker.vue'
+    import CourseCategorySelect from '../../component/select/CourseCategory.vue'
     // import CourseCategoryTree from '../../component/tree/CourseCategory.vue'
-    import CourseCategoryTree from '../component/tree/CourseCategory.vue'
+    import CourseCategoryTree from '../../component/tree/CourseCategory.vue'
 
     function getFetchParam() {
         return {
@@ -177,7 +174,7 @@
             time_start: void 0,
             time_end: void 0,
             need_testing: void 0, //  不赋值则表示全部，0为不需要，1为需要
-            audited: '', // 全部：-1   1：未审核 2：已审核 3：审核不通过
+            status: '', // 2- 视屏转码中 1-下线 0-正常
         }
     }
     export default {
@@ -193,7 +190,7 @@
                     isShow: false,
                     selectedId: void 0,
                 },
-                audited: '',
+                status: '',
             }
         },
         activated() {
@@ -215,17 +212,19 @@
             fetchData(val) {
                 this.loadingData = true
                 let obj = Object.assign({},this.fetchParam)
-                if(obj.audited === ''){
-                    obj.audited = -1
+                if(obj.status === ''){
+                    obj.status = -1
                 }
                 return courseService.getPublicCourselist(obj).then((ret) => {
                     this.data = ret
                     // this.total = ret.total
-                    this.total=2400
+                    this.total = 2400
                     this.loadingData = false
                     xmview.setContentLoading(false)
-                    // this.fetchParam.audited = '';
+                    // this.fetchParam.status = '';
+                    thi
                 })
+
             },
             // 单行被选中
             selectRow(selection) {
@@ -236,29 +235,15 @@
                 this.selectedIds = ret
             },
             // 下线 或者上线课程 0为下线，1为上线
-            // offline(index, row) {
-            //     let txt = row.audited == 0 ? '下线' : '上线'
-            //     let finalStatus = row.audited == 0 ? 1 : 0
-            //     xmview.showDialog(`你将要${txt}课程 <span style="color:red">${row.course_name}</span> 确认吗?`, () => {
-            //         courseService.offlineCourse({
-            //             course_id: row.contentid,
-            //             audited: finalStatus
-            //         }).then((ret) => {
-            //             row.audited = finalStatus
-            //         })
-            //     })
-            // },
-            // 	已审核 或者未审核课程 全部：-1 1：未审核 2：已审核 3：审核不通过
-             audit(index, row) {
-                let txt = row.audited == 2 ? '审核不通过' : '审核通过'
-                let finalStatus = row.audited == 1 ? 2 : 1
+            offline(index, row) {
+                let txt = row.status == 0 ? '下线' : '上线'
+                let finalStatus = row.status == 0 ? 1 : 0
                 xmview.showDialog(`你将要${txt}课程 <span style="color:red">${row.course_name}</span> 确认吗?`, () => {
-                    courseService.auditCourse({
+                    courseService.offlineCourse({
                         course_id: row.contentid,
-                        audited: finalStatus,
-                        description:'',
+                        status: finalStatus
                     }).then((ret) => {
-                        row.audited = finalStatus
+                        row.status = finalStatus
                     })
                 })
             },

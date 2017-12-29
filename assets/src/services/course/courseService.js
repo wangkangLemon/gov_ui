@@ -201,6 +201,13 @@ class CourseService {
         // console.log(finalUrl)
         return api.post(finalUrl, { status })
     }
+    // 上下线课程
+    auditCourse({ govid, course_id, audited,description }) {
+        govid = govid || authUtils.getUserInfo().company_id
+        let finalUrl = `${config.apiHost}/course/audit/${course_id}`
+        // console.log(finalUrl)
+        return api.post(finalUrl, { audited, description })
+    }
 
     // 获取添加编辑课程上传图片的url (与题目里的上传图片的url为同一个 )
         // getManageImgUploadUrl({ companyid } = {}) {   //=======commonUploadImageBase 
