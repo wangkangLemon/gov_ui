@@ -37,6 +37,28 @@
 
 <template>
     <article id="course-manage-public-container">
+        <el-dialog v-model="addForm" :title="formTitle">
+            <el-form :model="fetchParam" :rules="rules" ref="form">
+
+                <!--<el-form-item prop="role_id" label="角色" :label-width="formLabelWidth">
+                    <el-select clearable v-model="form.role_id" placeholder="未选择">
+                    <el-option v-for="(item, index) in roleTypes" :label="item.name" :value="item.role_id" :key="item.role_id">
+                    </el-option>
+                </el-select>-->
+                <!--</el-form-item>-->
+                <el-form-item prop="audited" label="审核结果" :label-width="formLabelWidth">
+                    <el-radio class="radio" v-model="fetchParam.audited" :label="3" :value="3">审核不通过</el-radio>
+                    <el-radio class="radio" v-model="fetchParam.audited" :label="2" :value="2">已审核</el-radio>
+                </el-form-item>
+                <el-form-item prop="description" label="审核意见" :label-width="formLabelWidth">
+                    <el-input v-model="fetchParam.description"  auto-complete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="addForm = false">取 消</el-button>
+                <el-button type="primary" @click="submitAudit('form')">确 定</el-button>
+            </div>
+        </el-dialog>
         <section class="manage-container">
             <el-button type="primary" icon="plus" @click="$router.push({ name:'course-manage-addCourse'})"><i>添加课程</i>
             </el-button>
@@ -117,10 +139,15 @@
                     <el-button @click="$router.push({name: 'course-manage-addCourse', params: {courseInfo: scope.row}, query: {id: scope.row.contentid}})"
                         type="text" size="small">查看
                     </el-button>
-                    <el-button @click="audit(scope.$index, scope.row)" type="text" size="small">
+                    <!--<el-button @click="audit(scope.$index, scope.row)" type="text" size="small">
                         <i>{{ scope.row.audited == 1 ? '审核通过 ' : '审核不通过 ' }}</i>
+                    </el-button>-->
+
+                    <el-button v-if="scope.row.audited == 1" @click="showDialog(scope.$index, scope.row)" type="text" size="small">
+                        <i>{{ '审核' }}</i>
                     </el-button>
                     <el-button @click="del(scope.$index, scope.row)" type="text" size="small">删除</el-button>
+
                     <!--<el-button v-if="scope.row.subject_num > 0" @click="$router.push({name:'course-manage-course-answer-analysis', params:{id:scope.row.id}})"
                         type="text" size="small">答案分析
                     </el-button>-->
@@ -178,6 +205,8 @@
             time_end: void 0,
             need_testing: void 0, //  不赋值则表示全部，0为不需要，1为需要
             audited: '', // 全部：-1   1：未审核 2：已审核 3：审核不通过
+            description:'',
+            contentid: void 0,
         }
     }
     export default {
@@ -193,7 +222,16 @@
                     isShow: false,
                     selectedId: void 0,
                 },
-                audited: '',
+                // audited: '',
+                // 表单相关属性
+                formTitle: '审核内容',
+                addForm: false, // 表单弹窗是否显示
+                rules: {
+                    // audited: [
+                    //     {required: true, message: '必须填写', trigger: 'blur'}
+                    // ],
+                },
+                formLabelWidth: '120px', // 表单label的宽度
             }
         },
         activated() {
@@ -249,17 +287,29 @@
             //     })
             // },
             // 	已审核 或者未审核课程 全部：-1 1：未审核 2：已审核 3：审核不通过
-             audit(index, row) {
-                let txt = row.audited == 2 ? '审核不通过' : '审核通过'
-                let finalStatus = row.audited == 1 ? 2 : 1
-                xmview.showDialog(`你将要${txt}课程 <span style="color:red">${row.course_name}</span> 确认吗?`, () => {
-                    courseService.auditCourse({
-                        course_id: row.contentid,
-                        audited: finalStatus,
-                        description:'',
-                    }).then((ret) => {
-                        row.audited = finalStatus
-                    })
+            showDialog(index, row){
+                this.addForm = true
+                this.fetchParam.contentid=row.contentid
+            },
+            submitAudit(form ,row) {
+                // let txt = row.audited == 2 ? '审核不通过' : '审核通过'
+                // let finalStatus = row.audited 
+                this.$refs[form].validate((valid) => {
+                    // console.log(row.contentid)
+                    console.log(this.fetchParam)
+
+                    if(valid){
+                        courseService.auditCourse({
+                            course_id: this.fetchParam.contentid,
+                            audited: this.fetchParam.audited,
+                            description: this.fetchParam.description,
+                        }).then((ret) => {
+                            row.audited =  this.fetchParam.audited
+                            xmview.showTip('success', msg)
+                            this.addForm = false
+                        })
+                    }
+                    
                 })
             },
             // 单条删除
