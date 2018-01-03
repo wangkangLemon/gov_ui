@@ -162,6 +162,17 @@ class CourseService {
             }
         })
     }
+    getReviewCourselist({ course_name = '', audited, category_id , time_start, time_end, page, pagesize}) {
+        let url = urlPre + '/lists'
+        return api.get(url, { course_name, audited, category_id, time_start, time_end, page, pagesize }, false).then(ret => {
+            if (ret.code == 0) {
+                return ret.data
+            } else {
+                return Promise.reject(ret)
+            }
+        })
+    }
+    
 
     // 创建
     addCourse({  category_id, course_name, image, description, tags, type, material_type, material_id, need_testing, status}) {
@@ -205,8 +216,16 @@ class CourseService {
     auditCourse({ govid, course_id, audited,description }) {
         govid = govid || authUtils.getUserInfo().company_id
         let finalUrl = `${config.apiHost}/course/audit/${course_id}`
-        // console.log(finalUrl)
-        return api.post(finalUrl, { audited, description })
+        console.log(finalUrl)
+        return api.post(finalUrl, { audited, description }).then((ret) => {
+             if (ret.code == 0) {
+                 xmview.showTip('success',ret.message)
+                return ret.data
+            } else {
+                xmview.showTip('error',ret.message)
+                return Promise.reject(ret)
+            }
+        })
     }
 
     // 获取添加编辑课程上传图片的url (与题目里的上传图片的url为同一个 )

@@ -100,6 +100,12 @@
                         <el-button v-show="fetchParam.material_type === 'video'" @click="isShowVideoDialog=true">
                             <i>{{fetchParam.material_name}}</i>
                         </el-button>
+
+                        <!--<el-button @click="preview(scope.$index, scope.row)" type="text" size="small"     v-if="scope.row.status != 1 && scope.row.status != 2"-->
+                        <el-button @click="preview(fetchParam.material_id)" type="text" size="big"
+                               
+                               > 查看
+                        </el-button>
                     </el-form-item>
                     <!--<el-form-item label="所属专辑">
                         <CourseAlbumSelect :placeholder="fetchParam.album_name" v-model="fetchParam.albumid"></CourseAlbumSelect>
@@ -141,13 +147,16 @@
                 试题设置删除
             </el-tab-pane>-->
         </el-tabs>
-    
+        
         <DialogVideo :onSelect="handleVideoSelected" v-model="isShowVideoDialog"></DialogVideo>
+        <!--<VideoPreview :url="videoUrl" :row ="row" :onchange="fetchVideoData" ref="videoPreview"></VideoPreview>-->
+        <VideoPreview :url="videoUrl" :onchange="fetchVideoData" ref="videoPreview"></VideoPreview>
     </article>
 </template>
 
 <script>
 import courseService from '../../../services/course/courseService.js'
+import videoService from '../../../services/course/videoService.js'
 import UploadImg from '../../component/upload/UploadImg.vue'
 import CropperImg from '../../component/upload/ImagEcropperInput.vue'
 import DialogVideo from '../component/DialogVideo.vue'
@@ -157,6 +166,7 @@ import CourseAlbumSelect from '../../component/select/CourseAlbum'
 import testingFactory from '../utils/testingFactory'
 import formUtils from '../../../utils/formUtils'
 import vTags from '../../component/form/Tags.vue'
+import VideoPreview from '../../component/dialog/VideoPreview.vue'
 
 export default {
     name: 'course-manage-addcourse',
@@ -179,12 +189,14 @@ export default {
             // 考试设置部分
             fetchTesting: [],
             readonly: false, // 只读模式
+            videoUrl: '', // 预览的视频url
         }
     },
     deactivated(){
       this.$destroy(true)
     },
     created() {
+        
         // alert(123)
         this.uploadDocUrl = courseService.getCourseDocUploadUrl()
         this.uploadImgUrl = courseService.commonUploadImage()
@@ -193,9 +205,8 @@ export default {
         if (this.$route.params.courseInfo) {
             this.activeTab= 'first'
             this.fetchParam = this.$route.params.courseInfo
-            console.log(this.$route.params.courseInfo)
-            
-            console.log(this.fetchParam.category_name,this.$route.params.courseInfo.category_name)
+            // console.log(this.$route.params.courseInfo)
+            // console.log(this.fetchParam.category_name,this.$route.params.courseInfo.category_name)
             this.fetchParam.name= this.$route.params.courseInfo.name
             this.courseTags = this.fetchParam.tags ? this.fetchParam.tags.split(',') : []
             xmview.setContentTile('编辑课程-培训')
@@ -253,6 +264,25 @@ export default {
         }
     },
     methods: {
+        fetchVideoData () {
+                this.loadingData = true
+                return videoService.getVideo(this.fetchParam).then((ret) => {
+                    this.data = ret
+                    this.total = ret.total
+                    this.loadingData = false
+                })
+            },
+        // 预览视频
+            preview (index) {
+                // 拿到播放地址
+                videoService.getVideoPreviewUrl(index).then((ret) => {
+                    console.log(ret)
+                    this.videoUrl = ret.video
+                    // this.row = row 
+                    this.$refs.videoPreview.show(row.file_name) //返回视频的数据后显示弹窗
+                })
+            },
+        
         // 下一步按钮点击
         btnNextClick() {
             this.fetchParam.limit_time && (this.fetchParam.limit_time += '')
@@ -373,7 +403,7 @@ export default {
             }
         }
     },
-    components: { CropperImg, UploadFile, CourseCategorySelect, CourseAlbumSelect, DialogVideo, UploadImg, vTags }
+    components: { CropperImg, UploadFile, CourseCategorySelect, CourseAlbumSelect, DialogVideo, UploadImg, vTags, VideoPreview }
 }
 
 function getOrignData() {

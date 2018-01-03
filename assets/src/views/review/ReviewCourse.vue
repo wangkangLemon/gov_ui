@@ -39,16 +39,9 @@
     <article id="course-manage-public-container">
         <el-dialog v-model="addForm" :title="formTitle">
             <el-form :model="fetchParam" :rules="rules" ref="form">
-
-                <!--<el-form-item prop="role_id" label="角色" :label-width="formLabelWidth">
-                    <el-select clearable v-model="form.role_id" placeholder="未选择">
-                    <el-option v-for="(item, index) in roleTypes" :label="item.name" :value="item.role_id" :key="item.role_id">
-                    </el-option>
-                </el-select>-->
-                <!--</el-form-item>-->
                 <el-form-item prop="audited" label="审核结果" :label-width="formLabelWidth">
-                    <el-radio class="radio" v-model="fetchParam.audited" :label="3" :value="3">审核不通过</el-radio>
-                    <el-radio class="radio" v-model="fetchParam.audited" :label="2" :value="2">已审核</el-radio>
+                    <el-radio  v-model="fetchParam.audited" :label="3" :value="3">审核不通过</el-radio>
+                    <el-radio  v-model="fetchParam.audited" :label="2" :value="2">已审核</el-radio>
                 </el-form-item>
                 <el-form-item prop="description" label="审核意见" :label-width="formLabelWidth">
                     <el-input v-model="fetchParam.description"  auto-complete="off"></el-input>
@@ -59,13 +52,13 @@
                 <el-button type="primary" @click="submitAudit('form')">确 定</el-button>
             </div>
         </el-dialog>
-        <section class="manage-container">
+        <!--<section class="manage-container">
             <el-button type="primary" icon="plus" @click="$router.push({ name:'course-manage-addCourse'})"><i>添加课程</i>
             </el-button>
-            <!--<el-button type="warning" icon="menu" @click="$router.push({name:'course-manage-course-category-manage'})">
+            <el-button type="warning" icon="menu" @click="$router.push({name:'course-manage-course-category-manage'})">
                 <i>管理栏目</i>
-            </el-button>-->
-        </section>
+            </el-button>
+        </section>-->
 
         <article class="search">
             <section>
@@ -91,13 +84,13 @@
                 @changeEnd="val=> fetchParam.time_end=val" :change="fetchData">
             </DateRange>
 
-            <section>
+            <!--<section>
                 <i>课后考试</i>
                 <el-select v-model="fetchParam.need_testing" placeholder="未选择" @change="fetchData" :clearable="true">
                     <el-option label="不需要" value="0"></el-option>
                     <el-option label="需要" value="1"></el-option>
                 </el-select>
-            </section>
+            </section>-->
         </article>
 
         <el-table class="data-table" v-loading="loadingData" :data="data" :fit="true" @select="selectRow" @select-all="selectRow"
@@ -133,9 +126,10 @@
             </el-table-column>
             <el-table-column width="190" prop="addate" label="创建时间">
             </el-table-column>
+            <!--<el-table-column width="100" prop="description" label="审核意见">
+            </el-table-column>-->
             <el-table-column fixed="right" width="227" label="操作">
                 <template scope="scope">
-                    <!--<el-button @click="preview(scope.$index, scope.row)" type="text" size="small">预览</el-button>-->
                     <el-button @click="$router.push({name: 'course-manage-addCourse', params: {courseInfo: scope.row}, query: {id: scope.row.contentid}})"
                         type="text" size="small">查看
                     </el-button>
@@ -227,9 +221,9 @@
                 formTitle: '审核内容',
                 addForm: false, // 表单弹窗是否显示
                 rules: {
-                    // audited: [
-                    //     {required: true, message: '必须填写', trigger: 'blur'}
-                    // ],
+                    audited: [
+                        { required: true, message: '必须填写'}
+                    ],
                 },
                 formLabelWidth: '120px', // 表单label的宽度
             }
@@ -256,7 +250,7 @@
                 if(obj.audited === ''){
                     obj.audited = -1
                 }
-                return courseService.getPublicCourselist(obj).then((ret) => {
+                return courseService.getReviewCourselist(obj).then((ret) => {
                     this.data = ret
                     // this.total = ret.total
                     this.total=2400
@@ -273,43 +267,25 @@
                 })
                 this.selectedIds = ret
             },
-            // 下线 或者上线课程 0为下线，1为上线
-            // offline(index, row) {
-            //     let txt = row.audited == 0 ? '下线' : '上线'
-            //     let finalStatus = row.audited == 0 ? 1 : 0
-            //     xmview.showDialog(`你将要${txt}课程 <span style="color:red">${row.course_name}</span> 确认吗?`, () => {
-            //         courseService.offlineCourse({
-            //             course_id: row.contentid,
-            //             audited: finalStatus
-            //         }).then((ret) => {
-            //             row.audited = finalStatus
-            //         })
-            //     })
-            // },
             // 	已审核 或者未审核课程 全部：-1 1：未审核 2：已审核 3：审核不通过
             showDialog(index, row){
                 this.addForm = true
-                this.fetchParam.contentid=row.contentid
+                this.fetchParam.contentid= row.contentid
             },
             submitAudit(form ,row) {
-                // let txt = row.audited == 2 ? '审核不通过' : '审核通过'
-                // let finalStatus = row.audited 
                 this.$refs[form].validate((valid) => {
-                    // console.log(row.contentid)
+                    if (!valid) return
                     console.log(this.fetchParam)
-
-                    if(valid){
-                        courseService.auditCourse({
+                    courseService.auditCourse({
                             course_id: this.fetchParam.contentid,
                             audited: this.fetchParam.audited,
                             description: this.fetchParam.description,
-                        }).then((ret) => {
-                            row.audited =  this.fetchParam.audited
-                            xmview.showTip('success', msg)
-                            this.addForm = false
-                        })
-                    }
-                    
+                         }).then((ret) => {
+                        // 重置当前数据
+                        this.addForm = false
+                        this.$refs[form].resetFields();
+                        row.audited =  this.fetchParam.audited
+                    })
                 })
             },
             // 单条删除

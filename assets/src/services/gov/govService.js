@@ -226,7 +226,8 @@ class govService {
         gov_id,
         page,
         pagesize,
-        role_id
+        role_id,
+        mobile
     }) {
         let finalUrl = `${urlPre1}/user/lists`
         return api.get(finalUrl, {
@@ -234,7 +235,8 @@ class govService {
             gov_id,
             page,
             pagesize,
-            role_id
+            role_id,
+            mobile
         }).then((ret) => {
             return ret.data
         })

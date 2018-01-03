@@ -322,7 +322,7 @@
              // 修改人员信息
             editUser(index, row) {
                 this.$router.push({
-                    name: 'person-edit',
+                    name: 'user-edit',
                     params: {
                         id: row.id
                     }
