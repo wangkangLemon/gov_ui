@@ -104,7 +104,7 @@
                         <!--<el-button @click="preview(scope.$index, scope.row)" type="text" size="small"     v-if="scope.row.status != 1 && scope.row.status != 2"-->
                         <el-button @click="preview(fetchParam.material_id)" type="text" size="big"
                                
-                               > 查看
+                               > 查看视频
                         </el-button>
                     </el-form-item>
                     <!--<el-form-item label="所属专辑">
@@ -150,7 +150,7 @@
         
         <DialogVideo :onSelect="handleVideoSelected" v-model="isShowVideoDialog"></DialogVideo>
         <!--<VideoPreview :url="videoUrl" :row ="row" :onchange="fetchVideoData" ref="videoPreview"></VideoPreview>-->
-        <VideoPreview :url="videoUrl" :onchange="fetchVideoData" ref="videoPreview"></VideoPreview>
+        <VideoPreview :url="videoUrl" :onchange="fetchVideoList" ref="videoPreview"></VideoPreview>
     </article>
 </template>
 
@@ -197,17 +197,18 @@ export default {
     },
     created() {
         
-        // alert(123)
         this.uploadDocUrl = courseService.getCourseDocUploadUrl()
         this.uploadImgUrl = courseService.commonUploadImage()
     
         //编辑页面 
         if (this.$route.params.courseInfo) {
             this.activeTab= 'first'
-            this.fetchParam = this.$route.params.courseInfo
-            // console.log(this.$route.params.courseInfo)
-            // console.log(this.fetchParam.category_name,this.$route.params.courseInfo.category_name)
-            this.fetchParam.name= this.$route.params.courseInfo.name
+            for(let i in this.$route.params.courseInfo){
+                 this.fetchParam[i]=this.$route.params.courseInfo[i]
+            }
+            // this.fetchParam = this.$route.params.courseInfo
+            console.log(this.fetchParam)
+            this.fetchParam.material_name = this.$route.params.courseInfo.course_name // 拿到视频名称
             this.courseTags = this.fetchParam.tags ? this.fetchParam.tags.split(',') : []
             xmview.setContentTile('编辑课程-培训')
         } else if (this.$route.query.contentid) {
@@ -225,6 +226,7 @@ export default {
         this.$route.params.tab && (this.activeTab = this.$route.params.tab)
         this.readonly = this.$route.params.readonly
         xmview.setContentLoading(false)
+        this.getVideoName()
     },
 
     watch: {
@@ -264,7 +266,7 @@ export default {
         }
     },
     methods: {
-        fetchVideoData () {
+        fetchVideoList () {
                 this.loadingData = true
                 return videoService.getVideo(this.fetchParam).then((ret) => {
                     this.data = ret
@@ -277,12 +279,12 @@ export default {
                 // 拿到播放地址
                 videoService.getVideoPreviewUrl(index).then((ret) => {
                     console.log(ret)
-                    this.videoUrl = ret.video
+                    this.videoUrl = ret
                     // this.row = row 
-                    this.$refs.videoPreview.show(row.file_name) //返回视频的数据后显示弹窗
+                    this.$refs.videoPreview.show(this.fetchParam.material_name) //返回视频的数据后显示弹窗
                 })
             },
-        
+
         // 下一步按钮点击
         btnNextClick() {
             this.fetchParam.limit_time && (this.fetchParam.limit_time += '')

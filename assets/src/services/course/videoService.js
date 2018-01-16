@@ -56,14 +56,6 @@ class VideoService {
         })
     }
 
-
-
-
-
-
-
-
-
     //------------------------
     // 获取视频
     //{ gov_id, material_id, title, page, pagesize, create_start, create_end, status }
@@ -115,7 +107,7 @@ class VideoService {
 
     // 获取视频预览地址
     getVideoPreviewUrl(id) {
-        let url = `${urlPre}/get/${id}`
+        let url = `${urlPre}/preview/${id}`
         return api.get(url).then((ret) => {
             return ret.data
         })

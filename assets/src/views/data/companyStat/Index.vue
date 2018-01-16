@@ -88,7 +88,7 @@
                         label="部门">
                 </el-table-column>
                 <el-table-column
-                        prop="user_id"
+                        prop="name"
                         min-width="100"
                         label="用户">
                 </el-table-column>
@@ -189,7 +189,6 @@
                     gov_id: this.fetchParam.companySelect,
                     date_start: this.fetchParam.date_start,
                     date_end: this.fetchParam.date_end,
-
                 }).then((ret) => {
                     this.loadingData = false
                     this.total = ret.total
