@@ -68,7 +68,6 @@ class govService {
             // village_id,
             // deleted,
         }, false).then((ret) => {
-            alert(22)
             return ret.data
         })
     }

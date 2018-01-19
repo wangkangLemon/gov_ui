@@ -11,7 +11,6 @@ class CommonService {
         
         let url = `${config.apiHost}/common/upload/base64`
         return api.post(url, {image, alias, biz, extpath}).then((ret) => {
-            xmview.showTip('success',ret.message)
             return ret.data
         })
     }

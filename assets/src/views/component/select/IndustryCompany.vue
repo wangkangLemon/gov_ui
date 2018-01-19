@@ -35,7 +35,7 @@
         },
         watch: {
             'value'(val, oldValue) {
-                console.log(val, oldValue)
+                // console.log(val, oldValue)
                 this.currVal !== val && (this.currVal = val)
             }
         },
@@ -47,10 +47,9 @@
                     pagesize: this.pageSize,
                     page: parseInt(length / this.pageSize) + 1
                 }).then((ret) => {
-                console.log(val, length)
-                    
-                    console.log(ret)
-                    this.$emit('changelist', ret.data)
+                // console.log(val, length)
+                console.log(ret)
+                    // this.$emit('changelist', ret)
                     return ret
                 })
             },

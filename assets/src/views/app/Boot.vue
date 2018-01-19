@@ -148,7 +148,7 @@
                 commonService.commonUploadImageBase({gov_id: this.user.gov_id, image: data,extpath:'banner'}).then(ret => {
                     this.imgData = ret.url
                 }).then(() => {
-                    xmview.showTip('success', '上传成功')
+                    // xmview.showTip('success', '上传成功')
                     this.uploadingImg = false
                 }).catch((ret) => {
                     xmview.showTip('error', ret.message)

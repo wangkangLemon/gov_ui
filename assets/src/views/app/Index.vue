@@ -114,7 +114,6 @@
                 this.mobileTitle=ret.name
                 // console.log(ret.logo)
                 // console.log(config.apiHost + ret.logo)
-
                 // this.imgData = ret.logo.indexOf(config.apiHost) > -1 ? ret.logo : config.apiHost + ret.logo //存在要检索的字符串值
                 this.imgData = ret.logo //存在要检索的字符串值
             }).then(() => {
@@ -132,7 +131,7 @@
                     // alias: `${Date.now()}${ext}`
                 }).then((ret) => {
                     this.imgData = ret.url
-                    xmview.showTip('success', '上传成功')
+                    // xmview.showTip('success', '上传成功')
                 }).catch((ret) => {
                     xmview.showTip('error', ret.message)
                 })

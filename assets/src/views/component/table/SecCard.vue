@@ -153,7 +153,7 @@
             // 图片上传完毕
             handleImgUploaded (response) {
                 this.selectData.image = response.data.url
-                alert( response.data.url)
+                // alert( response.data.url)
             },
             // 重置表单
             resetForm () {

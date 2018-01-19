@@ -48,24 +48,19 @@
             </div>
         </el-dialog>
         <!--添加/编辑表单-->
-        <el-dialog v-model="addForm">
+        <el-dialog title="添加管理员"  v-model="addForm">
             <el-form :model="form" :rules="rules" ref="form">
                 <!--<el-form-item v-if="category == 2" prop="department_id" label="部门" :label-width="formLabelWidth">
                     <departmentSelect :type="companyID" v-model="form.department_id"
                     v-on:change="val=>form.department_id = val">
                     </departmentSelect>
                 </el-form-item>-->
-                <el-form-item prop="role_id" label="角色" :label-width="formLabelWidth">
-                    <!--<departmentSelect :type="govID" v-model="form.role_id"
-                    v-on:change="val=>form.role_id = val">
-                    </departmentSelect>-->
-                    <el-select clearable v-model="form.role_id" placeholder="未选择">
-                    <el-option v-for="(item, index) in roleTypes" :label="item.name" :value="item.role_id" :key="item.role_id">
-                    </el-option>
-                </el-select>
-                </el-form-item>
+                
                 <el-form-item prop="name" label="姓名" :label-width="formLabelWidth">
                     <el-input v-model="form.name" placeholder="部门人员姓名" auto-complete="off"></el-input>
+                </el-form-item>
+                 <el-form-item label="昵称" :label-width="formLabelWidth">
+                    <el-input v-model="form.nickname" placeholder="昵称" auto-complete="off"></el-input>
                 </el-form-item>
                 <!--<el-form-item prop="sex" label="性别" :label-width="formLabelWidth">
                     <el-radio class="radio" v-model="form.sex" :label="1">男</el-radio>
@@ -74,15 +69,19 @@
                 <el-form-item prop="mobile" label="手机号" :label-width="formLabelWidth">
                     <el-input v-model="form.mobile" type="number" placeholder="手机号" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item prop="passwd" label="密码" :label-width="formLabelWidth">
+                <!--<el-form-item prop="role_id" label="角色" :label-width="formLabelWidth">
+                    <el-select clearable v-model="form.role_id" placeholder="未选择">
+                        <el-option v-for="(item, index) in roleTypes" :label="item.name" :value="item.role_id" :key="item.role_id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>-->
+                <el-form-item prop="passwd" label="密码"  :label-width="formLabelWidth">
                     <el-input type="password" v-model="form.passwd" placeholder="密码" auto-complete="off"></el-input>
                 </el-form-item>
                 <!--<el-form-item prop="birthday" label="生日" :label-width="formLabelWidth">
                     <el-date-picker type="date" v-model="form.birthday"></el-date-picker>
                 </el-form-item>-->
-                <el-form-item label="昵称" :label-width="formLabelWidth">
-                    <el-input v-model="form.nickname" placeholder="昵称" auto-complete="off"></el-input>
-                </el-form-item>
+               
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="addForm = false">取 消</el-button>
@@ -98,14 +97,14 @@
                     <i>姓名</i>
                     <el-input @change="getData" class="name" v-model="search.name" placeholder="请输入姓名"></el-input>
                 </section>
-                <section>
+                <!--<section>
                     <i>角色</i>
                     <el-select v-model="search.role_id" placeholder="未选择" @change="getData">
                         <el-option label="全部" :value="-1"></el-option>
                         <el-option label="管理员" value="1"></el-option>
                         <el-option label="部门人员" value="0"></el-option>
                     </el-select>
-                </section>
+                </section>-->
                 <section>
                 <i>手机号</i>
                 <el-input v-model="search.mobile" placeholder="请输入手机号"   @keyup.enter.native="getData" ></el-input>
@@ -188,6 +187,7 @@
     import * as timeUtils from '../../utils/timeUtils'
     import companyUserService from '../../services/gov/companyUserService'
     import {defaultAvatar} from '../../utils/filterUtils'
+    
     export default {
         name: 'gov-admin',
         filters: {
@@ -229,18 +229,7 @@
                 departmentData: [],
                 companyID: this.$route.params.gov_id,
                 showDetail: false,     // 是否显示详情对话框
-                form: {                // 表单属性值
-                    role_id: void 0,        //角色 无管理权限0 
-                    // area_id:0,         //地区id
-                    gov_id: void 0,    //部门id
-                    name: '',          // 姓名
-                    mobile: '',        // 手机
-                    passwd: '',        // 密码qu
-                    nickname: '',
-                    // address: '',       // 地址
-                    // sex: 0,            // 性别
-                    // birthday: ''       // 生日
-                },
+                form:clearFormFn() ,
                 rules: {
                     department_id: [
                         {type: 'number', required: true, message: '必须填写', trigger: 'blur'}
@@ -337,6 +326,7 @@
                 //         this.departmentData = ret.data
                 //     }
                 // }).then(() => {
+                    this.form=clearFormFn()
                     this.addForm = true
                 // })
             },
@@ -349,7 +339,7 @@
                     page: this.page,
                     pagesize: this.pageSize,
                     name: this.search.name,
-                    role_id:this.search.role_id,
+                    role_id:1,
                     mobile :this.search.mobile,
                     gov_id: this.govID,
                     active: this.$route.params.active
@@ -407,5 +397,19 @@
                 window.history.back()
             }
         }
+    }
+    function clearFormFn(){
+        return{                // 表单属性值
+                    role_id: 1,        //角色 无管理权限0 
+                    // area_id:0,         //地区id
+                    gov_id: void 0,    //部门id
+                    name: '',          // 姓名
+                    mobile: '',        // 手机
+                    passwd: '',        // 密码qu
+                    nickname: '',
+                    // address: '',       // 地址
+                    // sex: 0,            // 性别
+                    // birthday: ''       // 生日
+                }
     }
 </script>

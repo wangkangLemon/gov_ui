@@ -33,14 +33,20 @@
             <section class="search">
                 <section>
                     <i>部门</i>
-                    <CompanySelect :change="getData" v-model="search.gov_id" v-on:change="val=>this.search.gov_id=val">
+                    <CompanySelect  :change="getData" v-model="search.gov_id"
+                                    v-on:change="val=>search.gov_id=val">
                     </CompanySelect>
                 </section>
                 <!--<section>
                     <i>课程</i>
                     <DepSelect v-model="search.department_id" :change="getData"></DepSelect>
                 </section>-->
-                <DateRange title="发送时间" :start="search.createTime" :end="search.endTime" v-on:changeStart="val=> search.createTime=val" v-on:changeEnd="val=> search.endTime=val"
+                <DateRange   
+                    title="发送时间" 
+                    :start="search.createTime" 
+                    :end="search.endTime" 
+                    v-on:changeStart="val=> search.createTime=val" 
+                    v-on:changeEnd="val=> search.endTime=val"
                     :change="getData">
                 </DateRange>
             </section>
@@ -132,7 +138,7 @@
             xmview.setContentLoading(false)
         },
         activated() {
-            this.search.gov_id = this.govID
+            // this.search.gov_id = this.govID
             this.getData().then(() => {
                 xmview.setContentLoading(false)
             })
@@ -207,7 +213,7 @@
             },
             getData() {
                 this.loading = true
-                this.getUserList()
+                // this.getUserList()
                 return govService.getGovTestingData({
                     page: this.currentPage,
                     page_size: this.pageSize,
@@ -217,6 +223,7 @@
                     time_end: this.search.endTime,
                     course_id:this.search.course_id
                 }).then((ret) => {
+                    console.log(ret)
                     this.total = ret.total
                     this.testingData = ret
                 }).then(() => {

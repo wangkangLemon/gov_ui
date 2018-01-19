@@ -187,6 +187,7 @@
             role_id: '',
             createTime: '',
             endTime: '',
+            level:void 0,
         }
     }
 
@@ -206,7 +207,7 @@
                 total: 0,
                 search: clearFn(),
                 level: void 0,
-                govID: authUtils.getUserInfo().gov_id,
+                govID: void 0,
                 govLevel: authUtils.getUserInfo().gov_level,
             }
         },
@@ -217,14 +218,17 @@
             //     xmview.setContentLoading(false)
             // })
         },
+
         activated () {
-            console.log(authUtils.getUserInfo())
-            this.search.gov_id = this.govID
-            this.search.level = Number(this.govLevel) + 1
-            console.log(this.search.level)
+      
             this.getData().then(() => {
                 xmview.setContentLoading(false)
             })
+        },
+        watch: {
+            'search.gov_id'(){
+                // this.search.level = Number(this.govLevel) + 2
+            }
         },
         methods: {
             initFetchParam() {
@@ -241,7 +245,12 @@
             },
             getData () {
                 this.loading = true
-
+                if(this.search.gov_id){
+                    // alert('this.level=Number(this.govLevel) + 2='+Number(this.govLevel+2) )
+                    this.level=Number(this.govLevel) + 2
+                }else{
+                     this.level=Number(this.govLevel) + 1
+                }
                 return govService.getReportUserlogin({
                     page: this.currentPage,
                     pagesize: this.pageSize,
@@ -251,7 +260,7 @@
                     role_id: this.search.role_id,
                     date_start: this.search.createTime,
                     date_end: this.search.endTime,
-                    level:this.search.level,
+                    level:this.level,
                 }).then((ret) => {
                     this.total = ret.total
                     this.manageData = ret

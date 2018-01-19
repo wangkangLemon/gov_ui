@@ -100,10 +100,8 @@
                         <el-button v-show="fetchParam.material_type === 'video'" @click="isShowVideoDialog=true">
                             <i>{{fetchParam.material_name}}</i>
                         </el-button>
-
                         <!--<el-button @click="preview(scope.$index, scope.row)" type="text" size="small"     v-if="scope.row.status != 1 && scope.row.status != 2"-->
                         <el-button @click="preview(fetchParam.material_id)" type="text" size="big"
-                               
                                > 查看视频
                         </el-button>
                     </el-form-item>
@@ -226,7 +224,6 @@ export default {
         this.$route.params.tab && (this.activeTab = this.$route.params.tab)
         this.readonly = this.$route.params.readonly
         xmview.setContentLoading(false)
-        this.getVideoName()
     },
 
     watch: {

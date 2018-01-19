@@ -83,6 +83,11 @@
                         <el-option  v-for="item in  role_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="密码" prop="password" v-if="fetchParam.role_id==1">
+                    <el-input v-model.password="fetchParam.password" v-if="this.$route.params.id" auto-complete="off" type="password" key=""  placeholder="密码、不修改请留空"></el-input>
+                    <el-input v-model.password="fetchParam.password" v-else auto-complete="off" type="password" key=""  ></el-input>
+                </el-form-item>
+
                 <el-form-item label="" >
                     <!--<el-button @click="$router.push({ name:'medical-index'})">取消</el-button>-->
                     <div>

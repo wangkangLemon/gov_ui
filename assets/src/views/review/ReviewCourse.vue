@@ -38,13 +38,15 @@
 <template>
     <article id="course-manage-public-container">
         <el-dialog v-model="addForm" :title="formTitle">
-            <el-form :model="fetchParam" :rules="rules" ref="form">
-                <el-form-item prop="audited" label="审核结果" :label-width="formLabelWidth">
-                    <el-radio  v-model="fetchParam.audited" :label="3" :value="3">审核不通过</el-radio>
-                    <el-radio  v-model="fetchParam.audited" :label="2" :value="2">已审核</el-radio>
+            <el-form :model="auditedParam" :rules="rules" ref="form">
+                <el-form-item  label="审核结果" :label-width="formLabelWidth">
+                    <el-radio-group v-model="auditedParam.audited">
+                        <el-radio :label="3">审核不通过</el-radio>
+                        <el-radio :label="2">已审核</el-radio>
+                    </el-radio-group>
                 </el-form-item>
                 <el-form-item prop="description" label="审核意见" :label-width="formLabelWidth">
-                    <el-input v-model="fetchParam.description"  auto-complete="off"></el-input>
+                    <el-input v-model="auditedParam.description" auto-complete="off"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -150,7 +152,8 @@
         </el-table>
 
         <el-pagination class="pagin" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="fetchParam.page"
-            :page-size="fetchParam.pagesize" :page-sizes="[15, 30, 60, 100, 130, 160, 200]" layout="sizes,total, prev, pager, next" :total="total">
+            :page-size="fetchParam.pagesize" :page-sizes="[15, 30, 60, 100, 130, 160, 200]" layout="sizes,total, prev, pager, next"
+            :total="total">
         </el-pagination>
 
         <!--底部的批量删除和移动两个按钮-->
@@ -199,7 +202,7 @@
             time_end: void 0,
             need_testing: void 0, //  不赋值则表示全部，0为不需要，1为需要
             audited: '', // 全部：-1   1：未审核 2：已审核 3：审核不通过
-            description:'',
+            description: '',
             contentid: void 0,
         }
     }
@@ -212,6 +215,10 @@
                 dialogVisible: false,
                 selectedIds: [], // 被选中的数据id集合
                 fetchParam: getFetchParam(),
+                auditedParam: {
+                    audited: null,
+                    description: ''
+                },
                 dialogTree: {
                     isShow: false,
                     selectedId: void 0,
@@ -221,11 +228,13 @@
                 formTitle: '审核内容',
                 addForm: false, // 表单弹窗是否显示
                 rules: {
-                    audited: [
-                        { required: true, message: '必须填写'}
-                    ],
+                    audited: [{
+                        required: true,
+                        message: '必须填写'
+                    }],
                 },
                 formLabelWidth: '120px', // 表单label的宽度
+                auditedRow: {}, // 列表和审核框绑定row
             }
         },
         activated() {
@@ -244,16 +253,17 @@
                 this.fetchParam.pagesize = val
                 this.fetchData()
             },
+            //获取列表数据
             fetchData(val) {
                 this.loadingData = true
-                let obj = Object.assign({},this.fetchParam)
-                if(obj.audited === ''){
+                let obj = Object.assign({}, this.fetchParam)
+                if (obj.audited === '') {
                     obj.audited = -1
                 }
                 return courseService.getReviewCourselist(obj).then((ret) => {
                     this.data = ret
                     // this.total = ret.total
-                    this.total=2400
+                    this.total = 2400
                     this.loadingData = false
                     xmview.setContentLoading(false)
                     // this.fetchParam.audited = '';
@@ -268,23 +278,25 @@
                 this.selectedIds = ret
             },
             // 	已审核 或者未审核课程 全部：-1 1：未审核 2：已审核 3：审核不通过
-            showDialog(index, row){
+            showDialog(index, row) {
                 this.addForm = true
-                this.fetchParam.contentid= row.contentid
+                this.fetchParam.contentid = row.contentid
+                this.auditedRow = row
             },
-            submitAudit(form ,row) {
+            //提交审核
+            submitAudit(form, row) {
                 this.$refs[form].validate((valid) => {
                     if (!valid) return
-                    console.log(this.fetchParam)
                     courseService.auditCourse({
-                            course_id: this.fetchParam.contentid,
-                            audited: this.fetchParam.audited,
-                            description: this.fetchParam.description,
-                         }).then((ret) => {
+                        course_id: this.fetchParam.contentid,
+                        audited: this.auditedParam.audited,
+                        description: this.auditedParam.description,
+                    }).then((ret) => {
                         // 重置当前数据
                         this.addForm = false
                         this.$refs[form].resetFields();
-                        row.audited =  this.fetchParam.audited
+                        console.log(this.auditedParam.audited)
+                        this.auditedRow.audited = this.auditedParam.audited;
                     })
                 })
             },

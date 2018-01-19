@@ -464,15 +464,15 @@
                                     "level": 1,
                                     "items": []
                                 },
-                                {
-                                    "id": 21,
-                                    "menu_name": "公告联系人",
-                                    "menu_node": "/announce/contacts",
-                                    "remark": "",
-                                    "pid": 2,
-                                    "level": 1,
-                                    "items": []
-                                }
+                                // {
+                                //     "id": 21,
+                                //     "menu_name": "公告联系人",
+                                //     "menu_node": "/announce/contacts",
+                                //     "remark": "",
+                                //     "pid": 2,
+                                //     "level": 1,
+                                //     "items": []
+                                // }
                             ]
                         },
                         {

@@ -20,6 +20,22 @@
             background: rgb(153, 102, 204);
         }
     }
+    #show-detail {
+        width:100%;
+        .avatar{
+            width: 40%;
+            border:none;
+             img{
+                width: 33.33%;
+                height: 60%;
+            }
+           
+        }
+        .info{
+            width: 60%;
+        }
+        
+    }
 
     .search {
         @extend %top-search-container;
@@ -39,37 +55,29 @@
 <template>
     <article id="medical-index-container">
         <!--详情-->
-        <el-dialog class="show-detail" title="查看公告" v-model="showDetail">
+        <el-dialog class="show-detail" id="show-detail" title="查看公告" v-model="showDetail">
             <div class="avatar">
-                <img :src="{url:clerkDetail.images, sex: clerkDetail.sex} | defaultAvatar" />
+                <img  v-for="item in imagesList" :src="item" />
             </div>
-            <div class="info">
+            <div class="info" >
                 <h2>{{clerkDetail.name}}</h2>
                 <p><i class="title">内容：</i><span class="value">{{clerkDetail.content}}</span></p>
                 <br>
                 <p><i class="title">所属部门：</i><span class="value">{{clerkDetail.gov_name}}</span></p>
-                <!--<p>
-                    <i class="title">状态：</i>
-                    <span class="value">
-                        <el-tag type="success" v-if="!clerkDetail.disabled">正常</el-tag>
-                        <el-tag type="danger" v-else="clerkDetail.disabled">异常</el-tag>
-                    </span>
-                </p>-->
-                <!--<p><i class="title">性别：</i> <span class="value">{{clerkDetail.sex ? '男' : '女'}}</span></p>-->
                 <p><i class="title">发布人员：</i> <span class="value">{{clerkDetail.user_name}}</span></p>
                 <p><i class="title">创建时间：</i><span class="value">{{clerkDetail.addate}}</span></p>
             </div>
         </el-dialog>
-        <section class="manage-container">
+        <!--<section class="manage-container">
             <el-button type="primary" icon="plus" @click="$router.push({ name:'person-add',params:{sys_type:'add'}})">
-                <i>添加人员</i>
+                <i>添加公告</i>
             </el-button>
-        </section>
+        </section>-->
 
         <article class="search">
             <section>
                 <i>标题</i>
-                <el-input v-model="fetchParam.name" placeholder="请输入姓名"   @keyup.enter.native="fetchData" ></el-input>
+                <el-input v-model="fetchParam.name" placeholder="请输入公告标题"   @keyup.enter.native="fetchData" ></el-input>
             </section>
             <!--<section>
                 <i>角色</i>
@@ -90,20 +98,13 @@
 
             <el-table-column min-width="250" prop="name" label="标题" v-if="data">
             </el-table-column>
-            <el-table-column min-width="250" prop="name" label="内容" v-if="data">
+            <el-table-column min-width="250" prop="content" label="内容" v-if="data">
             </el-table-column>
             <el-table-column min-width="150" prop="user_name" label="发布人员" v-if="data">
             </el-table-column>
             <el-table-column min-width="170" :formatter="Time" label="创建时间">
             </el-table-column>
 
-            <!--<el-table-column width="100" label="状态">
-                <template scope="scope">
-                    <el-tag v-if="scope.row.deleted == 1">已删除</el-tag>
-                    <el-tag v-else-if="scope.row.deleted == 0&&scope.row.disabled == 0" type="success">正常</el-tag>
-                    <el-tag v-else>禁用</el-tag>
-                </template>
-            </el-table-column>-->
             <el-table-column fixed="right" width="180" label="操作">
                 <template scope="scope">
                     <!--<el-button @click="showFn(scope.$index, scope.row)" type="text" size="small">详情
@@ -185,7 +186,7 @@ export default {
                 birthday: '',          // 生日
                 addate: ''
             },
-
+            imagesList:[]
         }
     },
     activated () {
@@ -198,8 +199,14 @@ export default {
             this.showDetail = true
             announceService.getAnnounceDetail(row.id).then((ret) => {
                 this.clerkDetail = ret
+                this.imagesList=ret.images.split(',')
+                
             })
+                // this.clerkDetail.image
+                console.log( this.clerkDetail.images)
+            console.log(this.imagesList)
         },
+
         userInfo () {
             return authUtils.getUserInfo()
         },
@@ -247,7 +254,7 @@ export default {
         },
         timeFilter( addate){
             let time
-            this.dataCache.forEach(v=> {3
+            this.dataCache.forEach(v=> {
                     time = addate.split(" ")[0]
                 }, this);
             return time

@@ -306,7 +306,6 @@ export default {
                 // }).then(() => {
                     this.addForm = true
                     this.form.gov_id = this.fetchParam.gov_id
-                    alert('this.form.gov_id='+this.form.gov_id)
                 // })
             },
         //添加人员提交

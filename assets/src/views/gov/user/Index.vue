@@ -279,7 +279,7 @@ export default {
         },
         // 单条删除
         del(index, row) {
-            xmview.showDialog(`你将要删除管理员 <span style="color:red">${row.name}</span>  此操作不可恢复确认吗?`, () => {
+            xmview.showDialog(`你将要删除用户 <span style="color:red">${row.name}</span>  此操作不可恢复确认吗?`, () => {
                 userService.delete(row.id).then(() => {
                     this.dataCache.splice(index, 1)//删除选中项
                     row.deleted = 1

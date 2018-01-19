@@ -50,7 +50,7 @@
                         <el-input v-model="fetchParam.content" ></el-input>
                     </el-form-item>
                     <el-form-item label="公告图片" prop="images" class="images">
-                        <UploadImg ref="uploadImg" :defaultImg="fetchParam.images" :url="uploadImgUrl"
+                        <UploadImg ref="uploadImg" :fetchParam.images="fetchParam.images" :url="uploadImgUrl"
                                    :onSuccess="handleImgUploaded">
                         </UploadImg>
                     </el-form-item>
@@ -62,7 +62,7 @@
                         <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                         <div style="margin: 15px 0;"></div>
                         <el-checkbox-group v-model="checkedMenus" @change="handleCheckedMenusChange">
-                            <el-checkbox v-for="item in allCheckData" :label="item.id" :key="item.id" :value="item.id">{{item.concact}}</el-checkbox>
+                            <el-checkbox v-for="item in allCheckData" :label="item.id" :key="item.id" :value="item.id">{{item.name}}</el-checkbox>
                         </el-checkbox-group>
                     </el-form-item>
                     
@@ -136,14 +136,18 @@
                 }
             },
         },
+
         activated () {
+            this.fetchParam = getFetchParam()
+            console.log(this.fetchParam)
+            this.checkAll=this.checkedMenus= 0
             xmview.setContentLoading(false)
             this.uploadImgUrl = announceService.getUploadCategoryImgUrl()
             console.log(this.uploadImgUrl)
+            this.$refs.uploadImg.clearFiles()
             this.fetchData()
         },
         methods: {
-
              //全选反选按钮
             handleCheckAllChange(event) {
                 var arr = this.allCheckData.map(v=>{
@@ -168,6 +172,7 @@
             },
             // 图片上传完毕
             handleImgUploaded (response, file, fileList) {
+                
                 // this.fetchParam.images = response.url
                 // if (this.fetchParam.images.indexOf(response.data.url) == -1) {
                 //     this.fetchParam.images.push(response.data.url)
@@ -200,9 +205,6 @@
                this.fetchParam.images = this.$refs.uploadImg.imgList.map(function(v){
                     return v.response.data.url
                 }).join()
-                
-
-
 
                 this.$refs.form.validate((ret) => {
                     if (!ret) return
@@ -226,7 +228,8 @@
                         //     }
 
                             // 如果是添加的根节点
-                            this.fetchParam = getFetchParam()
+                            this.$router.push({name: 'announce-lists'})
+                            this.fetchParam =getFetchParam()
                         // }
                     })
                 })

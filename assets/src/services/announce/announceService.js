@@ -6,7 +6,7 @@ const urlPre = config.apiHost + '/gov/announce'
 class CompanyService {
     // 搜索
     getAnnounceListsData ({
-        // keyword = '',  // 关键词：匹配企业名称
+        name = '',  // 关键词：匹配公告名称
         // area = '',     // 负责区域：传 省份名称
         // category = 'agent', // 类型： self 我是工业，agent 我是代理
         // status ,   // 状态：-1 全部，0 关联中，1 待确认，2 已拒绝，3 已解除，4 已放弃
@@ -15,7 +15,7 @@ class CompanyService {
     }) {
         let finalUrl = `${urlPre}/lists`
         return api.get(finalUrl, {
-            // keyword,
+            name,
             // area,
             // category,
             // status,
