@@ -129,6 +129,7 @@
                 <section>
                     <i>角色</i>
                     <el-select clearable v-model="search.role_id" @change="getData">
+                        <el-option label="全部" :value="-1"></el-option>
                         <el-option label="管理员" value="1"></el-option>
                         <el-option label="部门人员" value="0"></el-option>
                     </el-select>
@@ -208,7 +209,7 @@
             name: '',
             user_name: '',
             gov_id: '',
-            role_id: '',
+            role_id: -1,
             createTime: '',
             endTime: '',
         }
