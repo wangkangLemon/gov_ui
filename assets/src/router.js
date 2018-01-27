@@ -7,7 +7,8 @@ import data from './routers/data'              // 数据分析模块
 import base from './routers/base'              // 基础模块
 import app from './routers/app'                // 设置模块
 import announce from './routers/announce'      // 公告模块
-import review from './routers/review'      // 审核模块
+import review from './routers/review'          // 审核模块
+import server from './routers/server'          // 政府服务
 
 // import course from './routers/course'          // 培训模块
 // import finance from './routers/finance'        // 财务模块
@@ -89,8 +90,10 @@ const routes = [{
             medical,
             // ============ 公告模块 ==================
             announce,
-            // ============ 模块 ==================
+            // ============ 审核模块 ==================
             review,
+            // ============ 政府服务模块 ==================
+            server,
         ]
     },
     { // 登录

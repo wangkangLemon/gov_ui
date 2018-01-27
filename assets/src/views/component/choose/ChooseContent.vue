@@ -150,7 +150,7 @@
                     page: this.fetchParam.page,
                     pagesize: this.fetchParam.pagesize
                 }).then((ret) => {
-                    this.data = ret
+                    this.data = ret.data
                     this.total = ret.total
                     this.loadingData = false
                 }).catch((ret) => {

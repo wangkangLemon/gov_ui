@@ -216,7 +216,7 @@
                     obj.status = -1
                 }
                 return courseService.getPublicCourselist(obj).then((ret) => {
-                    this.data = ret
+                    this.data = ret.data
                     // this.total = ret.total
                     this.total = 2400
                     this.loadingData = false

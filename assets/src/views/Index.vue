@@ -359,6 +359,61 @@
                             ]
                         },
                         {
+                            "id": 22,
+                            "menu_name": "审核管理",
+                            "menu_node": "/review",
+                            "remark": "",
+                            "pid": 0,
+                            "level": 0,
+                            "items": [{
+                                    "id": 23,
+                                    "menu_name": "课程审核",
+                                    "menu_node": "/review/course",
+                                    "remark": "",
+                                    "pid": 2,
+                                    "level": 1,
+                                    "items": []
+                                },
+                            ]
+                        },
+                        {
+                            "id": 24,
+                            "menu_name": "政府服务",
+                            "menu_node": "/server",
+                            "remark": "",
+                            "pid": 0,
+                            "level": 0,
+                            "items": [{
+                                    "id": 25,
+                                    "menu_name": "课程任务",
+                                    "menu_node": "/server/coursetask",
+                                    "remark": "",
+                                    "pid": 2,
+                                    "level": 1,
+                                    "items": [{
+                                            "id": 25,
+                                            "menu_name": "任务管理",
+                                            "menu_node": "/server/coursetask/manage",
+                                            "remark": "",
+                                            "pid": 2,
+                                            "level": 1,
+                                            "items": []
+                                    },
+                                    // {
+                                    //         "id": 25,
+                                    //         "menu_name": "课程任务",
+                                    //         "menu_node": "/server/coursetak/stat",
+                                    //         "remark": "",
+                                    //         "pid": 2,
+                                    //         "level": 1,
+                                    //         "items": []
+                                    // }
+                                    ]
+                                },
+                               
+                            ]
+                        },
+                        {
                             "id": 2,
                             "menu_name": "数据分析",
                             "menu_node": "/data",
@@ -475,24 +530,7 @@
                                 // }
                             ]
                         },
-                        {
-                            "id": 22,
-                            "menu_name": "审核管理",
-                            "menu_node": "/review",
-                            "remark": "",
-                            "pid": 0,
-                            "level": 0,
-                            "items": [{
-                                    "id": 23,
-                                    "menu_name": "课程审核",
-                                    "menu_node": "/review/course",
-                                    "remark": "",
-                                    "pid": 2,
-                                    "level": 1,
-                                    "items": []
-                                },
-                            ]
-                        },
+                        
 
                      // {
                         //     "id": 1,

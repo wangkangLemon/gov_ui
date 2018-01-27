@@ -39,7 +39,7 @@
                     <el-table-column type="selection" :selectable="(row) =>  row.id != -1"></el-table-column>
                     <el-table-column>
                         <template scope="scope">
-                            <i v-if="scope.row.id != -1">{{scope.row.name}}</i>
+                            <i v-if="scope.row.id != -1">{{scope.row.course_name}}</i>
                             <el-button @click="fetchData(false)" class="dialog-getmore-btn" type="text"
                                        v-else :disabled="data.length - 1 >= total">
                                 <i>{{data.length - 1 >= total ? '已无更多' : '点击加载更多'}}</i>
@@ -53,7 +53,7 @@
                 <el-table :show-header="false" :height="500" :data="currSelectedList">
                     <el-table-column>
                         <template scope="scope">
-                            {{scope.row.name}}
+                            {{scope.row.course_name}}
                             <el-button style="float: right;margin-right: 10px" type="text" size="tiny" icon="delete"
                                        @click="delItem(scope.row)">删除
                                 <!--i-->
@@ -63,7 +63,6 @@
                 </el-table>
             </section>
         </main>
-
         <span slot="footer">
                 <el-button type="primary" @click="currVal=false">确定</el-button>
             </span>
@@ -79,7 +78,7 @@
                 default: false
             },
             // 获取数据的方法 返回一个Promise,  数据格式: { total: 9, data:[{ name:'xxx', id:1 }] }
-            fetchData: Function,
+            getData: Function,
             // 被选中的列表集合
             selectedList: Array
         },
@@ -120,8 +119,9 @@
             fetchData (isFirst) {
                 this.loading = true
                 if (isFirst) this.fetchParam.page = 1
-                this.fetchData(this.fetchParam).then((ret) => {
-                    this.total = ret.total
+                this.getData(this.fetchParam).then((ret) => {
+                    console.log(ret)
+                    this.total = ret._exts.total
 
                     // 是否首次加载
                     if (this.fetchParam.page === 1) {

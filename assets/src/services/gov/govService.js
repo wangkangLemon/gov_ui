@@ -35,7 +35,7 @@ class govService {
             village_id,
             deleted,
         }, false).then((ret) => {
-            return ret.data
+            return ret
         })
     }
     // gov - list

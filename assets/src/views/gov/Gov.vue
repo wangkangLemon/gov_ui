@@ -258,7 +258,7 @@
                     city_id: this.fetchParam.citySelect,
                     area_id: this.fetchParam.areaSelect
                 }).then((ret) => {
-                    this.govData = ret
+                    this.govData = ret.data
                     this.total = ret.total
 
                 }).then(() => {

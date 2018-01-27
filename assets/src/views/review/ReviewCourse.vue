@@ -55,7 +55,7 @@
             </div>
         </el-dialog>
         <!--<section class="manage-container">
-            <el-button type="primary" icon="plus" @click="$router.push({ name:'course-manage-addCourse'})"><i>添加课程</i>
+            <el-button type="primary" icon="plus" @click="$router.push({ name:'review-manage-addCourse'})"><i>添加课程</i>
             </el-button>
             <el-button type="warning" icon="menu" @click="$router.push({name:'course-manage-course-category-manage'})">
                 <i>管理栏目</i>
@@ -104,7 +104,7 @@
             </el-table-column>
             <el-table-column width="80" label="题目数">
                 <template scope="scope">
-                    <el-button style="width: 100%" @click="$router.push({name: 'course-manage-addCourse', params: {courseInfo: scope.row, tab:'second'}})"
+                    <el-button style="width: 100%" @click="$router.push({name: 'review-manage-addCourse', params: {courseInfo: scope.row, tab:'second'}})"
                         type="text" size="small">{{scope.row.subject_num}}
                         <!--a-->
                     </el-button>
@@ -132,7 +132,7 @@
             </el-table-column>-->
             <el-table-column fixed="right" width="227" label="操作">
                 <template scope="scope">
-                    <el-button @click="$router.push({name: 'course-manage-addCourse', params: {courseInfo: scope.row}, query: {id: scope.row.contentid}})"
+                    <el-button @click="$router.push({name: 'review-manage-addCourse', params: {courseInfo: scope.row}, query: {id: scope.row.contentid}})"
                         type="text" size="small">查看
                     </el-button>
                     <!--<el-button @click="audit(scope.$index, scope.row)" type="text" size="small">

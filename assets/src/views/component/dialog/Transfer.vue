@@ -1,17 +1,18 @@
 <!--使用实例-->
-<!--<Transfer :data="allCompany"-->
-          <!--v-model="selectCompany"></Transfer>-->
+<!--<Transfer placeholder="搜索用户"-->
+          <!--@searchFn="(val)=>{page=1;users=[];name=val;getAllUser();}"-->
+          <!--@moreFn="()=>{page++;getAllUser();}" :total="usersTotal"-->
+          <!--:data="users"-->
+          <!--v-model="selectUser"></Transfer>-->
 <style lang="scss" rel="stylesheet/scss">
     .transfer-container {
-        margin: 0 auto;
         .dialog-add-item {
             height: 500px;
-            width: 45%;
+            width: 42%;
             display: inline-block;
             vertical-align: top;
             &:first-of-type {
                 margin-right: 2%;
-                margin-left: 4%;
                 .footer {
                     text-align: left;
                     padding-left: 10px;
@@ -34,7 +35,14 @@
                 }
             }
             .row-class {
-                border-bottom: none !important;
+                // &:last-of-type {
+                //     td:first-of-type {
+                //         div {
+                //             display: none;
+                //         }
+                //     }
+                // }
+                border: 1px solid #d1dbe5;
             }
             .footer {
                 text-align: right;
@@ -48,31 +56,46 @@
     <article class="transfer-container">
         <div class="dialog-add-item">
             <h5>全部</h5>
+            <el-input :placeholder="placeholder" v-model="name"
+                      @keyup.enter.native="fetchData"></el-input>
             <el-table :data="data"
-                      :height="400"
+                      :height="365"
                       :show-header="false"
                       :fit="true"
                       ref="multiple"
                       v-loading="loading"
-                      row-class-name="row-class"
-                      @select="selectRow">
-                <el-table-column type="selection" :selectable="(row) =>  row.id != -1">
-                </el-table-column>
+                      class="row-class"
+                      @select="selectRow" @select-all="selectRow">
+                <el-table-column type="selection" :selectable="(row) =>  row.id != -1"></el-table-column>
                 <el-table-column>
                     <template scope="scope">
                         <i v-if="scope.row.id != -1">{{scope.row.name}}</i>
+                        <el-button @click="$emit('moreFn')" class="dialog-getmore-btn" type="text"
+                                   v-else :disabled="data.length >= total">
+                            <i>{{data.length >= total ? '已无更多' : '点击加载更多'}}</i>
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
             <div class="footer"><el-button type="text" @click="selectAll">全选</el-button></div>
         </div>
-        <div class="dialog-add-item">
+        <div class="dialog-add-item" v-if="showSelectedData">
             <h5>已选择</h5>
-            <el-table :show-header="false" :data="selectData" :height="400" :fit="true" row-class-name="row-class" v-loading="selectLoading">
-                <el-table-column>
+            <el-table 
+                :show-header="false" 
+                :data="selectData" 
+                :height="400" 
+                :fit="true"
+                class="row-class"
+                v-loading="selectLoading">
+                <el-table-column prop="name" label="课程名"></el-table-column>
+                <el-table-column
+                        width="50"
+                        label="">
                     <template scope="scope">
-                        <i v-if="scope.row.id != -1">{{scope.row.name}}</i>
-                        <el-button type="text" @click="deleteData(scope.$index, scope.row)" icon="delete" size="small" style="float:right;"></el-button>
+                        <el-button type="text" @click="deleteData(scope.$index, scope.row)" icon="el-icon-delete"
+                                   size="small">
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -89,11 +112,31 @@
             },
             value: {
                 type: Array,
-            }
+            },
+            placeholder: {
+                type: String,
+                default: '搜索'
+            },
+            total: {
+                type: Number,
+                default: 0
+            },
+            showSelectedData: {
+                type: Boolean,
+                default: true
+            },
+            type: {
+                type: String,
+                required: false
+            },
         },
         watch: {
             data (val) {
                 this.data = val
+                this.initSelect()
+            },
+            total (val) {
+                this.total = val
             },
             value (val) {
                 this.selectData = val
@@ -102,24 +145,50 @@
         data () {
             return {
                 selectData: this.value,
-                keyword: '',
+                name: '',
                 loading: false,
-                selectLoading: false
+                selectLoading: false,
+                page: 1,
             }
+        },
+        created(){
+            console.log('1---------------------------')
+            console.log(this.value)
         },
         methods: {
             fetchData () {
-                this.$emit('searchFn', this.keyword)
+                console.log(this)
+                this.$emit('searchFn', this.name)
             },
             deleteData (index, row) {
                 this.selectData.splice(index, 1)
+                this.toggleRowSelectionById(row)
+                this.$emit('input', this.selectData)
+            },
+            toggleRowSelectionById (row) {
                 this.data.forEach((item) => {
                     if (item.id === row.id) this.$refs.multiple.toggleRowSelection(item, false)
                 })
-                this.$emit('input', this.selectData)
+            },
+            initSelect () {
+                if (!this.selectData || !this.data) return
+                if (!this.selectData.length || !this.data.length) return
+                // this.selectionChange = true
+                for (let i = 0; i < this.selectData.length; i++) {
+                    for (let j = 0; j < this.data.length; j++) {
+                        if (this.data[j].id === this.selectData[i].id) {
+                            // create时dom未更新
+                            this.$nextTick(() => {
+                                this.$refs.multiple.toggleRowSelection(this.data[j], true)
+                            })
+                            break
+                        }
+                    }
+                }
             },
             // 选中数据
             selectRow (selection, row) {
+                this.type && this.$emit('curRow', row, this.type)
                 if (row.id < 0) return
                 for (let i = 0; i < this.selectData.length; i++) {
                     if (this.selectData[i].id == row.id) {
@@ -132,20 +201,23 @@
             },
             // 全选
             selectAll () {
-                this.data.forEach((item) => {
-                    this.$refs.multiple.toggleRowSelection(item, true)
-                })
-                this.selectData = clone(this.data).splice(0, this.data.length - 1)
+                this.toggleRowSelection(true)
+                this.selectData = clone(this.data).splice(0, this.data.length).filter(item => item.id != -1)
                 this.$emit('input', this.selectData)
+                this.type && this.$emit('selectAll', this.type)
             },
             // 全部删除
             deleteAll () {
+                
                 this.selectData = []
-                this.data.forEach((item) => {
-                    this.$refs.multiple.toggleRowSelection(item, false)
-                })
+                this.toggleRowSelection()
                 this.$emit('input', this.selectData)
             },
+            toggleRowSelection (selected = false) {
+                this.data.forEach((item) => {
+                    this.$refs.multiple.toggleRowSelection(item, selected)
+                })
+            }
         }
     }
 </script>

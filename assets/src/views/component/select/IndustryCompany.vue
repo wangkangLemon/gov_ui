@@ -50,7 +50,7 @@
                 // console.log(val, length)
                 console.log(ret)
                     // this.$emit('changelist', ret)
-                    return ret
+                    return ret.data
                 })
             },
             handleChange(val) {

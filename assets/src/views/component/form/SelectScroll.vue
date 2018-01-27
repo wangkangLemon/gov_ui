@@ -77,6 +77,7 @@
                 if (this.value != null && this.currPlaceholder && this.data.length < 1) {
                     this.data.push({id: this.value, name: this.placeholder})
                 }
+                console.log(this.data)
             }
         },
         created () {
@@ -147,7 +148,8 @@
                 } else
                     this.data = ret
 
-                this.isShowGetMore = this.data.length < ret.total
+                // this.isShowGetMore = this.data.length < ret.total
+                this.isShowGetMore = this.data.length < 25
             }
         }
     }

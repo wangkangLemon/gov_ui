@@ -8,7 +8,7 @@
 
 <script>
     import SelectScroll from '../../component/form/SelectScroll.vue'
-    import depService from '../../../services/gov/departmentService.js'
+    import govService from '../../../services/gov/govService.js'
     export default{
         props: {
             value: [String, Number],
@@ -33,14 +33,14 @@
         },
         methods: {
             fetchData (val, length) {
-                return depService.getDepartment({
-                    keyword: val,
-                    page_size: this.pageSize,
+                return govService.getSelectList({
+                    name: val,
+                    pagesize: this.pageSize,
                     page: parseInt(length / this.pageSize) + 1
                 }).then((ret) => {
                     this.$emit('changeList', ret.data)
                     console.log(ret)
-                    return ret
+                    return ret.data
                 })
             },
             handleChange(val) {
