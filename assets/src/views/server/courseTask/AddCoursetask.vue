@@ -90,11 +90,12 @@
             <el-form-item prop="description" label="描述">
                 <el-input v-model="form.description" auto-complete="off" :rows="6" type="textarea"></el-input>
             </el-form-item>
-            <el-form-item prop="imgUrl" label="封面">
+            <el-form-item prop="imgUrl" label="任务封面图">
                 <div class="img-wrap" v-if="form.image">
                     <img :src="form.image | fillImgPath" alt=""/>
                 </div>
-                <ImagEcropperInput :isRound="false" :aspectRatio="2.15" :confirmFn="cropperFn"
+                <!--<ImagEcropperInput :isRound="false" :aspectRatio="2.15" :confirmFn="cropperFn"-->
+                <ImagEcropperInput :isRound="false" :confirmFn="cropperFn"
                                    class="upload-btn"></ImagEcropperInput>
             </el-form-item>
             <el-form-item prop="course" label="选择课程">
@@ -146,7 +147,7 @@
         <dialogSelectData ref="dialogSelect" v-model="dialogCourse.isShow" :getData="fetchCourse" title="选择课程"
                           :selectedList="form.course" @changeSelected="val=>form.course=val">
             <div slot="search" class="course-search">
-                <el-input @keyup.enter.native="$refs.dialogSelect.fetchCourse(true)" v-model="dialogCourse.name"
+                <el-input @keyup.enter.native="$refs.dialogSelect.fetchCourse(true)" v-model="dialogCourse.course_name"
                           icon="search"
                           placeholder="请输入关键字搜索"></el-input>
             </div>
@@ -182,7 +183,7 @@
 
 <script>
     import Transfer from '../../component/dialog/Transfer.vue'
-    import ImagEcropperInput from '../../component/upload/ImagEcropperInput.vue'
+    import ImagEcropperInput from '../../component/upload/ImagEcropperInputTask.vue'
     import courseTaskService from '../../../services/server/courseTaskService.js'
     import courseService from '../../../services/course/courseService.js'
     import commonService from '../../../services/commonService.js'
@@ -194,7 +195,7 @@
 
 
     export default{
-        name: 'server-manage-create',
+        name: 'server-manage-add',
         computed: {
             id () {
                 return this.$route.query.id
@@ -206,7 +207,7 @@
                 form: {                // 表单属性值
                     id: void 0,
                     title: void 0,          // 标题
-                    category_id: void 0,       // 分类
+                    // category_id: void 0,       // 分类
                     image: void 0,        // 图片地址
                     description: void 0,  // 简介
                     sort: void 0,         // 排序
@@ -230,7 +231,7 @@
                 dialogCourse: {
                     loading: false,
                     isShow: false,
-                    name: void 0,
+                    course_name: void 0,
                 },
                 pushTypeDialog: { //发布对象数据模型
                     fetchParam: {
@@ -242,9 +243,8 @@
                     type: '',
                     showDialog: false,
                     selectedData: {
-                        user: [],
-                        user_group: [],
-                        department: []
+                        2: [],
+                        1: []
                     },
                     data: [],
                     page: 1,
@@ -253,7 +253,19 @@
                 },
             }
         },
+        watch:{
+            'form.type'(){
+                if(this.form.type==1){//政府
+                    this.form.user_ids= null
+                }else{ //政府
+                    this.form.gov_ids= null
+                }
+            },
+        },
         created () {
+            console.log('(this.pushTypeDialog.selectedData')
+           console.log(this.pushTypeDialog.selectedData[this.pushTypeDialog.type])
+
             xmview.setContentLoading(false)
             if (this.$route.query.item) {
                 this.form = this.$route.query.item
@@ -345,8 +357,8 @@
                     if (this.pushTypeDialog.data.length > 0 ) {
                         this.pushTypeDialog.data.splice(-1, 1)
                     }
-                    // this.pushTypeDialog.data.push(...ret.data, {id: -1}) //暂无id:-1 字段
-                    this.pushTypeDialog.data.push(...ret.data) //暂无id:-1 字段
+                    this.pushTypeDialog.data.push(...ret.data, {id: -1}) //暂无id:-1 字段
+                    // this.pushTypeDialog.data.push(...ret.data) //暂无id:-1 字段
                     //  this.pushTypeDialog.data.forEach(item => { item.type = 'exam' })
                 })
             },
@@ -368,6 +380,7 @@
                 })
             },
             fetchCourse (params) {
+                // { course_name = '', status, category_id , time_start, time_end, page, pagesize}
                 return courseService.getPublicCourselist(Object.assign({}, this.dialogCourse, params))
             },
             submit(s) {
@@ -377,8 +390,11 @@
                     }
                     // 处理课程id
                     this.form.course_ids = []
-                    this.form.course.forEach((c) => {
-                        this.form.course_ids.push(c.id)
+                    // this.form.course.forEach((c) => {
+                    //     this.form.course_ids.push(c.id)
+                    // })
+                      this.form.course.forEach((c) => {
+                        this.form.course_ids.push(c.contentid)
                     })
                     this.form.course_ids = this.form.course_ids.join(',')
 

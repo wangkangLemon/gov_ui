@@ -101,7 +101,7 @@
 </style>
 <template>
     <article id="task-manager-container">
-        <el-button class="top-btn" icon="el-icon-plus" type='primary' @click="()=>{$router.push({name: 'server-manage-create'})}">添加任务</el-button>
+        <el-button class="top-btn" icon="el-icon-plus" type='primary' @click="()=>{$router.push({name: 'server-manage-add'})}">添加任务</el-button>
         <el-tabs v-model="activeTab" type="card" @tab-click="handleClick">
             <el-tab-pane label="任务列表" name="list">
                 <section class="search">

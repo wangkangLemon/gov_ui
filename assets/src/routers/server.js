@@ -26,10 +26,10 @@ export default {
          // 添加修改课程任务
         {
             path: 'coursetask/template/add',
-            name: 'server-manage-create',
+            name: 'server-manage-add',
             component: resolve => {
                 require.ensure([], () => {
-                    resolve(require('../views/server/courseTask/AddCoursetasktemplate.vue'))
+                    resolve(require('../views/server/courseTask/AddCoursetask.vue'))
                 })
             },
             meta: {

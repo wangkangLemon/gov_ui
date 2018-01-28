@@ -72,7 +72,7 @@
                         <i v-if="scope.row.id != -1">{{scope.row.name}}</i>
                         <el-button @click="$emit('moreFn')" class="dialog-getmore-btn" type="text"
                                    v-else :disabled="data.length >= total">
-                            <i>{{data.length >= total ? '已无更多' : '点击加载更多'}}</i>
+                            <i>{{data.length -1 >= total ? '已无更多' : '点击加载更多'}}</i>
                         </el-button>
                     </template>
                 </el-table-column>

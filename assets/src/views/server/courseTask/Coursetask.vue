@@ -78,7 +78,7 @@
         <!--添加/编辑表单-->
         <!--点击添加 form数据取邮箱/手机号 密码-->
         <article class="manage-container">
-            <el-button icon="plus" type="primary" @click="()=> $router.push({name:'coursetask-template-add'}) ">添加
+            <el-button icon="plus" type="primary" @click="()=> $router.push({name:'server-manage-add'}) ">添加
             <!--添加-->
             </el-button>
         </article>
