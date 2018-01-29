@@ -1,396 +1,283 @@
-<style lang="scss" scoped>
-@import "../../../utils/mixins/common";
-@import "../../../utils/mixins/mixins";
-@import "../../../utils/mixins/topSearch.scss";
-#task-manager-container{
-    @extend %content-container;
-    .search {
-        @extend %top-search-container;
-    }
-    .top-btn {
-        @extend %right-top-btnContainer;
-    }
-    .el-tabs {
-        position: relative;
-        .temp-container {
-            /*@extend %justify3;*/
-            padding: 10px 30px;
-            .temp-item {
-                margin-bottom: 10px;
-                margin-right: 3%;
+<!--课程任务模板-->
+<style lang='scss' rel="stylesheet/scss">
+    @import "../../../utils/mixins/mixins";
+    @import "../../../utils/mixins/topSearch";
+    @import "../../../utils/mixins/common";
+
+    .course-task-template-index {
+        @extend %content-container;
+        .search {
+            @extend %top-search-container;
+        }
+
+        .manage-container {
+            @extend %right-top-btnContainer;
+        }
+
+        .block {
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .edui-editor {
+            width: 100% !important;
+        }
+
+        .avatar-uploader {
+            .el-upload {
+                border: 1px dashed #d9d9d9;
+                border-radius: 6px;
+                cursor: pointer;
                 position: relative;
-                vertical-align: top;
-                // display: inline-block;
-                border: 1px solid #ededed;
-                flex-basis: 30%;
-                height: 310px;
-                font-size: 14px;
-                .content {
-                    height: 210px;
-                    padding: 10px 15px;
-                    h2 {
-                        font-size: 16px;
-                        padding-bottom: 10px;
-                    }
-                    img {
-                        width: 100%;
-                        height: 100%;
-                    }
-                    .des {
-                        line-height: 25px;
-                        @include lineCount(2);
-                    }
-                }
-                .bottom {
-                    position: absolute;
-                    bottom: 0;
-                    background: #eee;
-                    left: 0;
-                    width: 100%;
-                    display: flex;
-                    > div {
-                        margin-top: 5px;
-                        margin-bottom: 5px;
-                        text-align-last: center;
-                        text-align: center;
-                        /*line-height: 50px;*/
-                        width: 50%;
-                        &:first-of-type {
-                            border-right: 1px solid #ddd;
-                        }
-                    }
+                overflow: hidden;
+                &:hover {
+                    border-color: #20a0ff;
                 }
             }
         }
+
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+        }
+
+        .img-wrap {
+            margin-bottom: 10px;
+            width: 150px !important;
+            height: 150px !important;
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .add {
+            background: #ededed;
+            padding: px2rem(10) px2rem(20);
+            border-bottom: 1px solid #ededed;
+        }
+
+        .desc {
+            width: 100%;
+            height: 100px;
+        }
     }
-    .course-list {
-        .el-dialog {
-            width: 40%;
-        }
-        .course-section {
-            max-height: 500px;
-            overflow-y: auto;
-        }
-        .list-des {
-            h2 {
-                text-align: center;
-                line-height: 40px;
-            }
-            p {
-                // text-indent: 2em;
-                word-wrap: break-word;
-            }
-        }
-        .list-item {
-            h3 {
-                line-height: 35px;
-            }
-            ul {
-                padding: 0 20px;
-                li {
-                    line-height: 30px;
-                }
-            }
-        }
-    }
-    .block {
-        float: right;
-        margin-top: 15px;
-    }
-}
 </style>
 <template>
-    <article id="task-manager-container">
-        <el-button class="top-btn" icon="el-icon-plus" type='primary' @click="()=>{$router.push({name: 'server-manage-add'})}">添加任务</el-button>
-        <el-tabs v-model="activeTab" type="card" @tab-click="handleClick">
-            <el-tab-pane label="任务列表" name="list">
-                <section class="search">
-                    <section>
-                        <i>任务标题</i>
-                        <el-input v-model="task.fetchParam.keyword" @keyup.enter.native="getTaskData"></el-input>
-                    </section>
-                    <section>
-                        <i>发布对象</i>
-                        <el-select v-model="task.fetchParam.type" placeholder="未选择" @change="getTaskData" :clearable="true">
-                            <el-option label="企业任务" value="company"></el-option>
-                            <el-option label="门店任务" value="department"></el-option>
-                            <el-option label="指定人员" value="user"></el-option>
-                            <el-option label="指定用户组" value="user_group"></el-option>
-                        </el-select>
-                    </section>
-                    <section>
-                        <i>状态</i>
-                        <el-select v-model="task.fetchParam.status" placeholder="未选择" @change="getTaskData" :clearable="true">
-                            <el-option label="正常" :value="0"></el-option>
-                            <el-option label="下线" :value="1"></el-option>
-                            <el-option label="待上线" :value="2"></el-option>
-                        </el-select>
-                    </section>
-                </section>
-                <el-table v-loading="task.loading" :data="task.dataList" :fit="true" border>
-                    <el-table-column prop="title" min-width="300" label="任务标题"></el-table-column>
-                    <el-table-column prop="course_count" width="100" label="课程数量">
-                        <template scope="scope">
-                            <el-button type="text" @click="courseListFn(scope.row)" :disabled="!scope.row.course_count">{{scope.row.course_count}}</el-button>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="exam_count" label="考试数量" width="100">
-                        <template scope="scope">
-                            <el-button type="text" @click="examListFn(scope.row)"  :disabled="!scope.row.exam_count">{{scope.row.exam_count}}</el-button>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="type" label="发布对象" width="120">
-                        <template scope="scope">
-                            {{type[scope.row.type]}}
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="study_score" label="企业学分" width="180"></el-table-column>
-                    <el-table-column prop="status" label="状态" width="100">
-                        <template scope="scope">
-                            <el-tag type="success" v-if="scope.row.status === 0">已上线</el-tag>
-                            <el-tag type="danger" v-if="scope.row.status === 1">已下线</el-tag>
-                            <el-popover
-                                v-else-if="scope.row.status == 2" 
-                                placement="top"
-                                trigger="hover">
-                                <p class="status-popover">{{scope.row.start_time}}</p>
-                                <el-tag type="warning" slot="reference">待上线</el-tag>
-                            </el-popover>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="create_time_name" label="创建日期" width="180"></el-table-column>
-                    <el-table-column prop="end_day" label="截止日期" width="180"></el-table-column>
-                    <el-table-column prop="" label="操作" width="180" fixed="right" header-align="center">
-                        <template scope="scope">
-                            <el-button type="text" size="small"
-                                @click="()=>{$router.push({name: 'server-manage-edit', query: {id: scope.row.id}})}"
-                                :disabled="scope.row.status != 1">
-                                修改
-                            </el-button>
-                            <el-button type="text" size="small" @click="dealStatus(scope.row)" v-if="scope.row.status == 1">上线</el-button>
-                            <el-button type="text" size="small" @click="timingDialogFn(scope.row)" v-if="scope.row.status == 1">定时</el-button>
-                            <el-button type="text" size="small" @click="dealStatus(scope.row)" v-if="scope.row.status != 1">下线</el-button>
-                            <el-button type="text" size="small" @click="deleteTask(scope.row)">删除</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <el-pagination class="block"
-                    @size-change="val=> {task.fetchParam.pagesize=val; getTaskData()}"
-                    @current-change="val=> {task.fetchParam.page=val; getTaskData()}"
-                    :current-page="task.fetchParam.page"
-                    :page-size="task.fetchParam.pagesize"
-                    :page-sizes="[15, 30, 60, 100]"
-                    layout="sizes,total, prev, pager, next" :total="task.total">
-                </el-pagination>
-            </el-tab-pane>
-            <el-tab-pane label="模版推荐" name="temp">
-                <section class="search">
-                    <section>
-                        <i>类别</i>
-                        <courseTaskTemplate 
-                            :onchange="getTempData"
-                            v-model="temp.fetchParam.category_id">
-                        </courseTaskTemplate>
-                    </section>
-                    <section>
-                        <i>标题搜索</i>
-                        <el-input v-model="temp.fetchParam.keyword" @keyup.enter.native="getTempData"></el-input>
-                    </section>
-                </section>
-                <article class="temp-container" v-loading="temp.loading">
-                    <section class="temp-item" v-for="(item,index) in temp.dataList">
-                        <div class="content">
-                            <h2>{{item.title}}</h2>
-                            <!--<img :src="item.image" alt="">-->
-                            <img :src="item.image | fillImgPath" :alt="item.image">
-                            <div class="des">{{item.description}}</div>
-                        </div>
-                        <div class="bottom">
-                            <div><el-button type="text" @click="templateViewFn(item)">课程列表</el-button></div>
-                            <div><el-button type="text" @click="()=>{$router.push({name: 'server-manage-create', query: {item: item}})}">使用</el-button></div>
-                        </div>
-                        <br/>
-                    </section>
-                </article>
-                <el-pagination 
-                    class="block"
-                    @size-change="val=> {temp.fetchParam.pagesize=val; getTempData()}"
-                    @current-change="val=> {temp.fetchParam.page=val; getTempData()}"
-                    :current-page="temp.fetchParam.page"
-                    :page-size="temp.fetchParam.pagesize"
-                    :page-sizes="[6, 15, 30, 60, 100]"
-                    layout="sizes,total, prev, pager, next" 
-                    :total="temp.total">
-                </el-pagination>
-            </el-tab-pane>
-        </el-tabs>
-        <el-dialog class="course-list" custom-class="custom-el-dialog" :title="temp.name + '列表'" :visible.sync="temp.listDialog">
-            <section v-if="temp.courseList !== null" class="course-section">
-<!--                 <div class="list-des">
-                    <h2>{{temp.courseList.title}}</h2>
-                    <p>{{temp.courseList.description}}</p>
-                </div>
-                <div class="list-item">
-                    <template v-if="temp.courseList.course.length">
-                        <h3 class="list-title">此任务共包含{{temp.courseList.total}}项课程：</h3>
-                        <ul>
-                            <li v-for="(item,index) in temp.courseList.course" :key="index">{{item.name}}</li>
-                        </ul>
-                    </template>
-                </div> -->
-                <div class="list-item">
-                    <template v-if="temp.count">
-                        <h3 class="list-title">此任务共包含{{temp.count}}项{{temp.name}}：</h3>
-                        <ul>
-                            <li v-for="(item,index) in temp.courseList" :key="index" v-if="temp.type === item.type || !item.type">{{item.name}}</li>
-                        </ul>
-                    </template>
-                </div>
+    <article class="course-task-template-index">
+        <!--添加/编辑表单-->
+        <!--点击添加 form数据取邮箱/手机号 密码-->
+        <article class="manage-container">
+            <el-button icon="plus" type="primary" @click="()=> $router.push({name:'server-manage-add'}) ">添加
+            <!--添加-->
+            </el-button>
+        </article>
+        <section class="search">
+            <!--<section>
+                <i>类别</i>
+                <CourseTaskTemplateCategorySelect :onchange="getData"
+                                                  v-model="fetchParam.category_id"></CourseTaskTemplateCategorySelect>
+            </section>-->
+            <section>
+                <i>课程名称</i>
+                <el-input @keyup.enter.native="getData" class="name" v-model="fetchParam.title"/>
             </section>
-        </el-dialog>
-
-        <!--<TimingDialog v-model="timingDialog" :submit="timingDialogSubmit"></TimingDialog>-->
+            <section>
+                <i>状态</i>
+                <el-select v-model="fetchParam.status" placeholder="未选择" @change="getData" :clearable="true">
+                    <!--<el-option label="全部" value="-1"></el-option>-->
+                    <el-option label="正常" value="1"></el-option>
+                    <el-option label="草稿  " value="2"></el-option>
+                    <el-option label="已下线" value="3"></el-option>
+                </el-select>
+            </section>
+            <DateRange title="创建时间" :start="fetchParam.stime" :end="fetchParam.etime" @changeStart="val=> fetchParam.stime=val "
+                @changeEnd="val=> fetchParam.etime=val" :change="getData">
+            </DateRange>
+        </section>
+        <el-table border :data="coursetasktemplateData" v-loading="loading">
+            <el-table-column
+                    prop="title"
+                    label="课程任务">
+            </el-table-column>
+            <el-table-column
+                    prop="addate"
+                    label="创建时间"
+                    width="200">
+            </el-table-column>
+            <el-table-column
+                    prop="status"
+                    label="状态"
+                    width="100">
+                <template scope="scope">
+                    <el-tag type="success" v-if="scope.row.status == 1">正常</el-tag>
+                    <el-tag type="gray" v-if="scope.row.status == 2">草稿</el-tag>
+                    <el-tag type="gray" v-if="scope.row.status == 3">已下线</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column prop="operate" label="操作" width="160">
+                <template scope="scope">
+                    <el-button type="text" size="small" @click="editItm(scope.row)">
+                        修改
+                        <!--点击详情 form数据变成当前管理员的信息-->
+                    </el-button>
+                    <!--<el-button v-if="scope.row.status == 2 || scope.row.status == 1 " type="text" size="small"
+                               @click="publishCourseTaskTemplate(scope.row)">
+                        上线
+                    </el-button>-->
+                    <el-button v-if="scope.row.status == 0 " type="text" size="small"
+                               @click="revokeCourseTaskTemplate(scope.row)">
+                        <i>下线</i>
+                    </el-button>
+                    <el-button type="text" size="small" @click="handleDelete(scope.$index, scope.row)">
+                        <i>删除</i>
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <section class="block">
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="[15, 30, 60, 100]"
+                    layout="total, sizes, ->, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+        </section>
     </article>
 </template>
-
 <script>
-    import courseTaskTemplate from '../../component/select/CourseTaskTemplateCategory'
-    // import TimingDialog from '../../component/dialog/Timing.vue'
-    import coursetaskService from '../../../services/server/courseTaskService.js'
-    import * as _ from '../../../utils/commonUtils'
+    import DateRange from '../../component/form/DateRangePicker.vue'
+    import courseTaskService from '../../../services/server/courseTaskService.js'
+    // import CourseTaskTemplateCategorySelect from '../../component/select/CourseTaskTemplateCategory.vue'
+    import {fillImgPath} from '../../../utils/filterUtils'
+    
+
     export default {
+        filters: {
+            fillImgPath
+        },
         components: {
-            courseTaskTemplate,
-            
+            DateRange,
+            // CourseTaskTemplateCategorySelect,
         },
         data () {
             return {
-                type: {company: '企业任务', department: '门店任务', user: '指定人员', user_group: '指定用户组'},
-                activeTab: 'list',
-                task: {
-                    loading: false,
-                    dataList: [],
-                    total: 0,
-                    fetchParam: {
-                        status: '',
-                        type: '',
-                        keyword: '',
-                        page: 1,
-                        pagesize: 15
-                    }
+                currCategoryName: '',
+                loading: false,
+                fetchParam: {
+                    title: '',
+                    category_id: '',
+                    stime: '',
+                    etime: '',
+                    type :void 0,
+                    status :void 0,
+                    deleted :-1,
+
                 },
-                temp: {
-                    type: '',
-                    count: 0,
-                    name: '',
-                    listDialog: false, // 课程列表弹窗
-                    total: 0,
-                    loading: false,
-                    dataList: [],
-                    fetchParam: {
-                        category_id: '',
-                        keyword: '',
-                        page: 1,
-                        pagesize: 6
-                    },
-                    courseList: null
-                },
-                // timingDialog: false,
-                timingDialogSubmit: void 0
+                itemName: '',           // 要删除项名称
+                coursetasktemplateData: [],
+                total: 0,
+                currentPage: 1, // 分页当前显示的页数
+                pagesize: 15
             }
         },
         activated () {
-            this.getTaskData().then(() => {
+            this.getData().then(() => {
                 xmview.setContentLoading(false)
             })
         },
         methods: {
-            handleClick (e) {
-                e.name === 'temp' && this.getTempData()
-                e.name === 'list' && this.getTaskData()
+            handleDelete (index, row) {
+                xmview.showDialog(`你将要删除课程任务【<i style="color:red">${row.title || ''}</i>】操作不可恢复确认吗？`, this.deleteItem(row.id))
             },
-            getTaskData () {
-                this.task.loading = true
-                let fetchParam = _.clone(this.task.fetchParam)
-                fetchParam.status = fetchParam.status === '' ? -1 : fetchParam.status
-                return coursetaskService.getCourseTaskList(fetchParam).then((ret) => {
-                    this.task.dataList = ret.data
-                    this.task.total = ret.total
-                    this.task.loading = false
-                })
-            },
-            getTempData () {
-                this.temp.loading = true
-                return coursetaskService.getCourseTaskTemplateSearch(this.temp.fetchParam).then((ret) => {
-                    this.temp.dataList = ret.data
-                    this.temp.total = ret.total
-                    this.temp.loading = false
-                })
-            },
-            // 获取课程列表
-            courseListFn (row) {
-                this.temp.listDialog = true
-                this.temp.count = row.course_count
-                this.temp.name = '课程'
-                this.temp.type = 'course'
-                coursetaskService.courseTaskDetail({id: row.id}).then((ret) => {
-                    this.temp.courseList = ret.object
-                })
-            },
-            // 获取考试列表
-            examListFn (row) {
-                this.temp.listDialog = true
-                this.temp.count = row.exam_count
-                this.temp.name = '考试'
-                this.temp.type = 'exam'
-                coursetaskService.courseTaskDetail({id: row.id}).then((ret) => {
-                    this.temp.courseList = ret.object
-                })
-            },
-            templateViewFn (row) {
-                this.temp.listDialog = true
-                coursetaskService.getCourseTaskTemplate({id: row.id}).then((ret) => {
-                    this.temp.count = ret.total
-                    this.temp.name = '课程'
-                    this.temp.courseList = ret.course
-                })
-            },
-            // 处理状态
-            dealStatus (row) {
-                // 如果status 0 则执行下线 否则执行上线
-                let req
-                let msg = ''
-                if (row.status != 1) {
-                    req = coursetaskService.revokeCourseTask
-                    msg = '下线'
-                } else {
-                    req = coursetaskService.publishCourseTask
-                    msg = '上线'
-                }
-                xmview.showDialog(`确定要执行${msg}吗`, () => {
-                    req({id: row.id}).then(() => {
-                        xmview.showTip('success', '操作成功')
-                        this.getTaskData()
-                    })
-                })
-            },
-            timingDialogFn (row) {
-                // this.timingDialog = true
-                this.timingDialogSubmit = (start_time) => {
-                    return coursetaskService.timingPublish({id: row.id, start_time: start_time}).then(() => {
-                        row.status = 2
-                        row.start_time = start_time
-                        xmview.showTip('success', '操作成功')
+            deleteItem (id) {
+                // 以下执行接口删除动作
+                return () => {
+                    courseTaskService.deleteCourseTask(id).then((ret) => {
+                        xmview.showTip('success', '删除成功')
+                        this.getData()
+                    }).catch((ret) => {
+                        xmview.showTip('error', ret.message)
                     })
                 }
             },
-            deleteTask (row) {
-                xmview.showDialog(`确定要删除<span style="color:red;">${row.title}</span>`, () => {
-                    coursetaskService.deleteCourseTask({id: row.id}).then(() => {
-                        xmview.showTip('success', '操作成功')
-                        this.getTaskData()
+            editItm (row) {
+                row.course = row.course || []
+                this.$router.push({name: 'server-manage-add', query: {item: row}})
+            },
+            publishCourseTaskTemplate (row) {
+                xmview.showDialog(`你将要上线课程任务【<i style="color:red">${row.title || ''}</i>】吗？`, this.publishItem(row.id))
+            },
+            publishItem (id) {
+                // 以下执行接口删除动作
+                return () => {
+                    courseTaskService.publishCourseTaskTemplate(id).then((ret) => {
+                        xmview.showTip('success', '上线成功')
+                        this.getData()
+                    }).catch((ret) => {
+                        xmview.showTip('error', ret.message)
                     })
+                }
+            },
+            revokeCourseTaskTemplate (row) {
+                xmview.showDialog(`你将要下线课程任务【<i style="color:red">${row.title || ''}</i>】吗？`, this.revokeItem(row.id))
+            },
+            revokeItem (id) {
+                // 以下执行接口删除动作
+                return () => {
+                    courseTaskService.revokeCourseTaskTemplate(id).then((ret) => {
+                        xmview.showTip('success', '下线成功')
+                        this.getData()
+                    }).catch((ret) => {
+                        xmview.showTip('error', ret.message)
+                    })
+                }
+            },
+            handleSizeChange (val) {
+                this.pagesize = val
+                this.getData()
+            },
+            handleCurrentChange (val) {
+                this.currentPage = val
+                this.getData()
+            },
+            getData () {
+                this.loading = true
+                return courseTaskService.getCourseTaskList({
+                    // category_id: this.fetchParam.category_id,
+                    title: this.fetchParam.title,
+                    stime: this.fetchParam.stime,
+                    etime: this.fetchParam.etime,
+                    type: this.fetchParam.type,
+                    deleted: this.fetchParam.deleted,
+                    status: this.fetchParam.status,
+                    page: this.currentPage,
+                    pagesize: this.pagesize,
+
+                }).then((ret) => {
+                    this.coursetasktemplateData = ret.data
+                    this.total = ret.total
+                }).then(() => {
+                    this.loading = false
                 })
+            },
+            handleImgUploaded(response) {
+                this.form.cover = response.data.url
+            },
+            ueReady (ue) {
+                this.editor = ue
             }
         }
     }

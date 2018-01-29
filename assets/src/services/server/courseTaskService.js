@@ -5,40 +5,113 @@ const urlPre = config.apiHost + '/course/task'
 class sysService {
     // 课程任务
     getCourseTaskList ({
-                           page = '',
-                           pagesize = '',
-                           deleted= -1
+                            page ,
+                            pagesize,
+                            title,
+                            stime,
+                            etime,
+                            type,
+                            status,
+                            deleted,
                        }) {
         let finalUrl = urlPre + '/lists'
-        return api.get(finalUrl, {page, pagesize,deleted}).then((ret) => {
-            return ret.data
+        return api.get(finalUrl, {page, pagesize,title,stime,etime,type,status,deleted,}).then((ret) => {
+            return ret
         })
     }
-    submitTask (taskData) {
-        taskData.object = JSON.stringify(taskData.object)
-        let finalUrl = `${urlPre}`+'/create'
-        return api.post(finalUrl, taskData).then(ret => {
-            if (ret.code) {
-                return Promise.reject(ret)
-            }
+    // submitTask (taskData) {
+    //     // taskData.object = JSON.stringify(taskData.object)
+    //     let finalUrl = `${urlPre}`+'/create'
+    //     return api.post(finalUrl, taskData).then(ret => {
+    //         if (ret.code) {
+    //             return Promise.reject(ret)
+    //         }
+    //     })
+    // }
+    submitTask({
+        title= void 0,          // 标题
+        image= void 0,        // 图片地址
+        description= void 0,  // 简介
+        sort= void 0,         // 排序
+        course_ids= void 0,     // 课程
+        gov_ids= void 0,     // 部门
+        user_ids= void 0,     // 用户
+        score= 0,     // 可获得学分
+        type=void 0,       // 任务类型
+        stime='',
+        etime='',
+
+    }) {
+        let finalUrl =`${urlPre}`+'/create'
+        return api.post(finalUrl, {
+            title,
+            image,
+            description,
+            sort,
+            course_ids,
+            gov_ids,
+            user_ids,
+            score,
+            type,
+            stime,
+            etime,
+            
+        }, false).then((ret) => {
+            return ret
+        })
+    }
+     editTask({
+        id,
+        title= void 0,          // 标题
+        image= void 0,        // 图片地址
+        description= void 0,  // 简介
+        sort= void 0,         // 排序
+        course_ids= void 0,     // 课程
+        gov_ids= void 0,     // 部门
+        user_ids= void 0,     // 用户
+        score= 0,     // 可获得学分
+        type=void 0,       // 任务类型
+        stime='',
+        etime='',
+
+    }) {
+        let finalUrl = `${urlPre}/edit/${id}`
+        return api.post(finalUrl, {
+            title,
+            image,
+            description,
+            sort,
+            course_ids,
+            gov_ids,
+            user_ids,
+            score,
+            type,
+            stime,
+            etime,
+            
+        }, false).then((ret) => {
+            return ret
         })
     }
 
-    editTask (taskData, task_id) {
-        taskData.object = JSON.stringify(taskData.object)
-        let finalUrl = `${urlPre}/${task_id}`
-        return api.put(finalUrl, taskData).then(ret => {
-            if (ret.code) {
-                return Promise.reject(ret)
-            }
+
+    getTask (task_id) {
+        // taskData.object = JSON.stringify(taskData.object)
+        let finalUrl = `${urlPre}/get/${task_id}`
+        return api.post(finalUrl, ).then((ret) => {
+            return ret
         })
     }
-
+    // 删除课程任务模板
+    deleteCourseTask(task_id) {
+        let finalUrl = `${urlPre}/delete/${task_id}`
+        return api.post(finalUrl, {})
+    }
     
     // 编辑时获取文章内容
     getCourseTaskTemplateEditDetail (id) {
         let finalUrl = config.apiHost + '/sys/coursetask/template/' + id
-        return api.get(finalUrl, {}).then((ret) => {
+        return api.post(finalUrl, {}).then((ret) => {
             return ret.data
         })
     }
@@ -75,7 +148,7 @@ class sysService {
     // 更新课程任务模板
     updateCourseTaskTemplate ({category_id, title, description, image, course_id, sort, id, status}) {
         let finalUrl = config.apiHost + `/sys/coursetask/template/${id}`
-        return api.put(finalUrl, {
+        return api.post(finalUrl, {
             category_id,
             title,
             description,
@@ -94,19 +167,19 @@ class sysService {
     // 删除课程任务模板
     deleteCourseTaskTemplate (task_id) {
         let finalUrl = config.apiHost + `/sys/coursetask/template/${task_id}`
-        return api.del(finalUrl, {})
+        return api.post(finalUrl, {})
     }
 
     // 上线课程任务模板
     publishCourseTaskTemplate (task_id) {
         let finalUrl = config.apiHost + `/sys/coursetask/template/${task_id}/publish`
-        return api.put(finalUrl, {})
+        return api.post(finalUrl, {})
     }
 
     // 下线课程任务模板
     revokeCourseTaskTemplate (task_id) {
         let finalUrl = config.apiHost + `/sys/coursetask/template/${task_id}/revoke`
-        return api.put(finalUrl, {})
+        return api.post(finalUrl, {})
     }
 
     // 获取课程任务模板分类
@@ -129,13 +202,13 @@ class sysService {
     // 修改分类
     updateCategory ({name, image, sort, id}) {
         let finalUrl = config.apiHost + `/sys/coursetask/template/category/${id}`
-        return api.put(finalUrl, {name, image, sort})
+        return api.post(finalUrl, {name, image, sort})
     }
 
     // 删除分类
     delCategory ({id}) {
         let finalUrl = config.apiHost + `/sys/coursetask/template/category/${id}`
-        return api.del(finalUrl).then((ret) => {
+        return api.post(finalUrl).then((ret) => {
             if (ret.code) {
                 return Promise.reject(ret)
             }
@@ -151,13 +224,13 @@ class sysService {
     // 移动分类
     moveCategory ({id, to}) {
         let finalUrl = config.apiHost + `/sys/coursetask/template/category/${id}/move`
-        return api.put(finalUrl, {to})
+        return api.post(finalUrl, {to})
     }
 
     // 移动分类内容
     moveCategoryContent ({id, to}) {
         let finalUrl = config.apiHost + `/sys/coursetask/template/category/${id}/move/content`
-        return api.put(finalUrl, {to})
+        return api.post(finalUrl, {to})
     }
 
 

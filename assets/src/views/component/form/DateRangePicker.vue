@@ -12,6 +12,7 @@
                         v-model="timespan[0]"
                         align="right"
                         type="date"
+                        :default-value="defaultStart"
                         :picker-options="pickerOptionsStart"
                         placeholder="开始日期">
         </el-date-picker>
@@ -23,6 +24,7 @@
                 v-model="timespan[1]"
                 align="right"
                 type="date"
+                :default-value="defaultEnd"
                 :picker-options="pickerOptionsEnd"
                 placeholder="结束日期">
         </el-date-picker>
@@ -34,6 +36,8 @@
     let _this
     export default{
         props: {
+            defaultStart: String,
+            defaultEnd: String,
             title: String,
             start: {}, // 开始时间
             end: {}, // 结束时间
@@ -67,6 +71,7 @@
             'end'(val) {
                 if (getTimeStr(this.timespan[1]) != val) {
                     this.timespan[1] = val
+                    // console.log(val)
                     if (!val) this.$refs.end.$el.querySelector('input').value = ''
                 }
             }
@@ -79,6 +84,7 @@
                 const emitArr = ['changeStart', 'changeEnd']
                 let val = getTimeStr(this.timespan[type])
                 this.$emit(emitArr[type], getTimeStr(val))
+                console.log()
                 this.change && this.change()
             }
         }

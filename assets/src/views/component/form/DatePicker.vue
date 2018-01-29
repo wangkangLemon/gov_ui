@@ -1,5 +1,5 @@
 <!--使用示例-->
-<!--<DateRange title="晒单时间" :start="fetchParam.time_start" :end="fetchParam.time_end"-->
+<!--<DateRange title="时间" :start="fetchParam.time_start" :end="fetchParam.time_end"-->
 <!--v-on:changeStart="val=> fetchParam.time_start=val "-->
 <!--v-on:changeEnd="val=> fetchParam.time_end=val "-->
 <!--:change="fetchData">-->

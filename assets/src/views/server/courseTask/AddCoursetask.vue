@@ -112,19 +112,19 @@
                 <el-input-number v-model="form.sort" auto-complete="off"></el-input-number>
             </el-form-item>
             <el-form-item label="时间">
-                <DateRange :start="form.stime" :end="form.etime" @changeStart="val=> form.stime=val "
-                    @changeEnd="val=> form.etime=val" >
+                <DateRange :start="form.stime" :end="form.etime" @changeStart="val=> form.stime=val" 
+                    @changeEnd="val=> form.etime=val" :defaultStart="form.stime" :defaultEnd="form.etime">
                 </DateRange>
             </el-form-item>
             <el-form-item label="发布对象" prop="type">
                 <el-select clearable v-model="form.type" @change="choosePushType" placeholder="请选择指定人员或部门">
-                    <el-option label="部门任务" value="1"></el-option>
-                    <el-option label="个人任务" value="2"></el-option>
+                    <el-option label="部门任务" :value="1"></el-option>
+                    <el-option label="个人任务" :value="2"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item 
                 :label="pushTypeDialog.title" 
-                v-if="form.type && form.type===pushTypeDialog.type">
+                v-if="form.type && form.type==pushTypeDialog.type">
                 <div class="collection" @click="openPushTypeDialog">
                     <el-tag 
                         class="u-course-tag"
@@ -263,33 +263,54 @@
             },
         },
         created () {
-            console.log('(this.pushTypeDialog.selectedData')
-           console.log(this.pushTypeDialog.selectedData[this.pushTypeDialog.type])
+        //    console.log(this.pushTypeDialog.selectedData[this.pushTypeDialog.type])
 
             xmview.setContentLoading(false)
-            if (this.$route.query.item) {
-                this.form = this.$route.query.item
-                xmview.setContentTile('编辑课程任务模板')
-                this.choosePushType()
-            } else if (this.id === undefined) {
-                xmview.setContentLoading(false)
-            } else {
-                courseTaskService.courseTaskDetail({id: this.id}).then((ret) => {
-                    this.form = Object.assign(this.form, ret.data)
-                    // this.form.end_time = this.form.end_day
-                    this.selectCourseAndExam = ret.object
-                    ret.object.forEach(o => {
-                        if (o.type === 'course') {
-                            this.course.selectCourse.push(o)
-                        } else if (o.type === 'exam') {
-                            this.exam.selectExam.push(o)
-                        }
-                    })
+            // if (this.$route.query.item) {
+            //     this.form = this.$route.query.item
+            //     xmview.setContentTile('编辑课程任务模板')
+            //     this.choosePushType()
+            // } else if (this.id === undefined) {
+            //     xmview.setContentLoading(false)
+            // } else {
+                // console.log(this.$route.query.item.id)
+                courseTaskService.getTask(this.$route.query.item.id).then((ret) => {
+                    this.form = Object.assign(this.form, ret.data) 
+                    // this.form.course_ids=ret.data.courses
+                    this.form.stime =  ret.data.start_date.split(' ')[0]
+                    this.form.etime =  ret.data.end_date.split(' ')[0]
+                    this.form.type = ret.data.type
+                    this.pushTypeDialog.type = ret.data.type
+                    ret.data.courses.forEach(v=>{
+                        this.form.course.push(v)
+                    }) 
+                    // if(ret.data.govs.length!==0){
+                    //     ret.data.govs.forEach(v=>{
+                    //         this.form.govs.push(v)
+                    //     })
+                    // }else if(ret.data.users.length!==0){
+                    //     ret.data.users.forEach(v=>{
+                    //         this.form.course.push(v)
+                    //     })
+                    // }
+                    
+                    // ret.object.forEach(o => {
+                    //     if (o.type === 'course') {
+                    //         this.course.selectCourse.push(o)
+                    //     } else if (o.type === 'exam') {
+                    //         this.exam.selectExam.push(o)
+                    //     }
+                    // })
                     this.choosePushType()
-                    this.pushTypeDialog.selectedData[this.pushTypeDialog.type] = this.generatorList(ret.push_type_list || [])
+                    if(ret.data.govs.length!==0){
+                        this.pushTypeDialog.selectedData[this.pushTypeDialog.type] = this.generatorList(ret.data.govs || [])
+                    }
+                    else if(ret.data.users.length!==0){
+                        this.pushTypeDialog.selectedData[this.pushTypeDialog.type] = this.generatorList(ret.data.users || [])
+                    }
                     xmview.setContentLoading(false)
                 })
-            }
+            // }
 
             this.pushTypeDialog.selectedData[this.pushTypeDialog.type] = []
         },
@@ -365,8 +386,8 @@
             generatorList (arr) {
                 return arr.map(item => {
                     return {
-                        id: item['department_id'] || item['user_id'] || item['group_id'],
-                        name: item['department_name'] || item['user_name'] || item['group_name']
+                        id: item['gov_id'] || item['user_id'] || item['group_id'],
+                        name: item['gov_name'] || item['user_name'] || item['group_name']
                     }
                 })
             },
