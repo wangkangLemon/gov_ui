@@ -11,7 +11,7 @@
             width: 60%;
             img {
                 width: 35%;
-                // height: 50% 
+                // height: 50%
             }
         }
         /*.search {
@@ -24,7 +24,7 @@
             padding: 3px 30px 3px 10px;
             border: 1px solid #bfcbd9;
         }
-       
+
         .u-course-tag {
             margin-right: 10px;
             background-color: rgba(32,160,255,.1);
@@ -81,10 +81,10 @@
 <template>
     <article class="create-course-task">
         <el-form :model="form" :rules="rules" label-position="right" ref="form" label-width="120px" style="width: 60%">
-            
+
             <el-form-item prop="title" label="标题">
                 <el-input v-model="form.title" auto-complete="off"></el-input>
-                
+
             </el-form-item>
 
             <el-form-item prop="description" label="描述">
@@ -112,7 +112,7 @@
                 <el-input-number v-model="form.sort" auto-complete="off"></el-input-number>
             </el-form-item>
             <el-form-item label="时间">
-                <DateRange :start="form.stime" :end="form.etime" @changeStart="val=> form.stime=val" 
+                <DateRange :start="form.stime" :end="form.etime" @changeStart="val=> form.stime=val"
                     @changeEnd="val=> form.etime=val" :defaultStart="form.stime" :defaultEnd="form.etime">
                 </DateRange>
             </el-form-item>
@@ -122,13 +122,13 @@
                     <el-option label="个人任务" :value="2"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item 
-                :label="pushTypeDialog.title" 
+            <el-form-item
+                :label="pushTypeDialog.title"
                 v-if="form.type && form.type==pushTypeDialog.type">
                 <div class="collection" @click="openPushTypeDialog">
-                    <el-tag 
+                    <el-tag
                         class="u-course-tag"
-                        v-for="item in pushTypeDialog.selectedData[this.pushTypeDialog.type]" 
+                        v-for="item in pushTypeDialog.selectedData[this.pushTypeDialog.type]"
                         :key="item.id">
                         {{item.name}}
                     </el-tag>
@@ -153,9 +153,9 @@
             </div>
         </dialogSelectData>
         <!-- 发布对象弹窗 -->
-        <el-dialog 
-            :title="pushTypeDialog.title" 
-            :visible.sync="pushTypeDialog.showDialog" 
+        <el-dialog
+            :title="pushTypeDialog.title"
+            :visible.sync="pushTypeDialog.showDialog"
             v-if="pushTypeDialog.showDialog">
             <template v-if="pushTypeDialog.isSearch">
                 <section class="search">
@@ -167,7 +167,7 @@
             </template>
             <Transfer placeholder="搜索"
                       @searchFn="(val)=>{pushTypeDialog.page=1;pushTypeDialog.fetchParam.name=val;fetchPushTypeData();}"
-                      @moreFn="()=>{pushTypeDialog.page++;fetchPushTypeData('no-clear');}" 
+                      @moreFn="()=>{pushTypeDialog.page++;fetchPushTypeData('no-clear');}"
                       :total="pushTypeDialog.total"
                       :data="pushTypeDialog.data"
                       :selectedValue='selectData'
@@ -286,9 +286,13 @@
                     // console.log(ret.data.courses)
                     ret.data.courses.forEach(v=>{
                         this.form.course.push(v)
+<<<<<<< HEAD
                         // this.form.course_ids.push(v.course_id)
                     }) 
                     // console.log(this.form.course_ids) //编辑页拿到的数据
+=======
+                    })
+>>>>>>> f258aab4d79ca6c7932c83eba82053fc591dd186
                     // if(ret.data.govs.length!==0){
                     //     ret.data.govs.forEach(v=>{
                     //         this.form.govs.push(v)
@@ -298,7 +302,7 @@
                     //         this.form.course.push(v)
                     //     })
                     // }
-                    
+
                     // ret.object.forEach(o => {
                     //     if (o.type === 'course') {
                     //         this.course.selectCourse.push(o)
@@ -354,7 +358,7 @@
                     this.pushTypeDialog.type = param.type
                     // console.log(this.pushTypeDialog.type)
                 }
-                
+
             },
             getPushTypeData () {
                 this.pushTypeDialog.page = 1
@@ -364,7 +368,7 @@
                 type !== 'no-clear' && (this.pushTypeDialog.data = [])
                 let map = {
                     1: govService.getSelectList,  //部门
-                    2: userService.fetchData,  //人员 
+                    2: userService.fetchData,  //人员
                     // user_group: userService.userGroupSearch
                 }
                 let param = {
@@ -372,7 +376,7 @@
                     page: this.pushTypeDialog.page,
                     pagesize: this.pushTypeDialog.pagesize
                 }
-                
+
                 if (this.pushTypeDialog.isSearch) {
                     param.gov_ids = this.pushTypeDialog.fetchParam.gov_ids
                     param.role_id = -1
@@ -427,7 +431,7 @@
                     })
                     this.form.course_ids = this.form.course_ids.join(',')
 
-                    
+
                     if(this.form.type==1){
                         // 处理govids
                         this.form.gov_ids = this.pushTypeDialog.type && this.pushTypeDialog.selectedData[this.pushTypeDialog.type].map(item => {
@@ -439,8 +443,8 @@
                         return item.id
                         }).join(',')
                     }
-                    
-                    
+
+
                     // this.fetchParam.end_time = this.timeFormatter(this.fetchParam.end_time, true)
 
                     if (s > 0) { //存草稿箱
