@@ -98,7 +98,7 @@ class sysService {
     getTask (task_id) {
         // taskData.object = JSON.stringify(taskData.object)
         let finalUrl = `${urlPre}/get/${task_id}`
-        return api.post(finalUrl, ).then((ret) => {
+        return api.get(finalUrl, ).then((ret) => {
             return ret
         })
     }

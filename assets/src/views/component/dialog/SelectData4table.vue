@@ -119,11 +119,8 @@
                 this.loading = true
                 if (isFirst) this.fetchParam.page = 1
                 this.getData(this.fetchParam).then((ret) => {
-                    console.log(ret)
-
                     // this.total = ret._exts.total
                     this.total = 2000
-
                     // 是否首次加载
                     if (this.fetchParam.page === 1) {
                         this.fetchParam.page = 1
@@ -132,7 +129,6 @@
                     }
                     this.data.splice(-1, 1)
                     this.data.push(...[...ret.data, {id: -1}])
-                    console.log(this.data)
                     // 设置选中
                     this.setSelected()
 
@@ -144,12 +140,14 @@
             },
             rowSelected (selection, row) {
                 // 排除已选课程
+                console.log(selection, row)  
                 if (selection.indexOf(row) > -1)
                     this.currSelectedList.push(row)
                 else
                     this.currSelectedList.splice(this.currSelectedList.indexOf(row), 1)
 
                 this.$emit('changeSelected', this.currSelectedList)
+                console.log(this.currSelectedList)
             },
             delItem (row) {
                 this.currSelectedList.splice(this.currSelectedList.findIndex(item => {

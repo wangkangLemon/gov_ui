@@ -36,7 +36,6 @@ export default {
                 title: '添加课程任务',
             }
         },
-
         {
             path: 'manage/add-course', // 添加和编辑课程
             name: 'server-manage-addCourse',

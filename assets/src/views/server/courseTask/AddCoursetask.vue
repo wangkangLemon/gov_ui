@@ -211,7 +211,7 @@
                     image: void 0,        // 图片地址
                     description: void 0,  // 简介
                     sort: void 0,         // 排序
-                    course_ids: void 0,     // 课程
+                    course_ids: [],     // 课程
                     gov_ids: void 0,     // 部门
                     user_ids: void 0,     // 用户
                     // status: void 0,       // 状态
@@ -220,7 +220,6 @@
                     type:void 0,       // 任务类型
                     stime:'',
                     etime:'',
-
                 },
                 rules: {
                     title: [
@@ -256,17 +255,19 @@
         watch:{
             'form.type'(){
                 if(this.form.type==1){//政府
-                    this.form.user_ids= null
+                    this.form.user_ids= ''
                 }else{ //政府
-                    this.form.gov_ids= null
+                    this.form.gov_ids= ''
                 }
             },
+            'form.course'(){
+                console.log(this.form.course)  //监听数据也是对的
+            }
         },
         created () {
-        //    console.log(this.pushTypeDialog.selectedData[this.pushTypeDialog.type])
 
             xmview.setContentLoading(false)
-            // if (this.$route.query.item) {
+            if (this.$route.query.item) {
             //     this.form = this.$route.query.item
             //     xmview.setContentTile('编辑课程任务模板')
             //     this.choosePushType()
@@ -274,16 +275,20 @@
             //     xmview.setContentLoading(false)
             // } else {
                 // console.log(this.$route.query.item.id)
+                
                 courseTaskService.getTask(this.$route.query.item.id).then((ret) => {
-                    this.form = Object.assign(this.form, ret.data) 
+                    this.form = Object.assign(this.form, ret.data)
                     // this.form.course_ids=ret.data.courses
                     this.form.stime =  ret.data.start_date.split(' ')[0]
                     this.form.etime =  ret.data.end_date.split(' ')[0]
                     this.form.type = ret.data.type
                     this.pushTypeDialog.type = ret.data.type
+                    // console.log(ret.data.courses)
                     ret.data.courses.forEach(v=>{
                         this.form.course.push(v)
+                        // this.form.course_ids.push(v.course_id)
                     }) 
+                    // console.log(this.form.course_ids) //编辑页拿到的数据
                     // if(ret.data.govs.length!==0){
                     //     ret.data.govs.forEach(v=>{
                     //         this.form.govs.push(v)
@@ -308,9 +313,10 @@
                     else if(ret.data.users.length!==0){
                         this.pushTypeDialog.selectedData[this.pushTypeDialog.type] = this.generatorList(ret.data.users || [])
                     }
+                    xmview.setContentTile('编辑课程任务 ')
                     xmview.setContentLoading(false)
                 })
-            // }
+            }
 
             this.pushTypeDialog.selectedData[this.pushTypeDialog.type] = []
         },
@@ -410,12 +416,14 @@
                         return false
                     }
                     // 处理课程id
-                    this.form.course_ids = []
+                    // this.form.course_ids = []
                     // this.form.course.forEach((c) => {
                     //     this.form.course_ids.push(c.id)
                     // })
+                    // console.log(this.form.course)  //这里数据都没错
                       this.form.course.forEach((c) => {
-                        this.form.course_ids.push(c.contentid)
+                        this.form.course_ids.push(c.contentid||c.course_id) //开始出错
+                        // console.log(this.form.course_ids)
                     })
                     this.form.course_ids = this.form.course_ids.join(',')
 

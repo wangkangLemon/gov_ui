@@ -215,7 +215,7 @@
             },
             editItm (row) {
                 row.course = row.course || []
-                this.$router.push({name: 'server-manage-add', query: {item: row}})
+                this.$router.push({name: 'server-manage-add' ,query: {item: row}})
             },
             publishCourseTaskTemplate (row) {
                 xmview.showDialog(`你将要上线课程任务【<i style="color:red">${row.title || ''}</i>】吗？`, this.publishItem(row.id))
