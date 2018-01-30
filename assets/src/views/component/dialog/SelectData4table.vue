@@ -79,7 +79,11 @@
             // 获取数据的方法 返回一个Promise,  数据格式: { total: 9, data:[{ name:'xxx', id:1 }] }
             getData: Function,
             // 被选中的列表集合
-            selectedList: Array
+            selectedList: Array,
+            itemKey: {
+                type:String,
+                default: 'id'
+            }
         },
         data () {
             return {
@@ -104,6 +108,7 @@
                 if (val && this.data.length < 1) this.fetchCourse()
 
                 val && this.setSelected()
+            
             },
             selectedList (val) {
                 if (val !== this.currSelectedList && val.length !== this.currSelectedList.length)
@@ -129,6 +134,7 @@
                     }
                     this.data.splice(-1, 1)
                     this.data.push(...[...ret.data, {id: -1}])
+                    console.log('dataGot: ', this.data)
                     // 设置选中
                     this.setSelected()
 
@@ -140,14 +146,14 @@
             },
             rowSelected (selection, row) {
                 // 排除已选课程
-                console.log(selection, row)  
+                // console.log(selection, row)  
                 if (selection.indexOf(row) > -1)
                     this.currSelectedList.push(row)
                 else
                     this.currSelectedList.splice(this.currSelectedList.indexOf(row), 1)
 
                 this.$emit('changeSelected', this.currSelectedList)
-                console.log(this.currSelectedList)
+                // console.log(this.currSelectedList)
             },
             delItem (row) {
                 this.currSelectedList.splice(this.currSelectedList.findIndex(item => {
@@ -159,13 +165,18 @@
             },
             // 设置选中
             setSelected () {
+                // console.log('setSelected')
                 this.$nextTick(() => {
+                    if (!this.$refs.courseTable) return
                     this.$refs.courseTable.clearSelection()
                     this.currSelectedList.forEach((row) => {
+                        console.log(this.data)//左边数据
                         let currRow = this.data.find((item) => {
-                            return item.id == row.id
+                            return item[this.itemKey] == row[this.itemKey]
                         })
+                        console.log(currRow)//左边选中数据
                         this.$refs.courseTable.toggleRowSelection(currRow, true)
+                        console.log('setSelected finished')
                     })
                 })
             }

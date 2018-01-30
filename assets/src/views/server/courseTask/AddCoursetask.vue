@@ -145,7 +145,7 @@
 
         <!-- 选择课程弹窗 -->
         <dialogSelectData ref="dialogSelect" v-model="dialogCourse.isShow" :getData="fetchCourse" title="选择课程"
-                          :selectedList="form.course" @changeSelected="val=>form.course=val">
+                          :selectedList="form.course" @changeSelected="val=>form.course=val"  item-key="contentid">
             <div slot="search" class="course-search">
                 <el-input @keyup.enter.native="$refs.dialogSelect.fetchCourse(true)" v-model="dialogCourse.course_name"
                           icon="search"
@@ -261,22 +261,23 @@
                 }
             },
             'form.course'(){
-                console.log(this.form.course)  //监听数据也是对的
+                // console.log(this.form.course) 
             }
         },
         created () {
 
             xmview.setContentLoading(false)
-            if (this.$route.query.item) {
-            //     this.form = this.$route.query.item
+            console.log(this.$route.params.coursetaskInfo)
+            if (this.$route.params.coursetaskInfo) {
+            //     this.form = this.$route.query.courseinfo
             //     xmview.setContentTile('编辑课程任务模板')
             //     this.choosePushType()
             // } else if (this.id === undefined) {
             //     xmview.setContentLoading(false)
             // } else {
-                // console.log(this.$route.query.item.id)
+                // console.log(this.$route.query.id)
                 
-                courseTaskService.getTask(this.$route.query.item.id).then((ret) => {
+                courseTaskService.getTask(this.$route.query.id).then((ret) => {
                     this.form = Object.assign(this.form, ret.data)
                     // this.form.course_ids=ret.data.courses
                     this.form.stime =  ret.data.start_date.split(' ')[0]
@@ -284,15 +285,14 @@
                     this.form.type = ret.data.type
                     this.pushTypeDialog.type = ret.data.type
                     // console.log(ret.data.courses)
-                    ret.data.courses.forEach(v=>{
-                        this.form.course.push(v)
-<<<<<<< HEAD
+                    this.form.course = ret.data.courses.map(v=>{
+                        v.contentid = v.course_id
+                        return v
                         // this.form.course_ids.push(v.course_id)
                     }) 
+                    console.log('selectedData : ', this.form.course)
+                    this.$refs.dialogSelect.setSelected()
                     // console.log(this.form.course_ids) //编辑页拿到的数据
-=======
-                    })
->>>>>>> f258aab4d79ca6c7932c83eba82053fc591dd186
                     // if(ret.data.govs.length!==0){
                     //     ret.data.govs.forEach(v=>{
                     //         this.form.govs.push(v)
