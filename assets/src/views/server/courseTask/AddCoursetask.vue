@@ -161,7 +161,7 @@
                 <section class="search">
                     <section>
                         <i>部门</i>
-                        <DepSelect v-model="pushTypeDialog.fetchParam.gov_ids" :change="getPushTypeData"></DepSelect>
+                        <DepSelect v-model="pushTypeDialog.fetchParam.gov_id" :change="getPushTypeData"></DepSelect>
                     </section>
                 </section>
             </template>
@@ -234,6 +234,7 @@
                 },
                 pushTypeDialog: { //发布对象数据模型
                     fetchParam: {
+                        gov_id: '',
                         gov_ids: '',
                         name: ''
                     },
@@ -332,6 +333,7 @@
             openPushTypeDialog () {
                 this.pushTypeDialog.showDialog = true
                 this.pushTypeDialog.page = 1
+                this.pushTypeDialog.fetchParam.gov_id = ''
                 this.pushTypeDialog.fetchParam.gov_ids = ''
                 this.pushTypeDialog.fetchParam.name = ''
                 this.fetchPushTypeData()
@@ -378,9 +380,10 @@
                 }
 
                 if (this.pushTypeDialog.isSearch) {
-                    param.gov_ids = this.pushTypeDialog.fetchParam.gov_ids
+                    param.gov_id = this.pushTypeDialog.fetchParam.gov_id
                     param.role_id = -1
                 }
+                console.log(param)
                 map[this.pushTypeDialog.type](param).then(ret => {
                     // this.pushTypeDialog.total = ret._exts.total
                     this.pushTypeDialog.total = 690
