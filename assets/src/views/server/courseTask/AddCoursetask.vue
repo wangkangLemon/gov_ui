@@ -273,44 +273,26 @@
             //     this.form = this.$route.query.courseinfo
             //     xmview.setContentTile('编辑课程任务模板')
             //     this.choosePushType()
-            // } else if (this.id === undefined) {
-            //     xmview.setContentLoading(false)
-            // } else {
-                // console.log(this.$route.query.id)
-                
-                courseTaskService.getTask(this.$route.query.id).then((ret) => {
+                let req = courseTaskService.getTask
+                if (this.$route.params.type=="template") {req = courseTaskService.getCourseTaskTemplateEditDetail}
+                req(this.$route.query.id).then((ret) => {
                     this.form = Object.assign(this.form, ret.data)
                     // this.form.course_ids=ret.data.courses
-                    this.form.stime =  ret.data.start_date.split(' ')[0]
-                    this.form.etime =  ret.data.end_date.split(' ')[0]
-                    this.form.type = ret.data.type
-                    this.pushTypeDialog.type = ret.data.type
+                    if(this.$route.params.type=="task"){
+                         console.log(ret.data)
+                        this.form.stime =  ret.data.start_date.split(' ')[0]
+                        this.form.etime =  ret.data.end_date.split(' ')[0]
+                        this.form.type = ret.data.type
+                        this.pushTypeDialog.type = ret.data.type
+                    }
                     // console.log(ret.data.courses)
                     this.form.course = ret.data.courses.map(v=>{
                         v.contentid = v.course_id
                         return v
-                        // this.form.course_ids.push(v.course_id)
                     }) 
                     console.log('selectedData : ', this.form.course)
                     this.$refs.dialogSelect.setSelected()
-                    // console.log(this.form.course_ids) //编辑页拿到的数据
-                    // if(ret.data.govs.length!==0){
-                    //     ret.data.govs.forEach(v=>{
-                    //         this.form.govs.push(v)
-                    //     })
-                    // }else if(ret.data.users.length!==0){
-                    //     ret.data.users.forEach(v=>{
-                    //         this.form.course.push(v)
-                    //     })
-                    // }
-
-                    // ret.object.forEach(o => {
-                    //     if (o.type === 'course') {
-                    //         this.course.selectCourse.push(o)
-                    //     } else if (o.type === 'exam') {
-                    //         this.exam.selectExam.push(o)
-                    //     }
-                    // })
+           
                     this.choosePushType()
                     if(ret.data.govs.length!==0){
                         this.pushTypeDialog.selectedData[this.pushTypeDialog.type] = this.generatorList(ret.data.govs || [])
@@ -455,7 +437,11 @@
                     }
                     let reqFn = courseTaskService.submitTask
                     if (this.form.id) {
-                        reqFn = courseTaskService.editTask
+                        if(this.$route.params.type=="template"){
+                            reqFn = courseTaskService.submitTask
+                        }else{
+                            reqFn = courseTaskService.editTask
+                        }
                     }
                     reqFn(this.form).then((ret) => {
                         xmview.showTip('success', '保存成功')

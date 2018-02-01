@@ -399,15 +399,24 @@
                                             "level": 1,
                                             "items": []
                                     },
-                                    // {
-                                    //         "id": 25,
-                                    //         "menu_name": "课程任务",
-                                    //         "menu_node": "/server/coursetak/stat",
-                                    //         "remark": "",
-                                    //         "pid": 2,
-                                    //         "level": 1,
-                                    //         "items": []
-                                    // }
+                                    {
+                                            "id": 26,
+                                            "menu_name": "模板推荐",
+                                            "menu_node": "/server/coursetak/template",
+                                            "remark": "",
+                                            "pid": 2,
+                                            "level": 1,
+                                            "items": []
+                                    },
+                                    {
+                                            "id": 27,
+                                            "menu_name": "任务统计",
+                                            "menu_node": "/server/coursetak/stat",
+                                            "remark": "",
+                                            "pid": 2,
+                                            "level": 1,
+                                            "items": []
+                                    }
                                     ]
                                 },
                                

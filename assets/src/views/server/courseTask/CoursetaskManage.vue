@@ -82,6 +82,7 @@
             <!--添加-->
             </el-button>
         </article>
+        <!--<el-tab-pane label="任务列表" name="list">-->
         <section class="search">
             <!--<section>
                 <i>类别</i>
@@ -155,6 +156,47 @@
                     :total="total">
             </el-pagination>
         </section>
+         <!--</el-tab-pane>-->
+           <!--<el-tab-pane label="模版推荐" name="temp">-->
+                <!--<section class="search">
+                    <section>
+                        <i>类别</i>
+                        <courseTaskTemplate 
+                            :onchange="getTempData"
+                            v-model="temp.fetchParam.category_id">
+                        </courseTaskTemplate>
+                    </section>
+                    <section>
+                        <i>标题搜索</i>
+                        <el-input v-model="temp.fetchParam.keyword" @keyup.enter.native="getTempData"></el-input>
+                    </section>
+                </section>
+                <article class="temp-container" v-loading="temp.loading">
+                    <section class="temp-item" v-for="(item,index) in temp.dataList">
+                        <div class="content">
+                            <h2>{{item.title}}</h2>
+                            <img :src="item.image | fillImgPath" :alt="item.image">
+                            <div class="des">{{item.description}}</div>
+                        </div>
+                        <div class="bottom">
+                            <div><el-button type="text" @click="templateViewFn(item)">课程列表</el-button></div>
+                            <div><el-button type="text" @click="()=>{$router.push({name: 'server-manage-create', query: {item: item}})}">使用</el-button></div>
+                        </div>
+                        <br/>
+                    </section>
+                </article>
+                <el-pagination 
+                    class="block"
+                    @size-change="val=> {temp.fetchParam.page_size=val; getTempData()}"
+                    @current-change="val=> {temp.fetchParam.page=val; getTempData()}"
+                    :current-page="temp.fetchParam.page"
+                    :page-size="temp.fetchParam.page_size"
+                    :page-sizes="[6, 15, 30, 60, 100]"
+                    layout="sizes,total, prev, pager, next" 
+                    :total="temp.total">
+                </el-pagination>-->
+            <!--</el-tab-pane>-->
+
     </article>
 </template>
 <script>
@@ -215,7 +257,7 @@
             },
             editItm (row) {
                 row.course = row.course || []
-                this.$router.push({name: 'server-manage-add' ,params: {coursetaskInfo:row}, query: {id: row.id}})
+                this.$router.push({name: 'server-manage-edit' ,params: {coursetaskInfo:row, type:'task'}, query: {id: row.id}})
             },
             publishCourseTaskTemplate (row) {
                 xmview.showDialog(`你将要上线课程任务【<i style="color:red">${row.title || ''}</i>】吗？`, this.publishItem(row.id))
@@ -268,7 +310,7 @@
 
                 }).then((ret) => {
                     this.coursetasktemplateData = ret.data
-                    this.total = ret.total
+                    this.total = ret._exts.total
                 }).then(() => {
                     this.loading = false
                 })

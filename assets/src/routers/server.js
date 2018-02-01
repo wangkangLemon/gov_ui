@@ -19,11 +19,36 @@ export default {
                 })
             },
             meta: {
-                title: '课程任务',
+                title: '任务管理',
                 noback: true
             }
         },
          // 添加修改课程任务
+        {
+            path: 'coursetask/template/add',
+            name: 'server-manage-add',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/server/courseTask/AddCoursetask.vue'))
+                })
+            },
+            meta: {
+                title: '添加课程任务',
+            }
+        },
+        {
+            // path: 'coursetask/template/edit/:id',
+            path: 'coursetask/template/edit',
+            name: 'server-manage-edit',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/server/courseTask/AddCoursetask.vue'))
+                })
+            },
+            meta: {
+                title: '编辑课程任务',
+            }
+        },
         {
             path: 'coursetask/template/add',
             name: 'server-manage-add',
@@ -48,7 +73,44 @@ export default {
                 title: '添加课程-培训',
             }
         },
-       
+       {
+            path: 'coursetak/template',
+            name: 'server-coursetask-template',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/server/courseTask/CoursetaskTemplate.vue'))
+                })
+            },
+            meta: {
+                title: '模板推荐',
+                noback: true
+            }
+        },
+        {
+            path: 'coursetak/stat',
+            name: 'server-coursetask-stat',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/server/courseTask/Stat.vue'))
+                })
+            },
+            meta: {
+                title: '任务统计',
+                noback: true
+            }
+        },
+        {
+            path: 'coursetak/stat/:id/user',
+            name: 'server-coursetask-user',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/server/coursetask/User.vue'))
+                })
+            },
+            meta: {
+                title: '详细统计-任务标题',
+            }
+        },
        
     ]
 }
