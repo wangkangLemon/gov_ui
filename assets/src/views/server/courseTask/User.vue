@@ -107,10 +107,9 @@
 </template>
 
 <script>
-    import coursetaskService from '../../../services/server/coursetaskService'
+    import courseTaskService from '../../../services/server/courseTaskService.js'
     import Department from '../../component/select/Department.vue'
     export default {
-        name: 'server-coursetask-user',
         components: {
             Department
         },
@@ -159,7 +158,7 @@
         },
         methods: {
             fetchData () {
-                // return coursetaskService.getTaskStatDetail({...this.fetchParam, id: this.statid}).then((ret) => {
+                // return courseTaskService.getTaskStatDetail({...this.fetchParam, id: this.statid}).then((ret) => {
                 //     this.dataList = ret.data
                 //     this.total = ret.total
                 // })
@@ -178,7 +177,7 @@
             },
             exportTask () {
                 this.exportLoading = true
-                return coursetaskService.exportUserTask({
+                return courseTaskService.exportUserTask({
                     id: this.statid,
                     // ...this.fetchParam
                 }).then((ret) => {
