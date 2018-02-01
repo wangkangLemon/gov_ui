@@ -104,7 +104,7 @@ export default {
             name: 'server-coursetask-user',
             component: resolve => {
                 require.ensure([], () => {
-                    resolve(require('../views/server/coursetask/User.vue'))
+                    resolve(require('../views/server/courseTask/User.vue'))
                 })
             },
             meta: {
