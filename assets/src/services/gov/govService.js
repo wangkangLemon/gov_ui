@@ -316,7 +316,7 @@ class govService {
             date_start,
             date_end
         }).then((ret) => {
-            return ret.data
+            return ret
         })
     }
 

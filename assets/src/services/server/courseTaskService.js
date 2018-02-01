@@ -261,9 +261,9 @@ class sysService {
         })
     }
     //单条课程任务明细数据报表
-    getTaskStatDetail({id}){
+    getTaskStatDetail({id, page, pagesize}){
         let finalUrl = `${urlPre}/stat/${id}/user`
-        return api.get(finalUrl, {}).then((ret) => {
+        return api.get(finalUrl, {page, pagesize}).then((ret) => {
             return ret
         })
     }

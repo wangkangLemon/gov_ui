@@ -84,13 +84,11 @@
 
             <el-form-item prop="title" label="标题">
                 <el-input v-model="form.title" auto-complete="off"></el-input>
-
             </el-form-item>
-
             <el-form-item prop="description" label="描述">
                 <el-input v-model="form.description" auto-complete="off" :rows="6" type="textarea"></el-input>
             </el-form-item>
-            <el-form-item prop="imgUrl" label="任务封面图">
+            <el-form-item prop="image" label="任务封面图">
                 <div class="img-wrap" v-if="form.image">
                     <img :src="form.image | fillImgPath" alt=""/>
                 </div>
@@ -111,12 +109,12 @@
             <el-form-item prop="sort" label="排序">
                 <el-input-number v-model="form.sort" auto-complete="off"></el-input-number>
             </el-form-item>
-            <el-form-item label="时间">
+            <el-form-item label="时间" prop="etime">
                 <DateRange :start="form.stime" :end="form.etime" @changeStart="val=> form.stime=val"
                     @changeEnd="val=> form.etime=val" :defaultStart="form.stime" :defaultEnd="form.etime">
                 </DateRange>
             </el-form-item>
-            <el-form-item label="发布对象" prop="type">
+            <el-form-item label="发布对象">
                 <el-select clearable v-model="form.type" @change="choosePushType" placeholder="请选择指定人员或部门">
                     <el-option label="部门任务" :value="1"></el-option>
                     <el-option label="个人任务" :value="2"></el-option>
@@ -134,8 +132,8 @@
                     </el-tag>
                 </div>
             </el-form-item>
-            <el-form-item label="可得学分">
-                <el-input style="width: auto;" v-model.number="form.score" type="number"  placeholder="请输入可获得学分值"></el-input>
+            <el-form-item label="可得学分" prop="score">
+                <el-input style="width: auto;" v-model="form.score" type="number"  placeholder="请输入可获得学分值"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submit(0)">提交</el-button>
@@ -216,15 +214,21 @@
                     user_ids: void 0,     // 用户
                     // status: void 0,       // 状态
                     course: [],
-                    score: 0,     // 可获得学分
+                    score:void 0,     // 可获得学分
                     type:void 0,       // 任务类型
                     stime:'',
                     etime:'',
                 },
                 rules: {
-                    title: [
-                        {required: true, message: '必须填写', trigger: 'blur'}
-                    ],
+                    title: [{required: true, min: 1, message: '必须填写', trigger: 'blur'}],
+                    description: [{required: true, min: 1,message: '必须填写', trigger: 'blur'}],
+                    image: [{required: true, message: '必须填写', trigger: 'blur'}],
+                    stime: [{required: true, message: '必须填写', trigger: 'change'}],
+                    etime: [{required: true, message: '必须填写', trigger: 'change'}],
+                    type: [{required: true, message: '必须填写', trigger: 'change'}],
+                    // score: [{required: true, message: '必须填写', trigger: 'blur'}],
+                    sort: [{required: true, message: '必须填写'}],
+                    course: [{ required: true, message: '必须填写'}],
                     category_id: {type: 'number', required: true, message: '请选择栏目', trigger: 'change'}
                 },
                 dialogCourse: {

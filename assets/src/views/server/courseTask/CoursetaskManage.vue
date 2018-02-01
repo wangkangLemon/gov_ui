@@ -93,15 +93,15 @@
                 <i>课程名称</i>
                 <el-input @keyup.enter.native="getData" class="name" v-model="fetchParam.title"/>
             </section>
-            <section>
+            <!--<section>
                 <i>状态</i>
                 <el-select v-model="fetchParam.status" placeholder="未选择" @change="getData" :clearable="true">
-                    <!--<el-option label="全部" value="-1"></el-option>-->
+                    <el-option label="全部" value="-1"></el-option>
                     <el-option label="正常" value="1"></el-option>
                     <el-option label="草稿  " value="2"></el-option>
                     <el-option label="已下线" value="3"></el-option>
                 </el-select>
-            </section>
+            </section>-->
             <DateRange title="创建时间" :start="fetchParam.stime" :end="fetchParam.etime" @changeStart="val=> fetchParam.stime=val "
                 @changeEnd="val=> fetchParam.etime=val" :change="getData">
             </DateRange>

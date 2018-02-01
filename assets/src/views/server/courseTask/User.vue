@@ -18,9 +18,9 @@
 </style>
 <template>
     <article id="task-statistics-container">
-        <div class="top-btn">
+        <!--<div class="top-btn">
             <el-button icon="el-icon-document" type='warning' :loading="exportLoading" @click.native="exportTask">导出 excel</el-button>
-        </div>
+        </div>-->
         <article class="search">
             <section>
                 <i>完成状态</i>
@@ -29,40 +29,41 @@
                     <el-option label="未完成" :value="2"></el-option>
                 </el-select>
             </section>
-            <section>
+            <!--<section>
                 <i>门店</i>
                 <Department v-model="fetchParam.department_id" :change="()=>{page=1;fetchData();}"></Department>
-            </section>
-            <section>
+            </section>-->
+            <!--<section>
                 <i>角色</i>
                 <el-select v-model="fetchParam.role_type" placeholder="未选择" @change="fetchData" clearable>
                     <el-option label="店长" :value="1"></el-option>
                     <el-option label="店员" :value="2"></el-option>
                 </el-select>
-            </section>
+            </section>-->
             <section>
-                <i>员工姓名</i>
+                <i>人员姓名</i>
                 <el-input v-model="fetchParam.keyword" @keyup.enter.native="fetchData"></el-input>
             </section>
         </article>
         <el-table class="data-table" v-loading="loading" :data="dataList" :fit="true" border>
-            <el-table-column prop="name" width="130" label="员工姓名"></el-table-column>
-            <el-table-column prop="staff_id" width="93" label="工号"></el-table-column>
-            <el-table-column prop="job" width="140" label="职位"></el-table-column>
-            <el-table-column prop="department_name" min-width="120" label="所属门店"></el-table-column>
-            <el-table-column prop="status" label="完成状态" width="180"></el-table-column>
-            <el-table-column prop="" label="完成进度" width="100">
-                <template slot-scope="scope">
+            <!--<el-table-column prop="name" width="130" label="人员姓名"></el-table-column>-->
+            <el-table-column prop="name"label="人员姓名"></el-table-column>
+            <!--<el-table-column prop="staff_id" width="93" label="工号"></el-table-column>-->
+            <!--<el-table-column prop="job" width="140" label="职位"></el-table-column>-->
+            <!--<el-table-column prop="department_name" min-width="120" label="所属门店"></el-table-column>-->
+            <el-table-column prop="status" label="完成状态"></el-table-column>
+            <el-table-column prop="" label="完成进度">
+                <template scope="scope">
                     <el-button type='text' @click="openCourseDetail(scope.row)">{{scope.row.course_done}}/{{scope.row.course_count}}</el-button>
                 </template>
             </el-table-column>
             <el-table-column prop="last_time" label="最后学习时间" width="180"></el-table-column>
         </el-table>
         <el-pagination class="block"
-            @size-change="val=> {fetchParam.page_size=val; fetchData()}"
+            @size-change="val=> {fetchParam.pagesize=val; fetchData()}"
             @current-change="val=> {fetchParam.page=val; fetchData()}"
             :current-page="fetchParam.page"
-            :page-size="fetchParam.page_size"
+            :page-size="fetchParam.pagesize"
             :page-sizes="[15, 30, 60, 100]"
             layout="sizes,total, prev, pager, next" :total="total">
         </el-pagination>
@@ -80,7 +81,7 @@
                     min-width="140">
                 </el-table-column>
                 <el-table-column prop="object_type" label="类型" width="100">
-                    <template slot-scope="scope">
+                    <template scope="scope">
                         <el-tag type="success" v-if="scope.row.object_type === 'course'">课程</el-tag>
                         <el-tag type="danger" v-if="scope.row.object_type === 'exam'">试卷</el-tag>
                     </template>
@@ -92,10 +93,10 @@
                 </el-table-column>
             </el-table>
             <el-pagination class="block"
-                @size-change="val=> {courseDetail.fetchParam.page_size=val; fetchCourseData()}"
+                @size-change="val=> {courseDetail.fetchParam.pagesize=val; fetchCourseData()}"
                 @current-change="val=> {courseDetail.fetchParam.page=val; fetchCourseData()}"
                 :current-page="courseDetail.fetchParam.page"
-                :page-size="courseDetail.fetchParam.page_size"
+                :page-size="courseDetail.fetchParam.pagesize"
                 :page-sizes="[15, 30, 60, 100]"
                 layout="sizes, total, prev, pager, next" 
                 :total="courseDetail.total">
@@ -108,10 +109,10 @@
 
 <script>
     import courseTaskService from '../../../services/server/courseTaskService.js'
-    import Department from '../../component/select/Department.vue'
+    // import Department from '../../component/select/Department.vue'
     export default {
         components: {
-            Department
+            // Department
         },
         data () {
             return {
@@ -126,7 +127,7 @@
                     role_type: '',
                     keyword: '',
                     page: 1,
-                    page_size: 15
+                    pagesize: 15
                 },
                 exportLoading: false,
                 courseDetail: {
@@ -136,7 +137,8 @@
                     total: 0,
                     fetchParam: {
                         page: 1,
-                        page_size: 15
+                        pagesize: 15,
+                        id:void 0,
                     }
                 },
             }
@@ -158,10 +160,12 @@
         },
         methods: {
             fetchData () {
+                this.fetchParam.id=this.statid
                 // return courseTaskService.getTaskStatDetail({...this.fetchParam, id: this.statid}).then((ret) => {
-                //     this.dataList = ret.data
-                //     this.total = ret.total
-                // })
+                return courseTaskService.getTaskStatDetail(this.fetchParam).then((ret) => {
+                    this.dataList = ret.data
+                    this.total = ret._exts.total
+                })
             },
             openCourseDetail (row) {
                 this.courseDetail.showDialog = true
@@ -170,24 +174,24 @@
                 this.fetchCourseData()
             },
             fetchCourseData () {
-                let offset = this.courseDetail.fetchParam.page_size
+                let offset = this.courseDetail.fetchParam.pagesize
                 let start = (this.courseDetail.fetchParam.page - 1) * offset
                 let end = start + offset
                 this.courseDetail.data = this.courseDetail.object.slice(start, end)
             },
-            exportTask () {
-                this.exportLoading = true
-                return courseTaskService.exportUserTask({
-                    id: this.statid,
-                    // ...this.fetchParam
-                }).then((ret) => {
-                    xmview.showTip('success', ret.message || '导出成功')
-                }).catch((ret) => {
-                    xmview.showTip('error', ret.message || '导出失败')
-                }).then(() => {
-                    this.exportLoading = false
-                })
-            }
+            // exportTask () {
+            //     this.exportLoading = true
+            //     return courseTaskService.exportUserTask({
+            //         id: this.statid,
+            //         // ...this.fetchParam
+            //     }).then((ret) => {
+            //         xmview.showTip('success', ret.message || '导出成功')
+            //     }).catch((ret) => {
+            //         xmview.showTip('error', ret.message || '导出失败')
+            //     }).then(() => {
+            //         this.exportLoading = false
+            //     })
+            // }
         }
     }
 </script>

@@ -116,10 +116,10 @@
         <section class="block">
              <el-pagination 
                     class="block"
-                    @size-change="val=> {temp.fetchParam.page_size=val; getTempData()}"
+                    @size-change="val=> {temp.fetchParam.pagesize=val; getTempData()}"
                     @current-change="val=> {temp.fetchParam.page=val; getTempData()}"
                     :current-page="temp.fetchParam.page"
-                    :page-size="temp.fetchParam.page_size"
+                    :page-size="temp.fetchParam.pagesize"
                     :page-sizes="[6, 15, 30, 60, 100]"
                     layout="sizes,total, prev, pager, next" 
                     :total="temp.total">
@@ -182,7 +182,7 @@
                         type: '',
                         title: '',
                         page: 1,
-                        page_size: 15
+                        pagesize: 15
                     }
                 },
                 temp: {
@@ -199,7 +199,7 @@
                         deleted:-1,
                         status :-1,
                         page: 1,
-                        page_size: 6
+                        pagesize: 6
                     },
                     courseList: null,
                 },

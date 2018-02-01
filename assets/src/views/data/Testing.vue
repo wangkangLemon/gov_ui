@@ -224,8 +224,8 @@
                     course_id:this.search.course_id
                 }).then((ret) => {
                     console.log(ret)
-                    this.total = ret.total
-                    this.testingData = ret
+                    this.total = ret._exts.total
+                    this.testingData = ret.data
                 }).then(() => {
                     this.loading = false
                 })
