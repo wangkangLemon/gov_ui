@@ -22,13 +22,13 @@
             <el-button icon="el-icon-document" type='warning' :loading="exportLoading" @click.native="exportTask">导出 excel</el-button>
         </div>-->
         <article class="search">
-            <section>
+            <!--<section>
                 <i>完成状态</i>
                 <el-select v-model="fetchParam.status" placeholder="未选择" @change="fetchData" clearable>
                     <el-option label="完成" :value="1"></el-option>
                     <el-option label="未完成" :value="2"></el-option>
                 </el-select>
-            </section>
+            </section>-->
             <section>
                 <i>人员姓名</i>
                 <el-input v-model="fetchParam.name" @keyup.enter.native="fetchData"></el-input>
@@ -37,14 +37,14 @@
         <el-table class="data-table" v-loading="loading" :data="dataList" :fit="true" border>
             <!--<el-table-column prop="name" width="130" label="人员姓名"></el-table-column>-->
             <el-table-column prop="user_name"label="人员姓名"></el-table-column>
-            <el-table-column prop="done_cnt" label="完成数"></el-table-column>
-            <el-table-column prop="status" label="完成状态"></el-table-column>
-            <el-table-column prop="" label="完成进度">
+            <el-table-column prop="course_count" label="任务数"></el-table-column>
+            <el-table-column prop="course_done_cnt" label="完成数"></el-table-column>
+            <el-table-column :formatter="status" label="完成状态"></el-table-column>
+            <!--<el-table-column prop="" label="完成进度">
                 <template scope="scope">
                     <el-button type='text' @click="openCourseDetail(scope.row)">{{scope.row.course_done}}/{{scope.row.course_count}}</el-button>
                 </template>
-            </el-table-column>
-            <!--<el-table-column prop="last_time" label="最后学习时间" width="180"></el-table-column>-->
+            </el-table-column>-->
         </el-table>
         <el-pagination class="block"
             @size-change="val=> {fetchParam.pagesize=val; fetchData()}"
@@ -142,6 +142,18 @@
             })
         },
         methods: {
+            status (row, column, cellValue) {
+                return this.statusFilter(row.course_count, row.course_done_cnt)
+            },
+            statusFilter(all,done){
+                let stated
+                if (all > done){
+                    stated ='未完成'
+                }else{
+                    stated ='已完成'
+                }
+                return stated
+            },
             fetchData () {
                 this.fetchParam.id=this.statid
                 // return courseTaskService.getTaskStatDetail({...this.fetchParam, id: this.statid}).then((ret) => {

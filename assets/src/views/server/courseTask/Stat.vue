@@ -20,29 +20,28 @@
                 <i>任务标题</i>
                 <el-input v-model="fetchParam.title" @keyup.enter.native="fetchData"></el-input>
             </section>
-            <section>
+            <!--<section>
                 <i>发布对象</i>
                 <el-select v-model="fetchParam.type" placeholder="未选择" @change="fetchData" :clearable="true">
                     <el-option label="部门任务" value="1"></el-option>
                     <el-option label="个人任务" value="2"></el-option>
                 </el-select>
-            </section>
+            </section>-->
         </article>
         <el-table class="data-table" v-loading="loading" :data="dataList" :fit="true" border>
             <el-table-column prop="title" min-width="200" label="任务标题">
                 <template scope="scope">
-                    <el-button @click="()=>{$router.push({name: 'server-coursetask-user', params: {id: scope.row.task_id}, query: {title: scope.row.title}})}" type="text">{{scope.row.title}}</el-button>
+                    <el-button @click="()=>{$router.push({name: 'server-coursetask-user', params: {id: scope.row.id}, query: {title: scope.row.title}})}" type="text">{{scope.row.title}}</el-button>
                 </template>
             </el-table-column>
-            <el-table-column prop="type" label="发布对象" width="150">
+            <!--<el-table-column prop="type" label="发布对象" width="150">
                 <template scope="scope">
-                    <!--{{type[scope.row.type]}}-->
                     {{scope.row.type=='1'?'部门任务':'个人任务'}}
                 </template>
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column prop="user_cnt" label="任务总人数" width="120"></el-table-column>
             <el-table-column prop="done_cnt" width="120" label="完成人数"></el-table-column>
-            <el-table-column prop="task_start_date" label="创建日期" width="180"></el-table-column>
+            <el-table-column prop="task_start_date" label="开始日期" width="180"></el-table-column>
             <el-table-column prop="task_end_date" label="截止日期" width="180"></el-table-column>
         </el-table>
         <el-pagination class="block"
@@ -81,7 +80,9 @@
         methods: {
             fetchData () {
                 return courseTaskService.getTaskStat(this.fetchParam).then((ret) => {
+                    console.log(ret)
                     this.dataList = ret.data
+                    console.log(this.dataList)
                     this.total = ret._exts.total
                 })
             },
