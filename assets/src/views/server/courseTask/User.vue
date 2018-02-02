@@ -29,35 +29,22 @@
                     <el-option label="未完成" :value="2"></el-option>
                 </el-select>
             </section>
-            <!--<section>
-                <i>门店</i>
-                <Department v-model="fetchParam.department_id" :change="()=>{page=1;fetchData();}"></Department>
-            </section>-->
-            <!--<section>
-                <i>角色</i>
-                <el-select v-model="fetchParam.role_type" placeholder="未选择" @change="fetchData" clearable>
-                    <el-option label="店长" :value="1"></el-option>
-                    <el-option label="店员" :value="2"></el-option>
-                </el-select>
-            </section>-->
             <section>
                 <i>人员姓名</i>
-                <el-input v-model="fetchParam.keyword" @keyup.enter.native="fetchData"></el-input>
+                <el-input v-model="fetchParam.name" @keyup.enter.native="fetchData"></el-input>
             </section>
         </article>
         <el-table class="data-table" v-loading="loading" :data="dataList" :fit="true" border>
             <!--<el-table-column prop="name" width="130" label="人员姓名"></el-table-column>-->
-            <el-table-column prop="name"label="人员姓名"></el-table-column>
-            <!--<el-table-column prop="staff_id" width="93" label="工号"></el-table-column>-->
-            <!--<el-table-column prop="job" width="140" label="职位"></el-table-column>-->
-            <!--<el-table-column prop="department_name" min-width="120" label="所属门店"></el-table-column>-->
+            <el-table-column prop="user_name"label="人员姓名"></el-table-column>
+            <el-table-column prop="done_cnt" label="完成数"></el-table-column>
             <el-table-column prop="status" label="完成状态"></el-table-column>
             <el-table-column prop="" label="完成进度">
                 <template scope="scope">
                     <el-button type='text' @click="openCourseDetail(scope.row)">{{scope.row.course_done}}/{{scope.row.course_count}}</el-button>
                 </template>
             </el-table-column>
-            <el-table-column prop="last_time" label="最后学习时间" width="180"></el-table-column>
+            <!--<el-table-column prop="last_time" label="最后学习时间" width="180"></el-table-column>-->
         </el-table>
         <el-pagination class="block"
             @size-change="val=> {fetchParam.pagesize=val; fetchData()}"
@@ -109,11 +96,7 @@
 
 <script>
     import courseTaskService from '../../../services/server/courseTaskService.js'
-    // import Department from '../../component/select/Department.vue'
     export default {
-        components: {
-            // Department
-        },
         data () {
             return {
                 type: {company: '企业任务', department: '门店任务', user: '指定人员', user_group: '指定用户组'},
@@ -125,7 +108,7 @@
                     status: '',
                     department_id: '',
                     role_type: '',
-                    keyword: '',
+                    name: '',
                     page: 1,
                     pagesize: 15
                 },
@@ -152,7 +135,7 @@
             //     return this.$route.query.title
             // }
         },
-        created () {
+        activated () {
             xmview.setContentTile && xmview.setContentTile(`详细统计-${this.$route.query.title}`)
             this.fetchData().then(() => {
                 xmview.setContentLoading(false)

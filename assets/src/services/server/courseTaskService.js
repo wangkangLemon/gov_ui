@@ -159,7 +159,7 @@ class sysService {
 
     // 删除课程任务模板
     deleteCourseTaskTemplate (task_id) {
-        let finalUrl = urlPre + `/template/delete${task_id}`
+        let finalUrl = urlPre + `/template/delete/${task_id}`
         return api.post(finalUrl, {})
     }
 
@@ -254,16 +254,16 @@ class sysService {
         })
     }
     //课程任务数据报表
-    getTaskStat({type,name,page,pagesize}){
+    getTaskStat({type,title,page,pagesize}){
          let finalUrl = urlPre + '/stat/lists' 
-        return api.get(finalUrl, {type,name,page,pagesize}).then((ret) => {
+        return api.get(finalUrl, {type,title,page,pagesize}).then((ret) => {
             return ret
         })
     }
     //单条课程任务明细数据报表
-    getTaskStatDetail({id, page, pagesize}){
+    getTaskStatDetail({id, page, pagesize, name, status}){
         let finalUrl = `${urlPre}/stat/${id}/user`
-        return api.get(finalUrl, {page, pagesize}).then((ret) => {
+        return api.get(finalUrl, {page, pagesize, name, status}).then((ret) => {
             return ret
         })
     }

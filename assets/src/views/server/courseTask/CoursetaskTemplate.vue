@@ -18,58 +18,55 @@
             text-align: right;
             margin-top: 10px;
         }
-
-        .edui-editor {
-            width: 100% !important;
-        }
-
-        .avatar-uploader {
-            .el-upload {
-                border: 1px dashed #d9d9d9;
-                border-radius: 6px;
-                cursor: pointer;
+        .temp-container{
+            width:100%;
+            .temp-item {
+                width:310px;
+                margin-bottom: 10px;
+                margin-right: 3%;
                 position: relative;
-                overflow: hidden;
-                &:hover {
-                    border-color: #20a0ff;
+                vertical-align: top;
+                display: inline-block;
+                border: 1px solid #ededed;
+                flex-basis: 30%;
+                height: 310px;
+                font-size: 14px;
+                .content {
+                    height: 210px;
+                    padding: 10px 15px;
+                    h2 {
+                        font-size: 16px;
+                        padding-bottom: 10px;
+                    }
+                    img {
+                        width: 100%;
+                        height: 100%;
+                    }
+                    .des {
+                        line-height: 25px;
+                        @include lineCount(2);
+                    }
+                }
+                .bottom {
+                    position: absolute;
+                    bottom: 0;
+                    background: #eee;
+                    left: 0;
+                    width: 100%;
+                    display: flex;
+                    > div {
+                        margin-top: 5px;
+                        margin-bottom: 5px;
+                        text-align-last: center;
+                        text-align: center;
+                        /*line-height: 50px;*/
+                        width: 50%;
+                        &:first-of-type {
+                            border-right: 1px solid #ddd;
+                        }
+                    }
                 }
             }
-        }
-
-        .avatar-uploader-icon {
-            font-size: 28px;
-            color: #8c939d;
-            width: 178px;
-            height: 178px;
-            line-height: 178px;
-            text-align: center;
-        }
-
-        .avatar {
-            width: 178px;
-            height: 178px;
-            display: block;
-        }
-
-        .img-wrap {
-            margin-bottom: 10px;
-            width: 150px !important;
-            height: 150px !important;
-            img {
-                width: 100%;
-                height: 100%;
-            }
-        }
-
-        .add {
-            background: #ededed;
-            padding: px2rem(10) px2rem(20);
-            border-bottom: 1px solid #ededed;
-        }
-
-        .desc {
-            width: 100%;
-            height: 100px;
         }
     }
 </style>
@@ -77,20 +74,17 @@
     <article class="course-task-template-index">
         <!--添加/编辑表单-->
         <!--点击添加 form数据取邮箱/手机号 密码-->
-        <article class="manage-container">
+        <!--<article class="manage-container">
             <el-button icon="plus" type="primary" @click="()=> $router.push({name:'server-manage-add'}) ">添加
-            <!--添加-->
             </el-button>
-        </article>
+        </article>-->
         <!--<el-tab-pane label="任务列表" name="list">-->
-        <section class="search">
+                <section class="search">
                     <section>
                         <i>类别</i>
-                         <el-form  prop="category_id" :fetch-suggestions="querySearch" :onchange="getTempData">
-                    <el-select clearable class="select" v-model="fetchParam.category_id" placeholder="请选择部门">
-                        <el-option  v-for="item in  category_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                    </el-select>
-                </el-form>
+                        <el-select clearable class="select" v-model="temp.fetchParam.category_id" placeholder="请选择部门" :fetch-suggestions="querySearch" @change="getTempData">
+                            <el-option  v-for="item in  category_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                        </el-select>
                     </section>
                     <section>
                         <i>标题搜索</i>
@@ -108,7 +102,6 @@
                         <div class="bottom">
                             <div><el-button type="text" @click="templateViewFn(item)">课程列表</el-button></div>
                             <div><el-button type="text" @click="()=>{$router.push({name: 'server-manage-add', params:{coursetaskInfo:item,type:'template'},query: {id: item.id}})}">使用</el-button></div>
-                            <div>{{item}}</div>
                         </div>
                         <br/>
                     </section>
@@ -246,7 +239,7 @@
                 this.temp.loading = true
                 return courseTaskService.getCourseTaskTemplateList(this.temp.fetchParam).then((ret) => {
                     this.temp.dataList = ret.data
-                    this.temp.total = ret.total
+                    this.temp.total = ret._exts.total
                     this.temp.loading = false
                 })
             },

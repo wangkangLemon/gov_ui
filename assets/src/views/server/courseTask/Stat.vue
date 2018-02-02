@@ -18,7 +18,7 @@
         <article class="search">
             <section>
                 <i>任务标题</i>
-                <el-input v-model="fetchParam.name" @keyup.enter.native="fetchData"></el-input>
+                <el-input v-model="fetchParam.title" @keyup.enter.native="fetchData"></el-input>
             </section>
             <section>
                 <i>发布对象</i>
@@ -31,16 +31,17 @@
         <el-table class="data-table" v-loading="loading" :data="dataList" :fit="true" border>
             <el-table-column prop="title" min-width="200" label="任务标题">
                 <template scope="scope">
-                    <el-button @click="()=>{$router.push({name: 'server-coursetask-user', params: {id: scope.row.id}, query: {title: scope.row.title}})}" type="text">{{scope.row.title}}</el-button>
+                    <el-button @click="()=>{$router.push({name: 'server-coursetask-user', params: {id: scope.row.task_id}, query: {title: scope.row.title}})}" type="text">{{scope.row.title}}</el-button>
                 </template>
             </el-table-column>
             <el-table-column prop="type" label="发布对象" width="150">
                 <template scope="scope">
-                    {{type[scope.row.type]}}
+                    <!--{{type[scope.row.type]}}-->
+                    {{scope.row.type=='1'?'部门任务':'个人任务'}}
                 </template>
             </el-table-column>
+            <el-table-column prop="user_cnt" label="任务总人数" width="120"></el-table-column>
             <el-table-column prop="done_cnt" width="120" label="完成人数"></el-table-column>
-            <!--<el-table-column prop="user_cnt-done_cnt" label="未完成人数" width="120"></el-table-column>-->
             <el-table-column prop="task_start_date" label="创建日期" width="180"></el-table-column>
             <el-table-column prop="task_end_date" label="截止日期" width="180"></el-table-column>
         </el-table>
@@ -66,7 +67,7 @@
                 loading: false,
                 fetchParam: {
                     type: '',
-                    name: '',
+                    title: '',
                     page: 1,
                     pagesize: 15
                 }
