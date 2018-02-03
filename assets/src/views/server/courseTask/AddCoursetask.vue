@@ -220,8 +220,8 @@
                     etime:'',
                 },
                 rules: {
-                    title: [{required: true, min: 1, message: '必须填写', trigger: 'blur'}],
-                    description: [{required: true, min: 1,message: '必须填写', trigger: 'blur'}],
+                    title: [{required: true, pattern:  /\S$/, min: 1, message: '请输入非空格或非特殊字符的标题', trigger: 'blur'}],
+                    description: [{required: true, pattern:  /\S$/, min: 1,message: '请输入非空格或非特殊字符的描述', trigger: 'blur'}],
                     image: [{required: true, message: '必须填写', trigger: 'blur'}],
                     stime: [{required: true, message: '必须填写', trigger: 'change'}],
                     etime: [{required: true, message: '必须填写', trigger: 'change'}],
