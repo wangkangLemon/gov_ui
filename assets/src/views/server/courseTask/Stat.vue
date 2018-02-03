@@ -88,10 +88,10 @@
                 })
             },
             TimeStart(row, column, cellValue){
-              return  this.timeFilter(row.task_start_date) 
+              return  this.timeFilter(row.task_start_date)
             },
             TimeEnd(row, column, cellValue){
-              return  this.timeFilter(row.task_end_date) 
+              return  this.timeFilter(row.task_end_date)
             },
             timeFilter( v){
                 console.log(v)
