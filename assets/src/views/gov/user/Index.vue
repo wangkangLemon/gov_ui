@@ -305,7 +305,7 @@ export default {
         },
         timeFilter( addate){
             let time
-            this.dataCache.forEach(v=> {3
+            this.dataCache.forEach(v=> {
                     time = addate.split(" ")[0]
                 }, this);
             return time

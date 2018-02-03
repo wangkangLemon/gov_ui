@@ -41,8 +41,10 @@
             </el-table-column>-->
             <el-table-column prop="user_cnt" label="任务总人数" width="120"></el-table-column>
             <el-table-column prop="done_cnt" width="120" label="完成人数"></el-table-column>
-            <el-table-column prop="task_start_date" label="开始日期" width="180"></el-table-column>
-            <el-table-column prop="task_end_date" label="截止日期" width="180"></el-table-column>
+            <!--<el-table-column prop="task_start_date" label="开始日期" width="180"></el-table-column>-->
+            <el-table-column :formatter="TimeStart" label="开始日期" width="180"></el-table-column>
+            <!--<el-table-column prop="task_end_date" label="开始日期" width="180"></el-table-column>-->
+            <el-table-column :formatter="TimeEnd" label="截止日期" width="180"></el-table-column>
         </el-table>
         <el-pagination class="block"
                        @size-change="val=> {fetchParam.pagesize=val; fetchData()}"
@@ -73,6 +75,7 @@
             }
         },
         activated () {
+            this.fetchParam.title= ''
             this.fetchData().then(() => {
                 xmview.setContentLoading(false)
             })
@@ -80,12 +83,25 @@
         methods: {
             fetchData () {
                 return courseTaskService.getTaskStat(this.fetchParam).then((ret) => {
-                    console.log(ret)
                     this.dataList = ret.data
-                    console.log(this.dataList)
                     this.total = ret._exts.total
                 })
             },
+            TimeStart(row, column, cellValue){
+              return  this.timeFilter(row.task_start_date) 
+            },
+            TimeEnd(row, column, cellValue){
+              return  this.timeFilter(row.task_end_date) 
+            },
+            timeFilter( v){
+                console.log(v)
+                let time
+                // this.dataList.forEach(v=> {
+                        time = v.split(" ")[0]
+                    // }, this);
+                return time
+            },
+
         }
     }
 </script>

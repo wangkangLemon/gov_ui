@@ -136,6 +136,7 @@
             // }
         },
         activated () {
+            this.fetchParam.name= ''
             xmview.setContentTile && xmview.setContentTile(`详细统计-${this.$route.query.title}`)
             this.fetchData().then(() => {
                 xmview.setContentLoading(false)

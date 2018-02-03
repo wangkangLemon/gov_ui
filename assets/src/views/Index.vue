@@ -2,6 +2,7 @@
     @import "../utils/mixins/mixins";
 
     .index-container {
+        
         background: #d9e0e7;
 
         @media (max-width: 767px) {
@@ -94,6 +95,10 @@
                     }
                 }
             }
+
+            .title{
+                white-space:nowrap;
+            }
         }
 
         .content {
@@ -179,7 +184,7 @@
                 <img src="../assets/images/logo.png">
                 <h1>医线通政府管理平台</h1>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="6" class="title">
                 <!--<h2>{{ userInfo.gov }}</h2>-->
                 <h2> {{userInfo.gov_name}}</h2>
             </el-col>
