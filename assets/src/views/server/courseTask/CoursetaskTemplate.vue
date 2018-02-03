@@ -207,6 +207,7 @@
              this.getTempData() //暂无tab切换 在初始化页面请求
         },
         methods: {
+
              //获取部门组下拉列表
             getCategory(val){
                 courseTaskService.getCategoryTree({pagesize:-1}).then((ret)=>{
