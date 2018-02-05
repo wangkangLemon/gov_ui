@@ -233,7 +233,7 @@
                 this.loadingData = true
                 return courseService.getCourseList(this.fetchParams[this.currTab]).then((ret) => {
                     this.data = ret.data
-                    this.total = ret.total
+                    this.total = ret._exts.total
                     this.loadingData = false
                 }).catch(() => {
                     this.loadingData = false

@@ -166,7 +166,7 @@
                         :current-page="currentPage"
                         :page-sizes="[15, 30, 60, 100]"
                         :page-size="pageSize"
-                        layout="total, sizes, prev, pager, next"
+                        layout="total, sizes, total, prev, pager, next"
                         :total="total">
                 </el-pagination>
             </div>
@@ -215,12 +215,11 @@
             // govService.getCompanyManageStat().then((ret) => {
             //     this.statData = ret.data
             // }).then(() => {
-            //     xmview.setContentLoading(false)
+                // xmview.setContentLoading(false)
             // })
         },
 
         activated () {
-      
             this.getData().then(() => {
                 xmview.setContentLoading(false)
             })
@@ -262,8 +261,10 @@
                     date_end: this.search.endTime,
                     level:this.level,
                 }).then((ret) => {
-                    this.total = ret.total
-                    this.manageData = ret
+                    xmview.setContentLoading(false)
+                    this.loadingData = false
+                    this.total = ret._exts.total
+                    this.manageData = ret.data
                 }).then(() => {
                     this.loading = false
                 })

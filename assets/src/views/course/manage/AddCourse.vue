@@ -83,6 +83,11 @@
                             <el-option label="政府课程" value="gov"></el-option>
                         </el-select>
                     </el-form-item>
+                     <!--<el-form-item  label="关联专家"  :fetch-suggestions="querySearch">
+                        <Experts v-model="fetchParam.experts_id" :placeholder="fetchParam.experts_name"
+                                            v-on:change="val=>fetchParam.experts_id=val" :change="getExpertsList" :list="changelist">
+                        </Experts>
+                    </el-form-item>-->
                     <el-form-item label="课程封面图" prop="image">
                         <img :src="fetchParam.image | fillImgPath" width="200" height="112" v-show="fetchParam.image">
                         <CropperImg ref="imgcropper" :confirmFn="cropperImgSucc" :aspectRatio="16/9"></CropperImg>
@@ -155,6 +160,7 @@
 <script>
 import courseService from '../../../services/course/courseService.js'
 import videoService from '../../../services/course/videoService.js'
+// import expertsService from '../../../services/course/expertsService.js'
 import UploadImg from '../../component/upload/UploadImg.vue'
 import CropperImg from '../../component/upload/ImagEcropperInput.vue'
 import DialogVideo from '../component/DialogVideo.vue'
@@ -165,6 +171,7 @@ import testingFactory from '../utils/testingFactory'
 import formUtils from '../../../utils/formUtils'
 import vTags from '../../component/form/Tags.vue'
 import VideoPreview from '../../component/dialog/VideoPreview.vue'
+// import Experts from '../../component/select/Experts'
 
 export default {
     name: 'course-manage-addcourse',
@@ -224,6 +231,7 @@ export default {
         this.$route.params.tab && (this.activeTab = this.$route.params.tab)
         this.readonly = this.$route.params.readonly
         xmview.setContentLoading(false)
+        // this.getExpertsList()
     },
 
     watch: {
@@ -263,6 +271,25 @@ export default {
         }
     },
     methods: {
+        // getExpertsList (val, length) {
+        //         return expertsService.fetchExpertsData({
+        //             name: val,
+        //             // category: this.type,
+        //             pagesize: this.pageSize,
+        //             page: parseInt(length / this.pageSize) + 1
+        //         }).then((ret) => {
+        //             this.$emit('changelist', ret)
+        //             this.changelist = ret;
+        //             return ret
+        //         })
+        //     },
+        // //拿到医院列表输入建议
+        //     querySearch(queryString, cb) {
+        //         var restaurants = this.restaurants;
+        //         var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+        //         // 调用 callback 返回建议列表的数据返回建议列表的数据
+        //         cb(results);
+        //     },
         fetchVideoList () {
                 this.loadingData = true
                 return videoService.getVideo(this.fetchParam).then((ret) => {

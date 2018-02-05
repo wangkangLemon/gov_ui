@@ -166,7 +166,7 @@ class CourseService {
         let url = urlPre + '/lists'
         return api.get(url, { course_name, audited, category_id, time_start, time_end, page, pagesize }, false).then(ret => {
             if (ret.code == 0) {
-                return ret.data
+                return ret
             } else {
                 return Promise.reject(ret)
             }

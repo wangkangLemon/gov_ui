@@ -180,7 +180,7 @@
                     pagesize: this.pagesize
                 }).then((ret) => {
                     this.data = ret.data
-                    this.total = ret.total
+                    this.total = ret._exts.total
                     this.loadingData = false
                 }).catch((ret) => {
                     xmview.showTip('error', ret.message)

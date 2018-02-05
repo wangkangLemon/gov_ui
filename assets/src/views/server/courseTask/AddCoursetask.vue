@@ -372,7 +372,7 @@
                 console.log(param)
                 map[this.pushTypeDialog.type](param).then(ret => {
                     // this.pushTypeDialog.total = ret._exts.total
-                    this.pushTypeDialog.total = 690
+                    this.pushTypeDialog.total = ret._exts.total
                     // if (this.pushTypeDialog.data.length > 0 && this.pushTypeDialog.data.length < ret._exts.total) {
                     if (this.pushTypeDialog.data.length > 0 ) {
                         this.pushTypeDialog.data.splice(-1, 1)

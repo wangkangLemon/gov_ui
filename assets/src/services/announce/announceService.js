@@ -22,7 +22,7 @@ class CompanyService {
             page,
             pagesize,
         }, false).then((ret) => {
-            return ret.data
+            return ret
         })
     }
 

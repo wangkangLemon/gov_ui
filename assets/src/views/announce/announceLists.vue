@@ -229,8 +229,8 @@ export default {
         fetchData(val) {
             this.loadingData = true
             return announceService.getAnnounceListsData(this.fetchParam).then((ret) => {
-                this.dataCache = ret
-                this.total = ret.total
+                this.dataCache = ret.data
+                this.total = ret._exts.total
                 this.loadingData = false
                 xmview.setContentLoading(false)     
             })

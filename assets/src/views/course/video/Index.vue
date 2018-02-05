@@ -191,7 +191,7 @@ export default {
             this.loadingData = true
             return videoService.search(this.fetchParam).then((ret) => {
                 this.data = ret.data
-                this.total = ret.total
+                this.total = ret._exts.total
                 this.loadingData = false
             })
         },

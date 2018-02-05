@@ -230,7 +230,7 @@ export default {
             this.loadingData = true
             return userService.fetchData(this.fetchParam).then((ret) => {
                 this.dataCache = ret.data
-                this.total = ret.total
+                this.total = ret._exts.total
                 this.loadingData = false
                 xmview.setContentLoading(false)     
             })

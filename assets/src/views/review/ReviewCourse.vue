@@ -261,9 +261,8 @@
                     obj.audited = -1
                 }
                 return courseService.getReviewCourselist(obj).then((ret) => {
-                    this.data = ret
-                    // this.total = ret.total
-                    this.total = 2400
+                    this.data = ret.data
+                    this.total = ret._exts.total
                     this.loadingData = false
                     xmview.setContentLoading(false)
                     // this.fetchParam.audited = '';

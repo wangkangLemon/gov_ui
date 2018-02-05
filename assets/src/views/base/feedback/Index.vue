@@ -122,7 +122,7 @@
                 this.loadingData = true
                 return feedbackService.search(this.fetchParam).then((ret) => {
                     this.data = ret.data
-                    this.total = ret.total
+                    this.total = ret._exts.total
                     this.loadingData = false
                     xmview.setContentLoading(false)
                 })

@@ -169,10 +169,10 @@
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
                         :current-page="page"
-                        :page-sizes="[20, 30, 60, 100]"
+                        :page-sizes="[15, 30, 60, 100]"
                         :page-size="pageSize"
-                        layout="total, sizes, ->, prev, pager, next, jumper"
-                        :total=200>
+                        layout="total, sizes, ->, prev, pager, next"
+                        :total=total>
                 </el-pagination>
             </section>
         </div>
@@ -248,7 +248,7 @@
                 formLabelWidth: '120px', // 表单label的宽度
                 addForm: false, // 表单弹窗是否显示
                 page: 1, // 分页当前显示的页数
-                // total: 0,
+                total: 0,
                 pageSize: 15,
                 search: { // 搜索的姓名
                     name: '',
@@ -344,8 +344,9 @@
                     gov_id: this.govID,
                     active: this.$route.params.active
                 }).then((ret) => {
-                    this.adminData = ret
-                    // this.total = ret.total
+                    this.adminData =  ret.data
+                    this.total = ret._exts.total
+                    // this.total = ret._exts.to
                     this.loading = false
                 })
             },

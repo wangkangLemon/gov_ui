@@ -218,7 +218,7 @@
                 return courseService.getPublicCourselist(obj).then((ret) => {
                     this.data = ret.data
                     // this.total = ret.total
-                    this.total = 2400
+                    this.total = ret._exts.total
                     this.loadingData = false
                     xmview.setContentLoading(false)
                     // this.fetchParam.status = '';

@@ -76,7 +76,7 @@
                     :current-page="currentPage4"
                     :page-sizes="[100, 200, 300, 400]"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="400">
+                    :total="total">
             </el-pagination>
         </section>
     </article>

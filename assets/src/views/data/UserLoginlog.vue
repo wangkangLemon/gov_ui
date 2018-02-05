@@ -269,8 +269,8 @@
                     date_start: this.search.createTime,
                     date_end: this.search.endTime,
                 }).then((ret) => {
-                    this.total = ret.total
-                    this.manageData = ret
+                    this.total = ret._exts.total
+                    this.manageData = ret.data
                 }).then(() => {
                     this.loading = false
                 })

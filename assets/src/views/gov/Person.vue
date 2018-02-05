@@ -270,8 +270,8 @@
                     name: this.search.name,
                     gov_id: this.govID
                 }).then((ret) => {
-                    this.adminData = ret
-                    this.total = ret.total
+                    this.adminData = ret.data
+                    this.total = ret._exts.total
                     this.loading = false
                 
                     this.$store.dispatch('saveUserList',ret)  

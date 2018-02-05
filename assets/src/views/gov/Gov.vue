@@ -12,10 +12,10 @@
         .search {
             @extend %top-search-container;
         }
-        .block {
+        /*.block {
             text-align: right;
             margin-top: 15px;
-        }
+        }*/
         .addForm {
             .tip {
                 text-align: center;
@@ -113,11 +113,11 @@
                 </template>
             </el-table-column>
         </el-table>
-        <div class="block">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[15, 30, 60, 100]"
-                :page-size="pageSize" layout="total, sizes, prev, pager, next" :total="total">
+        <!--<div class="block">-->
+            <el-pagination class="pagin" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-size="pageSize":page-sizes="[15, 30, 60, 100]"
+                 layout="sizes,total, prev, pager, next" :total="total">
             </el-pagination>
-        </div>
+        <!--</div>-->
     </article>
 </template>
 <script>
@@ -259,7 +259,7 @@
                     area_id: this.fetchParam.areaSelect
                 }).then((ret) => {
                     this.govData = ret.data
-                    this.total = ret.total
+                    this.total = ret._exts.total
 
                 }).then(() => {
                     this.loading = false

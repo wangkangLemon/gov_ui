@@ -217,7 +217,7 @@
                 this.loadingData = true
                 return courseService.getDocList(this.fetchParam).then((ret) => {
                     this.data = ret.data
-                    this.total = ret.total
+                    this.total = ret._exts.total
                     this.loadingData = false
                 })
             },

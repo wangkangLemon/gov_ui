@@ -126,7 +126,7 @@
         </el-table>
 
         <!--底部的page -->
-        <el-pagination class="pagin" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="fetchParam.page" :page-size="fetchParam.pagesize" :page-sizes="[15, 30, 60, 100]" layout="sizes,total, prev, pager, next" :total="100">
+        <el-pagination class="pagin" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="fetchParam.page" :page-size="fetchParam.pagesize" :page-sizes="[15, 30, 60, 100]" layout="sizes,total, prev, pager, next" :total="total">
         </el-pagination>
 
         <!--底部的批量删除和移动两个按钮-->
@@ -235,7 +235,7 @@ export default {
             this.loadingData = true
             return userService.fetchData(this.fetchParam).then((ret) => {
                 this.dataCache = ret.data
-                this.total = ret.total
+                this.total = ret._exts.total
                 this.loadingData = false
                 xmview.setContentLoading(false)     
             })

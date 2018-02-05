@@ -178,7 +178,7 @@ export default {
         fetchData(val) {
             return govService.fetchData(this.fetchParam).then((ret) => {
                 this.dataCache = ret.data
-                this.total = ret.total
+                this.total = ret._exts.total
                 this.loadingData = false
                 xmview.setContentLoading(false)     
             })

@@ -315,7 +315,7 @@
                     date_start: this.fetchParam.date_start,
                     date_end: this.fetchParam.date_end,
                 }).then((ret) => {
-                    this.total = ret.total
+                    this.total = ret._exts.total
                     this.tableData = ret.data
                     this.loadingData = false
                 }),

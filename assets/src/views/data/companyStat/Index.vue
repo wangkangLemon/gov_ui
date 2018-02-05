@@ -120,7 +120,7 @@
                            :current-page="fetchParam.page"
                            :page-size="fetchParam.pagesize"
                            :page-sizes="[15, 30, 60, 100]"
-                           layout="sizes,total, prev, pager, next"
+                           layout="total, sizes, prev, pager, next"
                            :total="total">
             </el-pagination>
         </article>
@@ -191,8 +191,8 @@
                     date_end: this.fetchParam.date_end,
                 }).then((ret) => {
                     this.loadingData = false
-                    this.total = ret.total
-                    this.tableData = ret
+                    this.total = ret._exts.total
+                    this.tableData = ret.data
                     console.log(ret)
                     xmview.setContentLoading(false)
                 })
