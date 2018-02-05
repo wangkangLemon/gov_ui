@@ -401,6 +401,7 @@
             },
             fetchCourse (params) {
                 // { course_name = '', status, category_id , time_start, time_end, page, pagesize}
+                console.log(params)
                 return courseService.getPublicCourselist(Object.assign({}, this.dialogCourse, params))
             },
             submit(s) {
