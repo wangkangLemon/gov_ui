@@ -76,6 +76,16 @@
 
         <article class="search">
             <section>
+                <i>类别</i>
+                <!--<CourseTaskTemplateCategorySelect :onchange="getData"
+                                                  v-model="fetchParam.category_id"></CourseTaskTemplateCategorySelect>-->
+                <el-form  prop="category_id" :fetch-suggestions="querySearch" >
+                    <el-select clearable class="select" v-model="fetchParam.category_id" placeholder="请选择类别"  @change="fetchData">
+                        <el-option  v-for="item in  category_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                </el-form>
+            </section>
+            <section>
                 <i>标题</i>
                 <el-input v-model="fetchParam.name" placeholder="请输入公告标题"   @keyup.enter.native="fetchData" ></el-input>
             </section>
@@ -102,10 +112,16 @@
             </el-table-column>
             <el-table-column min-width="150" prop="user_name" label="发布人员" v-if="data">
             </el-table-column>
-            <el-table-column min-width="170" :formatter="Time" label="创建时间">
+            <el-table-column min-width="120" :formatter="Time" label="创建时间">
             </el-table-column>
-
-            <el-table-column fixed="right" width="180" label="操作">
+            <!--<el-table-column width="100" label="状态">
+                <template scope="scope">
+                    <el-tag v-if="scope.row.pushabled == 1" type="success">推送</el-tag>
+                    <el-tag v-else-if="scope.row.pushabled == 0&&scope.row.disabled == 0" type="success">正常</el-tag>
+                    <el-tag v-else type="warning">不推送</el-tag>
+                </template>
+            </el-table-column>-->
+            <el-table-column fixed="right" width="150" label="操作">
                 <template scope="scope">
                     <!--<el-button @click="showFn(scope.$index, scope.row)" type="text" size="small">详情
                     </el-button>-->
@@ -115,11 +131,11 @@
                     <!--<el-button type="text" size="small" @click="editUser(scope.$index, scope.row)">
                             修改
                     </el-button>-->
-                    <!--<el-button v-if="scope.row.disabled == 0" @click="offline(scope.$index, scope.row)" type="text" size="small">
-                        <i>禁用</i>
+                    <!--<el-button v-if="scope.row.pushabled == 1" @click="offline(scope.$index, scope.row)" type="text" size="small">
+                        <i>不推送</i>
                     </el-button>
                     <el-button v-else @click="online(scope.$index, scope.row)" type="text" size="small">
-                        <i>启用</i>
+                        <i>推送</i>
                     </el-button>-->
                     <!--<el-button @click="del(scope.$index, scope.row)" type="text" size="small">删除</el-button>-->
                 </template>
@@ -142,7 +158,6 @@
 <script>
 import announceService from '../../services/announce/announceService.js'
 import DateRange from '../component/form/DateRangePicker.vue'
-import companyUserService from '../../services/gov/companyUserService.js'
 
 function getFetchParam() {
     return {
@@ -153,6 +168,7 @@ function getFetchParam() {
         name,
         mobile: void 0,
         role_id: void -1,
+        category_id: void 0, 
     }
 }
 
@@ -186,14 +202,53 @@ export default {
                 birthday: '',          // 生日
                 addate: ''
             },
-            imagesList:[]
+            imagesList:[],
+            category_list:[]
         }
     },
     activated () {
         this.fetchData()
+        this.getCategory()
     },
     methods: {
-    
+          // 禁用
+        offline(index, row) {
+            // if(row.deleted == 0){
+                xmview.showDialog(`你将要取消推送 <span style="color:red">${row.name}</span>这条公告 确认吗?`, () => {
+                    row.pushabled = 1
+                    announceService.offline(row).then((ret) => {
+                    })
+                })
+            // }else{
+            //      xmview.showDialog(`管理员 <span style="color:red">${row.name}</span> 已删除，无法禁用！`)
+            // }
+        },
+        // 启用
+        online(index, row) {
+            // if(row.deleted == 0){
+                xmview.showDialog(`你将要推送<span style="color:red">${row.name}</span>这条公告 确认吗?`, () => {
+                    row.pushabled = 0
+                    announceService.online(row).then((ret) => {
+                    })
+                })
+            // }else{
+            //      xmview.showDialog(`管理员 <span style="color:red">${row.name}</span> 已删除，无法启用！`)
+            // }
+            
+        },
+         //获取部门组下拉列表
+            getCategory(val){
+                announceService.getCategoryTree({pagesize:-1, disabled:-1}).then((ret)=>{
+                 this.category_list = ret.data;
+                })
+            },
+            //拿到部门组
+            querySearch(queryString, cb) {
+                var restaurants = this.restaurants;
+                var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+                // 调用 callback 返回建议列表的数据返回建议列表的数据
+                cb(results);
+            },
        // 查看管理员详情
         checkClerkDetail (index, row) {
             this.showDetail = true

@@ -8,7 +8,7 @@ class CompanyService {
     getAnnounceListsData ({
         name = '',  // 关键词：匹配公告名称
         // area = '',     // 负责区域：传 省份名称
-        // category = 'agent', // 类型： self 我是工业，agent 我是代理
+        category_id = '', // 类型：
         // status ,   // 状态：-1 全部，0 关联中，1 待确认，2 已拒绝，3 已解除，4 已放弃
         page = 1,
         pagesize = 10,
@@ -17,7 +17,7 @@ class CompanyService {
         return api.get(finalUrl, {
             name,
             // area,
-            // category,
+            category_id,
             // status,
             page,
             pagesize,
@@ -30,7 +30,7 @@ class CompanyService {
     fetchAllCheckData () {
         let finalUrl = `${urlPre}/contacts`
         return api.get(finalUrl).then((ret) => {
-            return ret.data
+            return ret
         })
     }
     // 获取详情接口
@@ -44,8 +44,8 @@ class CompanyService {
         return `${config.apiHost}/common/upload/file`
     }
     
-    announceSend({ title, content, images, sendtime, range }) {
-        let reqParam = { title, content, images, sendtime, range }
+    announceSend({ category_id, name, content, images, sendtime, pushabled, range }) {
+        let reqParam = { category_id, name, content, images, sendtime, pushabled, range }
         let url = urlPre + '/send'
         return api.post(url, reqParam).then(ret => {
             if (ret.code == 0) {
@@ -86,6 +86,19 @@ class CompanyService {
             }
         })
     }
+
+
+
+     // 获取课程任务模板分列表
+    getCategoryTree({ id = '', type, filter = true, pid =-1 , level=-1, pagesize=-1, disabled=-1}) {
+        let finalUrl = urlPre + '/category/lists'
+        // alert('进入getData')
+        return api.get(finalUrl, { id, name, pagesize,disabled}).then((ret) => {
+            // console.log(ret)
+            return ret
+        })
+    }
+
 }
 
 export default new CompanyService()

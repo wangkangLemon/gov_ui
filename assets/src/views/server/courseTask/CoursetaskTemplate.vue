@@ -82,7 +82,7 @@
                 <section class="search">
                     <section>
                         <i>类别</i>
-                        <el-select clearable class="select" v-model="temp.fetchParam.category_id" placeholder="请选择部门" :fetch-suggestions="querySearch" @change="getTempData">
+                        <el-select clearable class="select" v-model="temp.fetchParam.category_id" placeholder="请选择类别" :fetch-suggestions="querySearch" @change="getTempData">
                             <el-option  v-for="item in  category_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </section>
