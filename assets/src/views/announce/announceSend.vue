@@ -125,13 +125,13 @@
                             <el-radio :label="1">推送</el-radio>
                         </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="发送范围" >
+                    <!--<el-form-item label="发送范围" >
                         <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                         <div style="margin: 15px 0;"></div>
                         <el-checkbox-group v-model="checkedMenus" @change="handleCheckedMenusChange">
                             <el-checkbox v-for="item in allCheckData" :label="item.id" :key="item.id" :value="item.id">{{item.name}}</el-checkbox>
                         </el-checkbox-group>
-                    </el-form-item>
+                    </el-form-item>-->
                     <el-form-item label="发送部门">
                         <div class="collection" @click="openPushTypeDialog">
                             <el-tag
@@ -212,15 +212,27 @@
                 },
                 fetchParam: getFetchParam(),
                 rules: {
+                    category_id: [
+                        {required: true, type:'number', message: '请输入类别', trigger: 'change'},
+                    ],
                     name: [
-                        {required: true, message: '请输入公告标题', trigger: 'blur'},
+                        {required: true, pattern:  /\S$/, min: 1, message: '请输入非空格或非特殊字符的标题', trigger: 'blur'},
                     ],
                     content: [
-                        {required: true, message: '请输入公告内容', trigger: 'blur'},
+                        {required: true,  pattern:  /\S$/, min: 1,message: '请输入非空格或非特殊字符的内容', trigger: 'blur'},
                     ],
                     images: [
-                        // {required: true, message: '请上传栏目logo', trigger: 'blur'}
-                    ]
+                        {required: true, message: '请上传栏目logo', trigger: 'blur'}
+                    ],
+                    sendtime: [
+                        {required: true, type:'object', message: '请输入发送时间', trigger: 'blur'}
+                    ],
+                    pushabled: [
+                        {required: true,  type:'number', message: '请选择是否推送', trigger: 'blur'}
+                    ],
+                    // images: [
+                    //     {required: true, message: '请上传栏目logo', trigger: 'blur'}
+                    // ],
                 },
                 checkedMenus: [],
                 //checkbox 的相关数据
@@ -255,6 +267,9 @@
                     this.resetForm()
                 }
             },
+            'fetchParam.pushabled'(){
+                console.log(typeof(this.fetchParam.pushabled))
+            }
         },
 
         activated () {
@@ -411,23 +426,22 @@
                     announceService.announceSend(this.fetchParam).then((ret) => {
                         xmview.showTip('success', '操作成功!')
                         this.$refs['form'].resetFields()
-                        if (this.activeTab === 'edit') {
-                            this.nodeSelected.label = this.fetchParam.name  
-                            node.data.data=this.fetchParam
-                            // this.nodeSelected.item = this.fetchParam
-                            this.$forceUpdate()
-                        } else {
-                            this.fetchParam.id = ret.data.id
-                            let addedItem = {
-                                name: this.fetchParam.name,
-                                value: this.fetchParam.id,
-                                item: this.fetchParam
-                            }
-
+                        // if (this.activeTab === 'edit') {
+                        //     this.nodeSelected.label = this.fetchParam.name  
+                        //     node.data.data=this.fetchParam
+                        //     // this.nodeSelected.item = this.fetchParam
+                        //     this.$forceUpdate()
+                        // } else {
+                        //     this.fetchParam.id = ret.data.id
+                        //     let addedItem = {
+                        //         name: this.fetchParam.name,
+                        //         value: this.fetchParam.id,
+                        //         item: this.fetchParam
+                        //     }
                             // 如果是添加的根节点
                             this.$router.push({name: 'announce-lists'})
                             this.fetchParam =getFetchParam()
-                        }
+                        // }
                     })
                 })
             },

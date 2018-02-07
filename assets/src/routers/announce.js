@@ -36,19 +36,19 @@ export default {
                 noback: false
             }
         },
-        {
-            path: 'contacts',
-            name: 'announce-contacts',
-            component: resolve => {
-                require.ensure([], () => {
-                    resolve(require('../views/announce/announceContacts.vue'))
-                })
-            },
-            meta: {
-                title: '公告发送',
-                noback: false
-            }
-        },
+        // {
+        //     path: 'contacts',
+        //     name: 'announce-contacts',
+        //     component: resolve => {
+        //         require.ensure([], () => {
+        //             resolve(require('../views/announce/announceContacts.vue'))
+        //         })
+        //     },
+        //     meta: {
+        //         title: '公告发送',
+        //         noback: false
+        //     }
+        // },
         // {
         //     path: 'edit/:sys_id',
         //     name: 'announce-edit',
