@@ -9,7 +9,7 @@
         .manage-container {
             @extend %right-top-btnContainer;
         }
-        
+
         > section {
             display: inline-block;
             vertical-align: top;
@@ -24,7 +24,7 @@
             width: 700px;
             .edit-content {
                 margin: 10px 0 0
-            
+
             }
 
             .btn-selected {
@@ -185,7 +185,7 @@
             </span>
         </el-dialog>
 
-        
+
     </article>
 </template>
 
@@ -368,19 +368,19 @@
                 this.checkAll = checkedCount === this.allCheckData.length;
             },
 
-            //总的数据     
+            //总的数据
             fetchData(val) {
                 return announceService.fetchAllCheckData(this.fetchParam).then((ret) => {
                     // console.log('全部的菜单======')
                     this.allCheckData = ret.data
                     this.loadingData = false
                     this.checkAll = this.checkedMenus.length === this.allCheckData.length;
-                    xmview.setContentLoading(false)     
+                    xmview.setContentLoading(false)
                 })
             },
             // 图片上传完毕
             handleImgUploaded (response, file, fileList) {
-                
+
                 // this.fetchParam.images = response.url
                 // if (this.fetchParam.images.indexOf(response.data.url) == -1) {
                 //     this.fetchParam.images.push(response.data.url)
@@ -389,7 +389,7 @@
 
                 // console.log(response)
 
-                
+
                 //  this.fetchParam.images = response.map(function(v){
                 //     return v.response.data.url
                 // }).join()
@@ -435,7 +435,7 @@
                         xmview.showTip('success', '操作成功!')
                         this.$refs['form'].resetFields()
                         // if (this.activeTab === 'edit') {
-                        //     this.nodeSelected.label = this.fetchParam.name  
+                        //     this.nodeSelected.label = this.fetchParam.name
                         //     node.data.data=this.fetchParam
                         //     // this.nodeSelected.item = this.fetchParam
                         //     this.$forceUpdate()
@@ -457,8 +457,8 @@
             resetForm () {
                 this.$refs.form.resetFields()
             },
-           
-           
+
+
         },
         components: { UploadImg, Transfer}
     }
