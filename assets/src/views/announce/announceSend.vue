@@ -113,11 +113,12 @@
                     </el-form-item>
                     <el-form-item label="公告图片" prop="images" class="images">
                         <UploadImg ref="uploadImg" :fetchParam.images="fetchParam.images" :url="uploadImgUrl"
-                                   :onSuccess="handleImgUploaded">
+                                   :onSuccess="handleImgUploaded" >
                         </UploadImg>
                     </el-form-item>
                     <el-form-item prop="sendtime" label="发送时间" >
-                        <el-date-picker v-model="fetchParam.sendtime" type="date" />
+                        <el-date-picker v-model="fetchParam.sendtime" type="date" placeholder="发送日期"
+                                        :picker-options="pickerOptionsed"/>
                     </el-form-item>
                     <el-form-item label="是否推送" prop="pushabled">
                         <el-radio-group v-model="fetchParam.pushabled">
@@ -267,6 +268,11 @@
                     total: 0,
                 },
                 selectData:[],
+                pickerOptionsed: {
+                    disabledDate (time) {
+                        return time.getTime() < Date.now() - 8.64e7
+                    }
+                },
             }
         },
         watch: {
@@ -293,6 +299,7 @@
             this.pushTypeDialog.selectedData[this.pushTypeDialog.type] =[]
         },
         methods: {
+            
             transferConfirmFn () {
                 this.pushTypeDialog.showDialog = false
             },

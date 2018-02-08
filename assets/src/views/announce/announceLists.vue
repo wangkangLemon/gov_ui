@@ -89,6 +89,9 @@
                 <i>标题</i>
                 <el-input v-model="fetchParam.name" placeholder="请输入公告标题"   @keyup.enter.native="fetchData" ></el-input>
             </section>
+            <DateRange title="创建时间" :start="fetchParam.stime" :end="fetchParam.etime" @changeStart="val=> fetchParam.stime=val "
+                @changeEnd="val=> fetchParam.etime=val" :change="fetchData">
+            </DateRange>
             <!--<section>
                 <i>角色</i>
                 <el-select clearable v-model="fetchParam.role_id" @change="fetchData">
