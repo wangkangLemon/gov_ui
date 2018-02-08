@@ -169,6 +169,7 @@ function getFetchParam() {
         mobile: void 0,
         role_id: void -1,
         category_id: void 0, 
+        pushabled: -1, 
     }
 }
 

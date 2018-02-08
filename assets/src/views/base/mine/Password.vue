@@ -74,6 +74,13 @@ export default {
         this.form.email = this.form.email || '未设置'
         xmview.setContentLoading(false)
     },
+    watch: {
+            'fetchParam.password'(){
+                if(this.fetchParam.password==undefined){
+                    this.fetchParam.password=''
+                }
+            }
+        },
     methods: {
         submit(form) {
             console.log(this.form )

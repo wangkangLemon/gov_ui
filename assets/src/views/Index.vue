@@ -472,7 +472,7 @@
                             // },
                             {
                                 "id": 17,
-                                "menu_name": "注册登陆统计",
+                                "menu_name": "注册登录统计",
                                 "menu_node": "/data/report-userlogin",
                                 "remark": "",
                                 "pid": 2,

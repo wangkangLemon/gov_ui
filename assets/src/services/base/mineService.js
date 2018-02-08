@@ -79,7 +79,7 @@ class MineService {
         })
     }
 
-    // =========================二次登陆部分============
+    // =========================二次登录部分============
     getSafeSetInfo() {
         let url = `${urlPre}/two-step/`
         return api.get(url).then(ret => {
@@ -87,7 +87,7 @@ class MineService {
         })
     }
 
-    // 二次登陆绑定的微信登录参数
+    // 二次登录绑定的微信登录参数
     getWechatLoginConfig() {
         let url = `${urlPre}/two-step/wechat`
         return api.get(url).then(ret => {

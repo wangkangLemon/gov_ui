@@ -216,7 +216,15 @@
                         {required: true, type:'number', message: '请输入类别', trigger: 'change'},
                     ],
                     name: [
-                        {required: true, pattern:  /\S$/, min: 1, message: '请输入非空格或非特殊字符的标题', trigger: 'blur'},
+                        {required: true,  message: '请输入公告标题', trigger: 'blur'},
+                        {
+                            min: 1,
+                            max: 40,
+                            message: '长度不得大于 40 个字符'
+                        },{
+                            pattern:  /\S$/,
+                            message: '请输入非空格或非特殊字符的标题'
+                        }
                     ],
                     content: [
                         {required: true,  pattern:  /\S$/, min: 1,message: '请输入非空格或非特殊字符的内容', trigger: 'blur'},

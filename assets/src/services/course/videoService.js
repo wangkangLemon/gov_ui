@@ -101,7 +101,7 @@ class VideoService {
     }
 
     deleteVideo({ id }) {
-        let url = `${urlPre}/video/${id}`
+        let url = `${urlPre}/delete/${id}`
         return api.del(url)
     }
 
@@ -117,10 +117,6 @@ class VideoService {
         let finalUrl = `${urlPre}/video/${form.id}/audit`
         return api.post(finalUrl, form)
     }
-
-
-
-
     
 }
 

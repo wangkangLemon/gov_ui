@@ -416,7 +416,7 @@ class govService {
         })
     }
 
-     // 注册登陆统计
+     // 注册登录统计
     getReportUserlogin({
         page,
         pagesize,

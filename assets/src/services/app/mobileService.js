@@ -54,7 +54,7 @@ class MobileService {
     // 删除导航方案
     menuDelete (id) {
         let finalUrl = `${urlPre}/menu/scheme/${id}`
-        return api.del(finalUrl)
+        return api.post(finalUrl)
     }
     // 上传导航图标
     uploadNavIcon ({image, alias}) {
@@ -100,7 +100,7 @@ class MobileService {
     // 删除导航方案
     deleteScheme ({scheme_id}) {
         let finalUrl = `${urlPre}/menuscheme/${scheme_id}`
-        return api.del(finalUrl)
+        return api.post(finalUrl)
     }
     // 启用方案
     activeScheme ({scheme_id, ios, android}) {
@@ -117,7 +117,7 @@ class MobileService {
     // 删除功能
     deleteModule ({scheme_id, module_id}) {
         let finalUrl = `${urlPre}/menuscheme/${scheme_id}/module/${module_id}`
-        return api.del(finalUrl)
+        return api.post(finalUrl)
     }
     // 获取功能版本
     getModuleVersions () {

@@ -124,6 +124,13 @@
                 role_list:[],
             }
         },
+        watch: {
+            'fetchParam.password'(){
+                if(this.fetchParam.password==undefined){
+                    this.fetchParam.password=''
+                }
+            }
+        },
         created() {
             xmview.setContentLoading(false);
                 if (this.$route.params.id != undefined) {    //路由id传递

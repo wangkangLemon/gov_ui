@@ -10,6 +10,7 @@ class CompanyService {
         // area = '',     // 负责区域：传 省份名称
         category_id = '', // 类型：
         // status ,   // 状态：-1 全部，0 关联中，1 待确认，2 已拒绝，3 已解除，4 已放弃
+        pushabled, 
         page = 1,
         pagesize = 10,
     }) {
@@ -19,6 +20,7 @@ class CompanyService {
             // area,
             category_id,
             // status,
+            pushabled,
             page,
             pagesize,
         }, false).then((ret) => {
@@ -27,9 +29,11 @@ class CompanyService {
     }
 
     // 获取
-    fetchAllCheckData () {
+    fetchAllCheckData ({
+        name,
+    }) {
         let finalUrl = `${urlPre}/contacts`
-        return api.get(finalUrl).then((ret) => {
+        return api.get(finalUrl,{name}).then((ret) => {
             return ret
         })
     }

@@ -74,7 +74,7 @@
             <!--<section class="course-analytics" v-if="statData != null">
                 <div>
                     <div>
-                        <i>今日登陆</i>
+                        <i>今日登录</i>
                         <p>{{statData.today_num}}</p>
                         </div>
                 </div>

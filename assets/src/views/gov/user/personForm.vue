@@ -179,6 +179,13 @@
         activated () {
             this.getrole()
         },
+        watch: {
+            'fetchParam.password'(){
+                if(this.fetchParam.password==undefined){
+                    this.fetchParam.password=''
+                }
+            }
+        },
         methods: {
             // passFn(){
             //     return this.$route.params.id != undefined?false:true

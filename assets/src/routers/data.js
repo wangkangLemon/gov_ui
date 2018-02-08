@@ -119,7 +119,7 @@ export default {
             }
         },
         
-        //注册登陆统计
+        //注册登录统计
          {
             path: 'report-userlogin',
             name: 'data-report-userlogin',
@@ -129,7 +129,7 @@ export default {
                 })
             },
             meta: {
-                title: '数据分析 - 注册登陆统计 ',
+                title: '数据分析 - 注册登录统计 ',
                 noback: true
             }
         },

@@ -74,7 +74,7 @@
             <!--<section class="course-analytics" v-if="statData != null">
                 <div>
                     <div>
-                        <i>今日登陆</i>
+                        <i>今日登录</i>
                         <p>{{statData.today_num}}</p>
                         </div>
                 </div>
@@ -182,7 +182,7 @@
                 <el-table-column
                         prop="device"
                         min-width="180"
-                        label="登陆设备">
+                        label="登录设备">
                 </el-table-column>
             </el-table>
             <div class="block">
