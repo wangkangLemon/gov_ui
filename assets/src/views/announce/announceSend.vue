@@ -117,7 +117,7 @@
                         </UploadImg>
                     </el-form-item>
                     <el-form-item prop="sendtime" label="发送时间" >
-                        <el-date-picker v-model="fetchParam.sendtime" type="date" placeholder="发送日期"
+                        <el-date-picker v-model="fetchParam.sendtime" type="datetime" placeholder="发送日期"
                                         :picker-options="pickerOptionsed"/>
                     </el-form-item>
                     <el-form-item label="是否推送" prop="pushabled">
@@ -194,7 +194,7 @@
     import announceService from '../../services/announce/announceService.js'
     import treeUtils from '../../utils/treeUtils'
     import UploadImg from '../component/upload/UploadImages.vue'
-    import { date2Str } from '../../utils/timeUtils.js'
+    import { time2String } from '../../utils/timeUtils.js'
     import Transfer from '../component/dialog/Transfer.vue'
 
     export default{
@@ -283,6 +283,9 @@
             },
             'fetchParam.pushabled'(){
                 console.log(typeof(this.fetchParam.pushabled))
+            },
+            'fetchParam.sendtime'(){
+                console.log(this.fetchParam.sendtime)
             }
         },
 
@@ -292,6 +295,14 @@
             this.checkAll=this.checkedMenus= 0
             xmview.setContentLoading(false)
             this.uploadImgUrl = announceService.getUploadCategoryImgUrl()
+            
+        //  cropperImgSucc(imgData) {
+        //             courseService.commonUploadImageBase({ image: imgData ,extpath:''}).then((ret) => {
+        //                 this.fetchParam.image = ret.url
+        //             })
+        //         },
+
+
             console.log(this.uploadImgUrl)
             this.$refs.uploadImg.clearFiles()
             this.fetchData()
@@ -416,7 +427,7 @@
                 //     this.fetchParamImp = ret
                 //     console.log(ret)
                 // })
-
+                debugger
                this.fetchParam.images = this.$refs.uploadImg.imgList.map(function(v){
                     return v.response.data.url
                 }).join()
@@ -433,11 +444,13 @@
                 // }
                 this.$refs.form.validate((ret) => {
                     if (!ret) return
-                    this.fetchParam.sendtime = this.fetchParam.sendtime ? date2Str(this.fetchParam.sendtime) : ''
+                    
+                    this.fetchParam.sendtime = this.fetchParam.sendtime ? time2String(this.fetchParam.sendtime) : ''
                     this.fetchParam.range=this.pushTypeDialog.selectedData[this.pushTypeDialog.type].map(item => {
                         return item.id
-                        }).join(',')
+                    }).join(',')
                     console.log(this.fetchParam)
+                    
                     announceService.announceSend(this.fetchParam).then((ret) => {
                         xmview.showTip('success', '操作成功!')
                         this.$refs['form'].resetFields()

@@ -51,7 +51,24 @@ class CompanyService {
     getUploadCategoryImgUrl() { 
         return `${config.apiHost}/common/upload/file`
     }
-    
+    // getUploadCategoryImgUrl({image, alias = Date.now() + '.jpg', biz='course', extpath}) {
+    //     // govid = govid || authUtils.getUserInfo().company_id
+    //     let finalUrl = `${config.apiHost}/common/upload/file`
+    //       return api.post(url, {image, alias, biz, extpath}).then((ret) => {
+    //         xmview.showTip('success',ret.message)
+    //         return ret.data
+    //     })
+    // }
+
+    // commonUploadImageBase(image,  biz='section', extpath='category') {
+    //     let url = `${config.apiHost}/common/upload/file`
+    //     return api.post(url, image,  biz, extpath).then((ret) => {
+    //         xmview.showTip('success',ret.message)
+    //         return ret.data
+    //     })
+    // }
+
+
     announceSend({ category_id, name, content, images, sendtime, pushabled, range }) {
         let reqParam = { category_id, name, content, images, sendtime, pushabled, range }
         let url = urlPre + '/send'

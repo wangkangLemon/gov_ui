@@ -65,7 +65,7 @@
                 <br>
                 <p><i class="title">所属部门：</i><span class="value">{{clerkDetail.gov_name}}</span></p>
                 <p><i class="title">发布人员：</i> <span class="value">{{clerkDetail.user_name}}</span></p>
-                <p><i class="title">创建时间：</i><span class="value">{{clerkDetail.addate}}</span></p>
+                <p><i class="title">发送时间：</i><span class="value">{{clerkDetail.send_time}}</span></p>
             </div>
         </el-dialog>
         <!--<section class="manage-container">
@@ -89,7 +89,7 @@
                 <i>标题</i>
                 <el-input v-model="fetchParam.name" placeholder="请输入公告标题"   @keyup.enter.native="fetchData" ></el-input>
             </section>
-            <DateRange title="创建时间" :start="fetchParam.stime" :end="fetchParam.etime" @changeStart="val=> fetchParam.stime=val "
+            <DateRange title="发送时间" :start="fetchParam.stime" :end="fetchParam.etime" @changeStart="val=> fetchParam.stime=val "
                 @changeEnd="val=> fetchParam.etime=val" :change="fetchData">
             </DateRange>
             <!--<section>
@@ -115,7 +115,7 @@
             </el-table-column>
             <el-table-column min-width="150" prop="user_name" label="发布人员" v-if="data">
             </el-table-column>
-            <el-table-column min-width="120" :formatter="Time" label="创建时间">
+            <el-table-column min-width="150" :formatter="Time" label="创建时间">
             </el-table-column>
             <!--<el-table-column width="100" label="状态">
                 <template scope="scope">
@@ -314,7 +314,10 @@ export default {
         timeFilter( addate){
             let time
             this.dataCache.forEach(v=> {
-                    time = addate.split(" ")[0]
+                    // time = addate.split(" ")[0]
+                    // console.log(addate)
+                    // console.log(typeof(addate))
+                    time = addate.substring(0,addate.length-3)
                 }, this);
             return time
         },

@@ -50,11 +50,11 @@ export function time2String (time, withoutDate = false, withoutSeconds = true, i
 }
 
 /**
- * 获取时间间隔的描述字符串
+ * 获取时间间隔的描述字符串  (例如 ：“刚刚”)
  * @param time 时间戳
  * @param isUTC 是否是UTC时间(true表示北京时间减去8小时) 默认:true
  */
-export function getTimespanDesc (time, isUTC = true) {
+export function getTimespanDesc (time, isUTC = true) { 
     // 当前的时间戳
     let currTimetamp = isUTC ? getUTCTimetamp() : Date.now()
     let timespan = currTimetamp / 1000 - time // 单位:秒
