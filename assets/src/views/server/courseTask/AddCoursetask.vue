@@ -372,7 +372,8 @@
                 let param = {
                     name: this.pushTypeDialog.fetchParam.name,
                     page: this.pushTypeDialog.page,
-                    pagesize: this.pushTypeDialog.pagesize
+                    pagesize: this.pushTypeDialog.pagesize,
+                    noself:1  
                 }
 
                 if (this.pushTypeDialog.isSearch) {
