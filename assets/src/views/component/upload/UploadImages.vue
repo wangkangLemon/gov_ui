@@ -22,6 +22,7 @@
         <el-upload :headers="headers"
                    :action="url"
                    :name="name"
+                   :data="data"
                    list-type="picture-card"
                    :multiple="multiple"
                    :on-success="handleSuccess"
@@ -61,6 +62,15 @@
                 type: Number,
                 default: 9
             },
+            //上传的参数
+            data:{
+                type:Object,
+                default:()=>({
+                    biz: "",
+                    extpath: ""
+                })
+               
+            }
         },
         data () {
             return {
@@ -94,6 +104,7 @@
             }
         },
         activated () {
+            console.log(this.govid)
             this.uploadBtn && (this.uploadBtn = this.$refs.container.querySelector('.el-upload--picture-card'))
         },
         mounted () {
@@ -102,6 +113,7 @@
         methods: {
             handlePreview (file) {
                 this.dialogImageUrl = file.url
+                console.log(file.url)
                 this.dialogVisible = true
             },
             handleRemove (file, fileList) {

@@ -112,7 +112,7 @@
                         <el-input v-model="fetchParam.content" ></el-input>
                     </el-form-item>
                     <el-form-item label="公告图片" prop="images" class="images">
-                        <UploadImg ref="uploadImg" :fetchParam.images="fetchParam.images" :url="uploadImgUrl"
+                        <UploadImg ref="uploadImg" :fetchParam.images="fetchParam.images" :url="uploadImgUrl" :data="uploadExtraData"
                                    :onSuccess="handleImgUploaded" >
                         </UploadImg>
                     </el-form-item>
@@ -195,6 +195,7 @@
     import treeUtils from '../../utils/treeUtils'
     import UploadImg from '../component/upload/UploadImages.vue'
     import { time2String } from '../../utils/timeUtils.js'
+    import authUtils  from '../../utils/authUtils'
     import Transfer from '../component/dialog/Transfer.vue'
 
     export default{
@@ -273,6 +274,10 @@
                         return time.getTime() < Date.now() - 8.64e7
                     }
                 },
+                uploadExtraData: {
+                    biz: "gov",
+                    extpath: authUtils.getUserInfo().gov_id
+                }
             }
         },
         watch: {
@@ -281,27 +286,30 @@
                     this.resetForm()
                 }
             },
-            'fetchParam.pushabled'(){
-                console.log(typeof(this.fetchParam.pushabled))
-            },
-            'fetchParam.sendtime'(){
-                console.log(this.fetchParam.sendtime)
+            'fetchParam.category_id'(){
+                console.log(this.fetchParam.category_id)
             }
+
         },
 
         activated () {
+            console.log(authUtils.getUserInfo())
             this.fetchParam = getFetchParam()
-            console.log(this.fetchParam)
+            // console.log(this.fetchParam)
             this.checkAll=this.checkedMenus= 0
             xmview.setContentLoading(false)
             this.uploadImgUrl = announceService.getUploadCategoryImgUrl()
             
-        //  cropperImgSucc(imgData) {
-        //             courseService.commonUploadImageBase({ image: imgData ,extpath:''}).then((ret) => {
-        //                 this.fetchParam.image = ret.url
-        //             })
-        //         },
+            // let param= new FormData()
+            // param.append('biz', 'gov')
+            // param.append('extpath', '')
+            //  announceService.getUploadCategoryImgUrl( param).then((ret) => {
+            //             // this.fetchParam.image = ret.url
+            //             console.log(ret.data)
+            //             //this.uploadImgUrl
+            //         })
 
+ 
 
             console.log(this.uploadImgUrl)
             this.$refs.uploadImg.clearFiles()
@@ -344,7 +352,7 @@
                     param.gov_id = this.pushTypeDialog.fetchParam.gov_id
                     param.role_id = -1
                 }
-                console.log(param)
+                // console.log(param)
                 // map[this.pushTypeDialog.type](param).then(ret => {
                 announceService.fetchAllCheckData(param).then(ret => {
 
@@ -362,7 +370,6 @@
             //获取部门组下拉列表
             getCategory(val){
                 announceService.getCategoryTree({pagesize:-1, disabled:-1}).then((ret)=>{
-                    console.log(ret)
                  this.category_list = ret.data;
                 })
             },
@@ -381,7 +388,6 @@
                 this.checkedMenus = event.target.checked ? arr : [];
             },
             handleCheckedMenusChange(value) {
-                console.log(value)
                 let checkedCount = value.length;
                 this.checkAll = checkedCount === this.allCheckData.length;
             },
@@ -403,7 +409,7 @@
                 // if (this.fetchParam.images.indexOf(response.data.url) == -1) {
                 //     this.fetchParam.images.push(response.data.url)
                 // }
-
+                 
 
                 // console.log(response)
 
@@ -485,7 +491,7 @@
 
     function getFetchParam () {
         return {
-            category_id: '',
+            category_id: void 0,
             name: '',
             content: void 0,
             images: void 0,

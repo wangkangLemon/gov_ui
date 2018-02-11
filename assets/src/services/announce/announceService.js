@@ -51,6 +51,14 @@ class CompanyService {
     getUploadCategoryImgUrl() { 
         return `${config.apiHost}/common/upload/file`
     }
+    //  getUploadCategoryImgUrl(params) {
+    //      let url = `${config.apiHost}/common/upload/file`
+    //      return api.post(url, params)//.then((ret) => {
+    //              //xmview.showTip('success',ret.message)
+    //              //return ret.data
+    //          //})
+    //  }  
+
     // getUploadCategoryImgUrl({image, alias = Date.now() + '.jpg', biz='course', extpath}) {
     //     // govid = govid || authUtils.getUserInfo().company_id
     //     let finalUrl = `${config.apiHost}/common/upload/file`

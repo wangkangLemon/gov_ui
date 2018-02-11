@@ -33,7 +33,7 @@ export default {
             },
             meta: {
                 title: '公告发送',
-                noback: false
+                noback: true
             }
         },
         // {

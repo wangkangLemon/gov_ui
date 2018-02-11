@@ -47,6 +47,10 @@ export function del (url, params, needLoading) {
     return sendRequest('DELETE', url, params, needLoading)
 }
 
+export function upload(url, params, needLoading) {
+    console.log('del--------------------------------')
+    return sendRequest('UPLOAD', url, params, needLoading)
+}
 // 下载功能
 export function downLoad (url, params, fileName) {
     return new Promise((resolve, reject) => {
@@ -91,8 +95,16 @@ function sendRequest (method, url, params, needLoding = false) {
     let pRequest = new Promise((resolve, reject) => {
         // 根据是否有token 添加header
         let headers = {}
+        
         if (authUtils.getAuthToken()) headers['Authorization'] = 'Bearer ' + authUtils.getAuthToken() // 登录凭证
         // if (authUtils.getTwiceToken()) headers['TwoStep'] = `Bearer ` + authUtils.getTwiceToken() // 二次验证的token
+        if (method === 'UPLOAD') {
+            headers = Object.assign({}, headers, {
+                'Content-Type': 'multipart/form-data'
+            })
+            method = 'POST' 
+        }
+
         ajax({
             method: method,
             url: url,
