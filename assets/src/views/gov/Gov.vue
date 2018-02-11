@@ -85,7 +85,7 @@
             <el-table-column prop="name" label="部门名称" min-width="180">
                 <template scope="scope">
                     <el-tag type="gray">{{govType[scope.row.category]}}</el-tag>
-                    {{scope.row.name}}
+                      {{scope.row.name}}
                 </template>
             </el-table-column>
             <el-table-column width="120" prop="concact" label="联系人">

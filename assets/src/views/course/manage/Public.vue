@@ -93,7 +93,7 @@
                     </el-button>
                 </template>
             </el-table-column>
-            <el-table-column width="80" prop="score_pass" label="总分数">
+            <el-table-column width="80" prop="total_score" label="总分数">
             </el-table-column>
             <el-table-column width="80" prop="limit_time" label="限时">
             </el-table-column>

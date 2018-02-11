@@ -98,12 +98,14 @@ function sendRequest (method, url, params, needLoding = false) {
         
         if (authUtils.getAuthToken()) headers['Authorization'] = 'Bearer ' + authUtils.getAuthToken() // 登录凭证
         // if (authUtils.getTwiceToken()) headers['TwoStep'] = `Bearer ` + authUtils.getTwiceToken() // 二次验证的token
+        
+        //直传图片写的假post 方法 
         if (method === 'UPLOAD') {
             headers = Object.assign({}, headers, {
                 'Content-Type': 'multipart/form-data'
             })
             method = 'POST' 
-        }
+        }//
 
         ajax({
             method: method,

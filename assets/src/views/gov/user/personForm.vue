@@ -51,10 +51,10 @@
             <el-form label-width="120px" ref="form" :rules="rules" :model="fetchParam">
                 
                 <el-form-item label="姓名" prop="name">
-                    <el-input v-model.name="fetchParam.name"></el-input>
+                    <el-input v-model="fetchParam.name"></el-input>
                 </el-form-item>
-                <el-form-item label="昵称" prop="price">
-                    <el-input v-model.address="fetchParam.nickname"></el-input>
+                <el-form-item label="昵称" prop="nickname">
+                    <el-input v-model="fetchParam.nickname"></el-input>
                 </el-form-item>
                 <!--<el-form-item label="性别" prop="sex">
                     <el-radio-group v-model="fetchParam.sex">
@@ -63,7 +63,7 @@
                     </el-radio-group>
                 </el-form-item>-->
                 <el-form-item label="手机号" prop="mobile">
-                    <el-input v-model.mobile="fetchParam.mobile"></el-input>
+                    <el-input v-model="fetchParam.mobile"></el-input>
                 </el-form-item>
 
                 <!--<el-form-item label="密码" prop="password" v-if="this.$route.params.id">
@@ -84,8 +84,8 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="密码" prop="password" v-if="fetchParam.role_id==1">
-                    <el-input v-model.password="fetchParam.password" v-if="this.$route.params.id" auto-complete="off" type="password" key=""  placeholder="密码、不修改请留空"></el-input>
-                    <el-input v-model.password="fetchParam.password" v-else auto-complete="off" type="password" key=""  ></el-input>
+                    <el-input v-model="fetchParam.password" v-if="this.$route.params.id" auto-complete="off" type="password" key=""  placeholder="密码、不修改请留空"></el-input>
+                    <el-input v-model="fetchParam.password" v-else auto-complete="off" type="password" key=""  ></el-input>
                 </el-form-item>
 
                 <el-form-item label="" >
@@ -145,7 +145,7 @@
                 ],
                 rules: {
                     role_id: { required: true, message: '请输入角色'},
-                    gov_id:{ required: true },
+                    gov_id:{ required: true , type:'number',message: '请输入部门'},
                     name: { required: true, message: '请输入姓名'},
                     sex: { required: true },
                     mobile: { pattern: /^1[34578]\d{9}$/, required: true, type: 'string', message: '请输入正确的手机号', trigger: 'blur' },
@@ -269,7 +269,7 @@
             id: 0,
             sex: 1,
             gov_id: void 0,
-
+            nickname:'',
             typeSelect: '',
             provinceSelect: '',
             citySelect: '',
@@ -277,6 +277,7 @@
             townSelect: '',
             villageSelect: '',
             pid: void -1,
+            area_id:''
 
         }
     }
