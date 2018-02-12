@@ -36,7 +36,7 @@
                 return govService.getSelectList({
                     name: val,
                     pagesize: this.pageSize,
-                    page: parseInt(length / this.pageSize) + 1
+                    page: parseInt(length / this.pageSize) + 1,
                 }).then((ret) => {
                     this.$emit('changeList', ret.data)
                     console.log(ret)

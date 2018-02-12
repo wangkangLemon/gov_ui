@@ -433,7 +433,6 @@
                 //     this.fetchParamImp = ret
                 //     console.log(ret)
                 // })
-                debugger
                this.fetchParam.images = this.$refs.uploadImg.imgList.map(function(v){
                     return v.response.data.url
                 }).join()

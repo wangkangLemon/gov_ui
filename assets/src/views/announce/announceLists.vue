@@ -22,9 +22,31 @@
     }
     #show-detail {
         width:100%;
+        .info{
+            h2{
+               word-wrap: break-word; 
+            }
+            p{
+                .value{
+                    word-wrap: break-word;
+                }
+            }
+        }
         .avatar{
-            width: 40%;
+            width: 30%;
             border:none;
+            
+            // h2{
+            //     display: inline-block;
+            //     word-wrap: break-word;
+            // };
+            // p{
+            //     .value{
+            //     word-break:break-all
+                    
+            //     }
+            //     display: inline-block;
+            // }
              img{
                 width: 33.33%;
                 height: 60%;
@@ -65,7 +87,7 @@
                 <br>
                 <p><i class="title">所属部门：</i><span class="value">{{clerkDetail.gov_name}}</span></p>
                 <p><i class="title">发布人员：</i> <span class="value">{{clerkDetail.user_name}}</span></p>
-                <p><i class="title">发送时间：</i><span class="value">{{clerkDetail.send_time}}</span></p>
+                <p><i class="title">发送时间：</i><span class="value">{{clerkDetail.send_datetime}}</span></p>
             </div>
         </el-dialog>
         <!--<section class="manage-container">

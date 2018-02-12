@@ -189,7 +189,7 @@
     import userService from '../../../services/gov/userService.js'
     import dialogSelectData from '../../component/dialog/SelectData4table.vue'
     import DateRange from '../../component/form/DateRangePicker.vue'
-    import DepSelect from '../../component/select/Department.vue'
+    import DepSelect from '../../component/select/DepartmentNoself.vue'
 
 
     export default{
@@ -250,7 +250,8 @@
                     fetchParam: {
                         gov_id: '',
                         gov_ids: '',
-                        name: ''
+                        name: '',
+                        noself: 1
                     },
                     title: '',
                     isSearch: '',
@@ -379,6 +380,7 @@
                 if (this.pushTypeDialog.isSearch) {
                     param.gov_id = this.pushTypeDialog.fetchParam.gov_id
                     param.role_id = -1
+                    param.noself = 1
                 }
                 console.log(param)
                 map[this.pushTypeDialog.type](param).then(ret => {
