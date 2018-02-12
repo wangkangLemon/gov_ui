@@ -69,10 +69,10 @@ export default {
         }
     },
     created() {
+        xmview.setContentLoading(false)
         this.form = authUtils.getUserInfo()
         this.form.mobile = this.form.mobile || '未设置'
         this.form.email = this.form.email || '未设置'
-        xmview.setContentLoading(false)
     },
     watch: {
             'fetchParam.password'(){

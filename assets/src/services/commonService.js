@@ -38,6 +38,16 @@ class CommonService {
         })
     }
 
+    // 公共添加编辑头像  ---传base64
+    commonUploadAvatar({ image, alias = Date.now() + '.jpg', biz, extpath }) {
+
+        let url = `${config.apiHost}/common/upload/base64`
+        return api.post(url, { image, alias, biz, extpath }).then((ret) => {
+            xmview.showTip('success', ret.message)
+            return ret.data
+        })
+    }
+
 
 }
 export default new CommonService()

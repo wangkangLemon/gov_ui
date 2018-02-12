@@ -74,13 +74,11 @@
                         <el-button type='text'>{{scope.row.grade=='1'?'满分':(scope.row.grade=='2'?'及格':'不及格')}}</el-button>
                     </template>
                 </el-table-column>
-                <el-table-column prop="user_name" label="管理员"  min-width="180">
+                <el-table-column prop="user_name" label="考试人员"  min-width="180">
                 </el-table-column>
                 <!--<el-table-column prop="user_id"  :formatter="user_id" label="管理员"  min-width="180">
                 </el-table-column>-->
                 <el-table-column prop="score" label="分值"  min-width="180">
-                </el-table-column>
-                <el-table-column prop="passed" label="通过人数"  min-width="180">
                 </el-table-column>
                 <el-table-column prop="addate" min-width="180" label="创建时间">
                 </el-table-column>

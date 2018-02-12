@@ -85,9 +85,9 @@ export default {
                 mobile: '',
                 email: '',
                 name: '',
-                address: '',
-                sex: 0,
-                nickname:''
+                // sex: 0,
+                nickname:'',
+                avatar:''
             },
             rules: {
                 name: { required: true, message: '必须填写', trigger: 'blur' }
@@ -96,30 +96,34 @@ export default {
         }
     },
     created() {
+        xmview.setContentLoading(false)
         this.form = authUtils.getUserInfo()
-
         if (!this.form.avatar) {
             this.imgUrl = filterUtils.defaultAvatar({ url: '', sex: this.form.sex })
         } else {
             // this.imgUrl = this.form.avatar.indexOf(config.apiHost) > -1 ? this.form.avatar : config.apiHost + this.form.avatar
             this.imgUrl = this.form.avatar 
         }
-        xmview.setContentLoading(false)
     },
     methods: {
-        // 裁切后的回调
+         // 裁切后的回调
         cropperFn(data, ext) {
-            commonService.commonUploadImageBase({
-                avatar: data,
+            commonService.commonUploadAvatar({
+                id: this.form.id,
+                image: data,
                 alias: `${Date.now()}${ext}`,
-                id: this.form.id
+                biz: 'avatar',
+                extpath: this.form.id,
             }).then((ret) => {
-                xmview.showTip('success', '上传成功')
                 this.imgUrl = data
+                console.log( ret)
+                this.form.avatar = ret.url
+                xmview.showTip('success', '上传成功')
                 authUtils.setAvatar(ret.data.url)
-            }).catch((ret) => {
-                xmview.showTip('error', ret.message)
             })
+            // .catch((ret) => {
+            //     xmview.showTip('error', ret.message)
+            // })
         },
         submit(form) {
             this.$refs[form].validate((valid) => {
