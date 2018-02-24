@@ -260,7 +260,7 @@
         },
         computed: {
             govID () { 
-                console.log( 'this.$route.params.gov_id===='+1)
+                console.log( 'this.$route.params.gov_id===='+this.$route.params.gov_id)
                 return this.$route.params.gov_id
             },
             category () {  //1 系统 2 政府
@@ -370,7 +370,7 @@
             submit (form) {
                 this.$refs[form].validate((valid) => {
                     if (valid) {
-                        this.form.gov_id = this.companyID
+                        this.form.gov_id = this.$route.params.gov_id
                         this.form.birthday = timeUtils.date2Str(this.form.birthday)
                         govService.addGovAdmin(this.form).then((ret) => {
                             xmview.showTip('success', '添加成功')

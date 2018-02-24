@@ -275,14 +275,14 @@ class govService {
         let finalUrl = `${urlPre1}/user/create`
         return api.post(finalUrl, {
             name,
-            sex,
+            // sex,
             mobile,
             passwd,
             // birthday,
             // address,
             gov_id,
             role_id,
-            area_id,
+            // area_id,
             nickname
         }).then((ret) => {
             if (ret.code) {
