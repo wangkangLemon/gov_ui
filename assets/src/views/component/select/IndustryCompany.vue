@@ -48,7 +48,6 @@
                     page: parseInt(length / this.pageSize) + 1
                 }).then((ret) => {
                 // console.log(val, length)
-                console.log(ret)
                     // this.$emit('changelist', ret)
                     return ret.data
                 })

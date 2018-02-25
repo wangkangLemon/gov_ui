@@ -225,7 +225,6 @@
                     time_end: this.search.endTime,
                     course_id:this.search.course_id
                 }).then((ret) => {
-                    console.log(ret)
                     this.total = ret._exts.total
                     this.testingData = ret.data
                 }).then(() => {

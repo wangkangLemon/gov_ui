@@ -444,7 +444,6 @@ class govService {
     //                   stat_date,
     //               }) {
     //     let finalUrl = `${urlPre}/course/history/lists`
-    //     alert(2222)
     //     return api.get(finalUrl, {page, pagesize, gov_id, stat_date}).then((ret) => {
     //         return ret.data
     //     })

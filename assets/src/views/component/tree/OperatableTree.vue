@@ -157,7 +157,6 @@
             //     this.loading = true
             //     return this.getData({id : 'tree', type :'course', filter : true , pid : 0 , level:-1}).then(ret => {
             //         //11-7 关
-            //         // alert(22222)
             //         console.log(ret)
             //         xmview.setContentLoading(false)
             //         if (!parentNode) {

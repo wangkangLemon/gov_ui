@@ -138,7 +138,6 @@
             },
             // 处理请求后的结果 type- 0:追加 1-重新赋值
             processRequestRet (ret, type = 0) {
-                console.log(ret)
                 if (type === 0) {
                     // 把结果过滤掉当前选中的
                     ret = ret.filter((item) => {
@@ -149,7 +148,7 @@
                     this.data = ret
 
                 // this.isShowGetMore = this.data.length < ret.total
-                this.isShowGetMore = this.data.length < 25
+                this.isShowGetMore = this.data.length < ret._exts.total
             }
         }
     }

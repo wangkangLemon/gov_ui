@@ -62,7 +62,6 @@ export default {
                 title: '管理员',
             }
         },
-
         //  // 人员
         // {
         //     path: 'user/:gov_id',
@@ -76,7 +75,6 @@ export default {
         //         title: '管理员',
         //     }
         // },
-        
         // // 部门人员查询
         {
             path: 'user',
