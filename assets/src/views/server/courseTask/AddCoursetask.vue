@@ -106,9 +106,9 @@
                 </el-tag>
                 <el-button type="primary" @click="dialogCourse.isShow=true" size="small">添加课程</el-button>
             </el-form-item>
-            <el-form-item prop="sort" label="排序">
+            <!-- <el-form-item prop="sort" label="排序">
                 <el-input-number v-model="form.sort" auto-complete="off"></el-input-number>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="时间" prop="etime">
                 <DateRange :start="form.stime" :end="form.etime" @changeStart="val=> form.stime=val"
                     @changeEnd="val=> form.etime=val" :defaultStart="form.stime" :defaultEnd="form.etime">
@@ -116,13 +116,14 @@
             </el-form-item>
             <el-form-item label="发布对象">
                 <el-select clearable v-model="form.type" @change="choosePushType" placeholder="请选择指定人员或部门">
+                    <el-option label="全部" :value="3"></el-option>
                     <el-option label="部门任务" :value="1"></el-option>
                     <el-option label="个人任务" :value="2"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item
                 :label="pushTypeDialog.title"
-                v-if="form.type && form.type==pushTypeDialog.type">
+                v-if="form.type!=3 && form.type==pushTypeDialog.type">
                 <div class="collection" @click="openPushTypeDialog">
                     <el-tag
                         class="u-course-tag"
@@ -208,10 +209,10 @@
                     // category_id: void 0,       // 分类
                     image: void 0,        // 图片地址
                     description: void 0,  // 简介
-                    sort: void 0,         // 排序
+                    // sort: void 0,         // 排序
                     course_ids: [],     // 课程
-                    gov_ids: void 0,     // 部门
-                    user_ids: void 0,     // 用户
+                    gov_ids: '',     // 部门
+                    user_ids: '',     // 用户
                     // status: void 0,       // 状态
                     course: [],
                     score:void 0,     // 可获得学分
@@ -237,9 +238,9 @@
                     etime: [{required: true, message: '必须填写', trigger: 'change'}],
                     type: [{required: true, message: '必须填写', trigger: 'change'}],
                     // score: [{required: true, message: '必须填写', trigger: 'blur'}],
-                    sort: [{required: true, message: '必须填写'}],
+                    // sort: [{required: true, message: '必须填写'}],
                     course: [{ required: true, message: '必须填写'}],
-                    category_id: {type: 'number', required: true, message: '请选择栏目', trigger: 'change'}
+                    // category_id: {type: 'number', required: true, message: '请选择栏目', trigger: 'change'}
                 },
                 dialogCourse: {
                     loading: false,
@@ -269,16 +270,16 @@
             }
         },
         watch:{
-            'form.type'(){
-                if(this.form.type==1){//政府
-                    this.form.user_ids= ''
-                }else{ //政府
-                    this.form.gov_ids= ''
-                }
-            },
-            'form.course'(){
-                // console.log(this.form.course) 
-            }
+            // 'form.type'(){
+                //     if(this.form.type==1){//政府
+                //         this.form.user_ids= ''
+                //     }else{ //政府
+                //         this.form.gov_ids= ''
+                //     }
+                // },
+                // 'form.course'(){
+                //     // console.log(this.form.course) 
+                // }
         },
         created () {
 
@@ -413,8 +414,6 @@
                 })
             },
             fetchCourse (params) {
-                // { course_name = '', status, category_id , time_start, time_end, page, pagesize}
-                console.log(params)
                 return courseService.getPublicCourselist(Object.assign({}, this.dialogCourse, params))
             },
             submit(s) {
@@ -440,7 +439,7 @@
                         this.form.gov_ids = this.pushTypeDialog.type && this.pushTypeDialog.selectedData[this.pushTypeDialog.type].map(item => {
                         return item.id
                         }).join(',')
-                    }else{
+                    }else if(this.form.type==2){
                         // 处理userids
                         this.form.user_ids = this.pushTypeDialog.type && this.pushTypeDialog.selectedData[this.pushTypeDialog.type].map(item => {
                         return item.id

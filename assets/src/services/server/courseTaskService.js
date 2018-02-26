@@ -32,7 +32,7 @@ class sysService {
         title= void 0,          // 标题
         image= void 0,        // 图片地址
         description= void 0,  // 简介
-        sort= void 0,         // 排序
+        // sort= void 0,         // 排序
         course_ids= void 0,     // 课程
         gov_ids= void 0,     // 部门
         user_ids= void 0,     // 用户
@@ -47,7 +47,7 @@ class sysService {
             title,
             image,
             description,
-            sort,
+            // sort,
             course_ids,
             gov_ids,
             user_ids,
@@ -65,7 +65,7 @@ class sysService {
         title= void 0,          // 标题
         image= void 0,        // 图片地址
         description= void 0,  // 简介
-        sort= void 0,         // 排序
+        // sort= void 0,         // 排序
         course_ids= void 0,     // 课程
         gov_ids= void 0,     // 部门
         user_ids= void 0,     // 用户
@@ -80,7 +80,7 @@ class sysService {
             title,
             image,
             description,
-            sort,
+            // sort,
             course_ids,
             gov_ids,
             user_ids,
