@@ -136,7 +136,7 @@
             <el-form-item label="可得学分" prop="score">
                 <el-input style="width: auto;" v-model="form.score" type="number"  placeholder="请输入可获得学分值"></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item v-if="this.$route.type=='edit'">
                 <el-button type="primary" @click="submit(0)">提交</el-button>
                 <!--<el-button type="warning" @click="submit(1)">存草稿</el-button>-->
             </el-form-item>
@@ -171,7 +171,7 @@
                       :data="pushTypeDialog.data"
                       :selectedValue='selectData'
                       v-model="pushTypeDialog.selectedData[pushTypeDialog.type]"></Transfer>
-            <span slot="footer" class="dialog-footer">
+            <span slot="footer" class="dialog-footer" >
                 <el-button @click="pushTypeDialog.showDialog = false">取 消</el-button>
                 <el-button type="primary" @click="transferConfirmFn">确 定</el-button>
             </span>

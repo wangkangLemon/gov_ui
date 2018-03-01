@@ -128,18 +128,20 @@
             </el-table-column>
             <el-table-column prop="operate" label="操作" width="160">
                 <template scope="scope">
-                    <el-button type="text" size="small" @click="editItm(scope.row)">
-                        修改
-                        <!--点击详情 form数据变成当前管理员的信息-->
+                    <el-button type="text" size="small" @click="lookItm(scope.row)">
+                        查看<!--点击详情 form数据变成当前管理员的信息-->
                     </el-button>
+                    <!-- <el-button type="text" size="small" @click="editItm(scope.row)">
+                        修改
+                    </el-button> -->
                     <!--<el-button v-if="scope.row.status == 2 || scope.row.status == 1 " type="text" size="small"
                                @click="publishCourseTaskTemplate(scope.row)">
                         上线
                     </el-button>-->
-                    <el-button v-if="scope.row.status == 0 " type="text" size="small"
+                    <!-- <el-button v-if="scope.row.status == 1 " type="text" size="small"
                                @click="revokeCourseTaskTemplate(scope.row)">
                         <i>下线</i>
-                    </el-button>
+                    </el-button> -->
                     <el-button type="text" size="small" @click="handleDelete(scope.$index, scope.row)">
                         <i>删除</i>
                     </el-button>
@@ -256,9 +258,9 @@
                     })
                 }
             },
-            editItm (row) {
+            lookItm (row) {
                 row.course = row.course || []
-                this.$router.push({name: 'server-manage-edit' ,params: {coursetaskInfo:row, type:'task'}, query: {id: row.id}})
+                this.$router.push({name: 'server-manage-edit' ,params: {coursetaskInfo:row, type:'task'}, query: {id: row.id},type:"look"})
             },
             publishCourseTaskTemplate (row) {
                 xmview.showDialog(`你将要上线课程任务【<i style="color:red">${row.title || ''}</i>】吗？`, this.publishItem(row.id))
