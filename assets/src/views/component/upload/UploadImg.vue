@@ -141,7 +141,8 @@
             disabled: {
                 type: Boolean,
                 default: false
-            }
+            },
+            
         },
         data () {
             return {
@@ -151,6 +152,7 @@
                 forceShowUpload: false, // 强行显示上传图片
                 host: config.apiHost,
                 currImg: [],
+                
             }
         },
         watch: {

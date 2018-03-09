@@ -232,7 +232,7 @@
                         {required: true,  pattern:  /\S$/, min: 1,message: '请输入非空格或非特殊字符的内容', trigger: 'blur'},
                     ],
                     images: [
-                        {required: true, message: '请上传栏目logo', trigger: 'blur'}
+                        {required: true, message: '请上传正确格式的公告图片', trigger: 'blur'}
                     ],
                     sendtime: [
                         {required: true, type:'object', message: '请输入发送时间', trigger: 'blur'}

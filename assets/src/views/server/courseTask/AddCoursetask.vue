@@ -136,7 +136,7 @@
             <el-form-item label="可得学分" prop="score">
                 <el-input style="width: auto;" v-model="form.score" type="number"  placeholder="请输入可获得学分值"></el-input>
             </el-form-item>
-            <el-form-item v-if="this.$route.type=='edit'">
+            <el-form-item v-if="this.$route.params.type=='add'">
                 <el-button type="primary" @click="submit(0)">提交</el-button>
                 <!--<el-button type="warning" @click="submit(1)">存草稿</el-button>-->
             </el-form-item>
@@ -282,7 +282,6 @@
                 // }
         },
         created () {
-
             xmview.setContentLoading(false)
             console.log(this.$route.params.coursetaskInfo)
             if (this.$route.params.coursetaskInfo) {

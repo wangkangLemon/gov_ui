@@ -78,7 +78,8 @@
         <!--添加/编辑表单-->
         <!--点击添加 form数据取邮箱/手机号 密码-->
         <article class="manage-container">
-            <el-button icon="plus" type="primary" @click="()=> $router.push({name:'server-manage-add'}) ">添加
+            <el-button icon="plus" type="primary" @click="()=> $router.push({name:'server-manage-add',params: {coursetaskInfo:row, type:'add'} })">添加
+                   <!-- this.$router.push({name: 'server-manage-edit' ,params: {coursetaskInfo:row, type:'task'}, query: {id: row.id},type:'look'}) -->
             <!--添加-->
             </el-button>
         </article>
@@ -260,7 +261,7 @@
             },
             lookItm (row) {
                 row.course = row.course || []
-                this.$router.push({name: 'server-manage-edit' ,params: {coursetaskInfo:row, type:'task'}, query: {id: row.id},type:"look"})
+                this.$router.push({name: 'server-manage-edit' ,params: {coursetaskInfo:row, type:'task'}, query: {id: row.id} })
             },
             publishCourseTaskTemplate (row) {
                 xmview.showDialog(`你将要上线课程任务【<i style="color:red">${row.title || ''}</i>】吗？`, this.publishItem(row.id))
