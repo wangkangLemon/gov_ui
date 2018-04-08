@@ -170,12 +170,17 @@
         },
         watch: {
             "$route":function(to,from){
-                xmview.setContentLoading(false)
-                if(this.$route.path=='/data/report-userlogin-isVillage'){
-                    this.isVillage = authUtils.getUserInfo().isVillage
+                console.log(to,from)
+                console.log(to.name)
+                console.log(from.name)
+                if(to.name!==from.name){
+                     xmview.setContentLoading(false)
+                    if(this.$route.path=='/data/report-userlogin-isVillage'){
+                        this.isVillage = authUtils.getUserInfo().isVillage
+                    }
+                    this.getData()
                 }
-                this.getData()
-                
+               
             }
 
         },
@@ -189,10 +194,9 @@
                 this.getData()
             },
             handleCurrentChange (val) {
-                this.currentPage = val
-                this.getData()
+                this.getData(val)
             },
-            getData () {
+            getData (page) {
                 this.loading = true
                 if(this.search.gov_id){
                     // alert('this.level=Number(this.govLevel) + 2='+Number(this.govLevel+2) )
@@ -201,7 +205,7 @@
                      this.level=Number(this.govLevel) + 1
                 }
                 return govService.getReportUserlogin({
-                    page: this.currentPage,
+                    page: page||1,
                     pagesize: this.pageSize,
                     name: this.search.name,
                     user_name: this.search.user_name,

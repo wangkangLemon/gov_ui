@@ -181,8 +181,8 @@
         <!--头部部分 pc端-->
         <el-row class="header header-pc" type="flex">
             <el-col :span="10" class="logo">
-                <img src="../assets/images/logo.png">
-                <h1>医线通政府管理平台</h1>
+                <img src="../assets/images/logo.png" @click="$router.push({name:'main'})">
+                <h1   @click="$router.push({name:'main'})">医线通政府管理平台</h1>
             </el-col>
             <el-col :span="6" class="title">
                 <!--<h2>{{ userInfo.gov }}</h2>-->
@@ -217,7 +217,7 @@
         <!--头部部分 wap端-->
         <section class="header-wap">
             <el-row class="header wap-header" type="flex">
-                <el-col :span="20" class="logo">
+                <el-col :span="20" class="logo" >
                     <img src="../assets/images/logo.png">
                     <h1>医线通政府管理平台</h1>
                 </el-col>

@@ -11,15 +11,24 @@ class MainService {
             return ret
         })
     }
-    getUserlearn(){
-        let finalUrl = `${config.apiHost}/report/userlearn/lists`
-        return api.get(finalUrl).then((ret) => {
+    getchart(chartParam){
+        let finalUrl = `${config.apiHost}/report/dashboard/area/linechart`
+        return api.get(finalUrl, chartParam).then((ret) => {
             return ret
         })
     }
-    getUsertesting() {
+    getUserlearn(chartParam){
+        console.log(chartParam)
+        
+        let finalUrl = `${config.apiHost}/report/userlearn/lists`
+        return api.get(finalUrl, chartParam).then((ret) => {
+            return ret
+        })
+    }
+    getUsertesting(chartParam) {
+        console.log(chartParam)
         let finalUrl = `${config.apiHost}/report/usertesting/lists`
-        return api.get(finalUrl).then((ret) => {
+        return api.get(finalUrl, chartParam).then((ret) => {
             return ret
         })
     }

@@ -182,6 +182,27 @@
     }
     .l{
         color: #909399;
+         .header-title {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .header-right {
+                display: inline-block;
+            }
+        }
+        .fr{
+            display: inline-block;
+            float:right;
+            .el-radio-group{
+                margin-right: 10px;
+                .el-radio-button__inner{
+                    display: inline-block;
+                    padding: 10px 13px;
+                 }
+
+            }
+            
+        }
     }
     .analyics-list {
         @extend %justify;
@@ -264,7 +285,9 @@
                 <p>昨日学习人数</p>
                 <h2>{{ mainData.user_learn_cnt }}</h2>
                 <div>
-                    <i>比前天新增 {{ mainData.user_learn2_cnt }}人 （{{ mainData.user_learn_added_rate }}）</i>
+                    <i v-if=" mainData.user_learn_cnt-mainData.user_learn2_cnt >=0">比前天新增 {{ mainData.user_learn_cnt-mainData.user_learn2_cnt }}人 （{{ mainData.user_learn_added_rate }}）</i>
+                    <i v-else>比前天减少 {{ mainData.user_learn2_cnt-mainData.user_learn_cnt}}人 （{{ mainData.user_learn_added_rate }}）</i>
+                    <!-- <i>比前天新增 {{ mainData.user_learn2_cnt }}人 （{{ mainData.user_learn_added_rate }}）</i> -->
                     <router-link tag="a" :to="{name: 'data-course-history', query: {yesterday}}">查看详情</router-link>
                 </div>
             </div>
@@ -273,39 +296,63 @@
                 <p>昨日考试人数</p>
                 <h2>{{ mainData.user_testing_cnt }}</h2>
                 <div>
-                    <i>比前天减少 {{ mainData.user_testing2_cnt }}人 （{{ mainData.user_testing_added_rate }}）</i>
+                    <i v-if="mainData.user_testing_cnt-mainData.user_testing2_cnt>=0">比前天新增{{ mainData.user_testing_cnt-mainData.user_testing2_cnt }}人 （{{ mainData.user_testing_added_rate }}）</i>
+                    <i v-else>比前天减少 {{ mainData.user_testing2_cnt-mainData.user_testing_cnt  }}人 （{{ mainData.user_testing_added_rate }}）</i>
                     <router-link tag="a" :to="{name: 'data-testing', query: {yesterday}}">查看详情</router-link>
                 </div>
             </div>
         </section>
         <section >
-             <section class="course-analytics">
-            <div>
-                <i class="sign test"><img src="./images/gongkaikecheng.png"/></i>
+            <section class="course-analytics">
                 <div>
-                    <i>平台公开课程</i>
-                    <p>{{mainData.course_num}}</p>
+                    <i class="sign test"><img src="./images/gongkaikecheng.png"/></i>
+                    <div>
+                        <i>平台公开课程</i>
+                        <p>{{mainData.course_num}}</p>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <i class="sign public"><img src="./images/xuexi_cishu.png"/></i>
                 <div>
-                    <i>村医学习次数</i>
-                    <p>{{mainData.total_village_learn_cnt}}</p>
+                    <i class="sign public"><img src="./images/xuexi_cishu.png"/></i>
+                    <div>
+                        <i>学习次数</i>
+                        <p>{{mainData.total_village_learn_cnt}}</p>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <i class="sign primary"><img src="./images/kechengrenwu.png"/></i>
                 <div>
-                    <i>课程任务</i>
-                    <p>{{mainData.course_task_num}}</p>
+                    <i class="sign primary"><img src="./images/kechengrenwu.png"/></i>
+                    <div>
+                        <i>课程任务</i>
+                        <p>{{mainData.course_task_num}}</p>
+                    </div>
                 </div>
-            </div>
             </section>    
             <el-card class="box-card l">
                 <div slot="header" class="clearfix">
-                    人员学习情况和考试情况
+                    <div slot="header" class="clearfix header-title">人员学习情况和考试情况     
+                           <!-- <DateRange :start="chartParam.stime" :end="chartParam.etime" @changeStart="val=> chartParam.stime=val "
+                                        @changeEnd="val=> chartParam.etime=val" :change="getChartData">
+                                    </DateRange>                -->
+                        <div class="fr">
+                          
+                            <span class="fr">
+                                 <DateRange   
+                                    :start="chartParam.stime" 
+                                    :end="chartParam.etime" 
+                                    v-on:changeStart="val=> chartParam.stime=val" 
+                                    v-on:changeEnd="val=> chartParam.etime=val"
+                                    :change="getChartData" ref="DateRange">
+                                </DateRange>
+                            </span>
+                              <span class="fr">
+                                <el-radio-group v-model="chartRadio" class="header-right">
+                                    <el-radio-button label="week">近7天</el-radio-button>
+                                    <el-radio-button label="month">近30天</el-radio-button>
+                                </el-radio-group>
+                            </span>
+                        </div> 
+                    </div>    
                 </div>
+
                 <section id="lineChart"></section>
             </el-card>
             <section class="analyics-list">
@@ -331,7 +378,7 @@
                         </el-table-column>
                         <el-table-column prop="gov_name" width="200" label="部门名称">
                         </el-table-column>
-                        <el-table-column prop="total_duration_name" width="120" label="观看时长">
+                        <el-table-column prop="added_duration_name" width="120" label="观看时长">
                         </el-table-column>
                     </el-table>
                 </el-card>
@@ -377,9 +424,13 @@
 <script>
 import Echars from 'echarts'
 import mainService from '../../services/base/mainService'
+import DateRange from '../component/form/DateRangePicker'
 import * as timeUtils from '../../utils/timeUtils'
 let d = new Date()
 export default {
+    components: {
+        DateRange
+    },
     data() {
         return {
             yesterday: timeUtils.date2Str(new Date(d.setTime(Date.now() - 24 * 60 * 60 * 1000))),
@@ -390,87 +441,148 @@ export default {
             viewCourseData: [],
             tryUserData: [],
             tryCourseData: [],
-            maxResult: 0
+            maxResult: 0,
+            chartRadio: 'week',
+            chartParam:{
+                stime:'',
+                etime:''
+            },
         }
     },
     created() {
         xmview.setContentLoading(false)//加载数据结束关闭加载动画
         //这里是假数据
         // this.mainData={'course_plan': 222, 'course_plan_offline': 3434,'user_yesterday': 666,'testing': 4711}
-   
-
-        mainService.getMain().then((ret) => {
+    },
+    mounted () {
+          mainService.getMain().then((ret) => {
             this.mainData = ret.data
-            this.listData = ret.data
-            // let chartData = ret.chart
-                // chartData.forEach((item) => {
-                //     this.xData.push(item.day)
-                //     this.viewUserData.push(item.num1)   // 学习人数
-                //     this.viewCourseData.push(item.num2) // 考试人数
-                //     this.tryUserData.push(item.num3)    // 试看人数
-                //     this.tryCourseData.push(item.num4)  // 试看课程数
-                // })
-        }).then(() => {
-            // this.getLineChart()
-                // var max1 = this.viewUserData.reduce(function(a, b) {
-                //     return Math.max(a, b)
-                // })
-                // var max2 = this.viewCourseData.reduce(function(a, b) {
-                //     return Math.max(a, b)
-                // })
-                // var max3 = this.tryUserData.reduce(function(a, b) {
-                //     return Math.max(a, b)
-                // })
-                // var max4 = this.tryCourseData.reduce(function(a, b) {
-                //     return Math.max(a, b)
-                // })
-                // var arr = [max1, max2, max3, max4]
-                // this.maxResult = arr.reduce(function(a, b) {
-                //     return Math.max(a, b)
-                // })
-        }).then(() => {
-            xmview.setContentLoading(false)
+            // this.listData = ret.data
         })
-
-        mainService.getUserlearn().then((ret) => {
-            let chartData = ret.data
-            console.log(ret.data)
-            // if(chartData==null||chartData==undefined){ return flase}
-            chartData.forEach((item) => {
-                this.xData.push(item.dt)
-                this.viewUserData.push(item.user_cnt)   // 学习人数
-            })
-        }).then(() => {
-            this.getLineChart()
-            var max1 = this.viewUserData.reduce(function(a, b) {
-                return Math.max(a, b)
-            })
-            var arr = [max1]
-            this.maxResult = arr.reduce(function(a, b) {
-                return Math.max(a, b)
-            })
-        })
-
-        mainService.getUsertesting().then((ret) => {
-            let chartData = ret.data
-            console.log(chartData)
-            chartData.forEach((item) => {
-                this.xData.push(item.dt)
-                this.viewCourseData.push(item.user_cnt) // 考试人数
-            })
-        }).then(() => {
-            this.getLineChart()
-            var max2 = this.viewCourseData.reduce(function(a, b) {
-                return Math.max(a, b)
-            })
-            var arr = [ max2]
-            this.maxResult = arr.reduce(function(a, b) {
-                return Math.max(a, b)
-            })
-        })
-
+        this.chartParam={
+                    stime:this.getlastweekday(this. getNow()),
+                    etime:this.getNow()
+                },
+        this.getChartData()
+    },
+    watch:{
+        'chartRadio'(){
+             console.log(this.$refs.DateRange)
+            //  this.$refs.DateRange.start.$el.querySelector('input').value = ''
+             this.$refs.DateRange.start = []
+            //  this.$refs.DateRange.end.$el.querySelector('input').value = ''
+             this.$refs.DateRange.end = []
+            // this.chartParam.stime=[]
+            // this.chartParam.etime=[]
+            if(this.chartRadio=='month'){
+                this.getPreMonth(this. getNow())
+                console.log(this.getPreMonth(this. getNow()))
+                   this.chartParam={
+                    stime:this.getPreMonth(this. getNow()),
+                    etime:this.getNow()
+                },
+                this.getChartData()
+            }
+             if(this.chartRadio=='week'){
+                this.getlastweekday(this. getNow())
+                console.log(this.getlastweekday(this. getNow()))
+                   this.chartParam={
+                    stime:this.getlastweekday(this. getNow()),
+                    etime:this.getNow()
+                },
+                this.getChartData()
+            }
+        }
     },
     methods: {
+        /**
+         * 获取上一个月
+         *
+         * @date 格式为yyyy-mm-dd的日期，如：2014-01-25
+         */
+        getNow(){
+            let date= new Date()
+            let Y = date.getFullYear() + '-';
+            let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+            let D = (date.getDate()+1 < 10 ? '0'+(date.getDate()+1) : date.getDate()+1) 
+            return(Y+M+D)
+        },
+        /** 
+         * 计算上周的时间 
+         * @returns 
+         */  
+        getlastweekday(){         
+            var d=new Date();  
+            var yesterday_milliseconds=d.getTime()-7000*60*60*24;          
+            var yesterday = new Date();          
+            yesterday.setTime(yesterday_milliseconds);          
+            var strYear = yesterday.getFullYear();       
+            var strDay = yesterday.getDate();       
+            var strMonth = yesterday.getMonth()+1;     
+            if(strDay<10)       
+        {       
+            strDay="0"+strDay;       
+            }      
+        if(strMonth<10)       
+        {       
+            strMonth="0"+strMonth;       
+            }       
+            var datastr = strYear+"-"+strMonth+"-"+strDay;     
+            return datastr;     
+        },     
+        getPreMonth(date) {
+            console.log(date)
+            var arr = date.split('-');
+            var year = arr[0]; //获取当前日期的年份
+            var month = arr[1]; //获取当前日期的月份
+            var day = arr[2]; //获取当前日期的日
+            var days = new Date(year, month, 0);
+            days = days.getDate(); //获取当前日期中月的天数
+            var year2 = year;
+            var month2 = parseInt(month) - 1;
+            if (month2 == 0) {
+                year2 = parseInt(year2) - 1;
+                month2 = 12;
+            }
+            var day2 = day;
+            var days2 = new Date(year2, month2, 0);
+            days2 = days2.getDate();
+            if (day2 > days2) {
+                day2 = days2;
+            }
+            if (month2 < 10) {
+                month2 = '0' + month2;
+            }
+            var t2 = year2 + '-' + month2 + '-' + day2;
+            return t2;
+        },
+
+        getChartData(){
+             mainService.getchart(this.chartParam).then((ret) => {
+                this.xData=[]
+                let chartData = ret.data
+                console.log(chartData)
+                chartData.forEach((item) => {
+                    this.xData.push(item.dt)
+                    this.viewUserData.push(item.learn_cnt)   // 学习人数
+                    this.viewCourseData.push(item.testing_cnt) // 考试人数
+                })
+            }).then(() => {
+                setTimeout(() => {
+                    this.getLineChart()
+                }, 1000)
+                var max1 = this.viewUserData.reduce(function(a, b) {
+                    return Math.max(a, b)
+                })
+                var max2 = this.viewCourseData.reduce(function(a, b) {
+                    return Math.max(a, b)
+                })
+                var arr = [max1, max2]
+                this.maxResult = arr.reduce(function(a, b) {
+                    return Math.max(a, b)
+                })
+            })
+        },
         getLineChart() { // 线性
             this.$nextTick(() => {
                 let myChart = Echars.init(document.getElementById('lineChart'))
