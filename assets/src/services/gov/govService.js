@@ -424,6 +424,7 @@ class govService {
         pagesize,
         gov_id,
         level,
+        isVillage
     }) {
         let finalUrl = `${config.apiHost}/report/userlogin/lists`
         return api.get(finalUrl, {
@@ -431,6 +432,7 @@ class govService {
             pagesize,
             gov_id,
             level,
+            isVillage
         }).then((ret) => {
             return ret
         })

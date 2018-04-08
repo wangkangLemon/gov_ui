@@ -33,7 +33,7 @@ export default {
                 })
             },
             meta: {
-                title: '数据分析 - 成绩管理 ',
+                title: '成绩管理 ',
                 noback: true
             }
         },
@@ -73,7 +73,7 @@ export default {
                 })
             },
             meta: {
-                title: '数据分析 - 登录日志 ',
+                title: '登录日志 ',
                 noback: true
             }
         },
@@ -87,7 +87,7 @@ export default {
                 })
             },
             meta: {
-                title: '数据分析 - 课程观看日志',
+                title: '课程观看日志',
                 noback: true
             }
         },
@@ -114,12 +114,12 @@ export default {
                 })
             },
             meta: {
-                title: '数据分析 - 课时记录',
+                title: '课时记录',
                 noback: true
             }
         },
         
-        //注册登录统计
+        //部门统计
          {
             path: 'report-userlogin',
             name: 'data-report-userlogin',
@@ -129,7 +129,21 @@ export default {
                 })
             },
             meta: {
-                title: '数据分析 - 注册登录统计 ',
+                title: '部门统计 ',
+                noback: true
+            }
+        },
+        // //注册村医统计
+        {
+            path: 'report-userlogin-isVillage',
+            name: 'data-report-userlogin-isVillage',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/data/ReportUserlogin.vue'))
+                })
+            },
+            meta: {
+                title: '村医统计 ',
                 noback: true
             }
         },

@@ -132,7 +132,7 @@
             </el-table-column>-->
             <el-table-column fixed="right" width="227" label="操作">
                 <template scope="scope">
-                    <el-button @click="$router.push({name: 'review-manage-addCourse', params: {courseInfo: scope.row}, query: {id: scope.row.contentid}})"
+                    <el-button @click="$router.push({name: 'review-manage-addCourse', params: {courseInfo: scope.row,type:'reviewCheck'}, query: {id: scope.row.contentid}})"
                         type="text" size="small">查看
                     </el-button>
                     <!--<el-button @click="audit(scope.$index, scope.row)" type="text" size="small">

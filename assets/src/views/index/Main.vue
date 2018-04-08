@@ -18,7 +18,7 @@
                 width: 55px;
                 height: 55px;
                 position: absolute;
-                left: 20px;
+                right: 20px;
                 top: 25px;
                 background: rgba(0, 0, 0, 0.1);
                 border-radius: 50%;
@@ -26,25 +26,30 @@
                 text-align: center;
                 text-align-last: center;
                 img {
-                    width: 35px;
-                    height: 35px;
-                }
+                    width: 44px;
+                    margin-top: 5px;
+                };
             }
             p {
                 font-size: 16px;
-                padding-right: 10px;
+                padding-left: 10px;
                 cursor: pointer;
+                margin-top: 20px;
+                
             }
             >div {
                 position: absolute;
                 left: 0;
                 bottom: 0;
                 width: 100%;
-                background: rgba(255, 255, 255, 0.9);
+                background: rgba(255, 255, 255, 0.2);
                 padding: 5px 10px;
                 text-align: left;
                 text-align-last: left;
-                color: #999999;
+                > a {
+                    float: right;
+                    color: #fff;
+                }
             }
             &.col2 {
                 width: 49%;
@@ -67,24 +72,23 @@
             &.col4 {
                 height: 120px;
                 width: 23.5%;
-                text-align: right;
-                text-align-last: right;
+                text-align: left;
+                text-align-last: left;
                 &:first-of-type {
-                    background: #FF9966;
+                    background: #169998;
                 }
                 &:nth-child(2) {
-                    background: #2DB6F4;
+                    background: #37B7F2;
                 }
                 &:nth-child(3) {
-                    background: #7DC856;
+                    background: #9999CB;
                 }
                 &:nth-child(4) {
-                    background: #5D6977;
+                    background: #CA0036;
                 }
                 >h2 {
-                    margin-top: 20px;
                     font-size: 25px;
-                    padding-right: 10px;
+                    padding-left: 10px;
                 }
                 >div {
                     border-radius: 0 0 5px 5px;
@@ -92,29 +96,99 @@
             }
         }
     }
+    .course-analytics {
+        // @extend %justify;
+        float: left;
+        width:23.5%;
+        border: 1px solid #ddd;
+        background: #fff;
+        border-radius: 5px;
+        padding: 1.5% 0.7%;
+        overflow-x: auto;
+        > div {
+            display: inline-block;
+            vertical-align: top;
+            height: 100%;
+            border-bottom: 1px solid #ddd;
+            padding: 1% 0;
+            &:last-of-type {
+                border-bottom: none;
+            }
+            width: 100%;
+            > * {
+                display: inline-block;
+                vertical-align: top;
+            }
+            .sign {
+                width: 55px;
+                height: 55px;
+                text-align: center;
+                text-align-last: center;
+                border-radius: 50%;
+                margin:10px 20px;
+                &.test {
+                    background: #808BC4;
+                }
+                &.public {
+                    background: #37B8F3;
+                }
+                &.primary {
+                    background: #F8BE29;
+                }
+                line-height:450%;
+                img {
+                    margin-top: 9px;
+                    width: 35px;
+                    // height: 50%;
+                }
+            }
+            > div {
+                margin-top: 10px;
+                > i {
+                    font-size: 12px;
+                    color: #666;
+                }
+                > p {
+                    font-size: 25px;
+                    color: #333;
+                    font-weight:500;
+                }
+            }
+        }
+    }
     .box-card {
         margin-bottom: 15px;
         color: #333;
+        width: 75%;
+        height:100%;
+        &.l{
+            margin-left:25%;
+        }
         .clearfix {
             text-align: left;
+            
         }
         .el-card__header {
             padding: 10px 15px;
             background: #f0f3f5;
             font-size: 16px;
+            
         }
         #lineChart {
             width: 100%;
-            height: 300px;
+            height: 40%;
+            min-height:210px;
         }
+    }
+    .l{
+        color: #909399;
     }
     .analyics-list {
         @extend %justify;
-        >.box-card {
-            width: 33%;
+        >.box-card ,>.box-card-2{
+            width: 32.4%;
             display: inline-block;
             vertical-align: top;
-            padding-bottom: 20px;
             .el-table {
                 border: none;
                 th {
@@ -136,6 +210,10 @@
             }
             .el-card__body {
                 padding: 0;
+                .cell{
+                text-align: center
+                    
+                }
             }
             th {
                 background: none;
@@ -146,98 +224,159 @@
                 }
             }
         }
+        >.box-card-2{
+            width: 49.3%;
+            margin-bottom: 15px;
+        }
+        .el-table  {
+            thead{
+            color: #909399;
+            font-weight: 500;
+            }
+        }
     }
 }
 </style>
 
 <template>
     <main id="index-main-container" v-if="mainData != null">
-        <div>123123</div>
         <section class="dashboard-analytics">
             <div class="col4">
-                <i class="fa fa-user"></i>
-                <h2>{{ mainData.course_plan }}</h2>
-                <p>销售额</p>
+                <i><img src="./images/renyuanzongshu.png"/></i>
+                <p>人员总数量</p>
+                <h2>{{ mainData.user_cnt }}</h2>
                 <div>
-                    <i>昨日销售额 {{ mainData.finance_money_yesterday }}</i>
+                    <i>已激活： {{ mainData.logined_cnt }}（{{ mainData.logined_rate }}）</i>
+                    <router-link tag="a" :to="{name: 'user-index', query: {yesterday}}">查看详情</router-link>
                 </div>
             </div>
             <div class="col4">
-                <i class="fa fa-user"></i>
-                <h2>{{ mainData.course_plan_offline}}</h2>
-                <p>销售量</p>
+                <i><img src="./images/cunyizongshu.png"/></i>
+                <p>村医总数量</p>
+                <h2>{{ mainData.village_user_cnt}}</h2>
                 <div>
-                    <i>昨日销售量 {{ mainData.finance_num_yesterday }}</i>
+                    <i>已激活 {{ mainData.village_logined_cnt }} （{{ mainData.village_logined_rate }}）</i>
+                    <router-link tag="a" :to="{name: 'data-report-userlogin-isVillage', query: {yesterday}}">查看详情</router-link>
                 </div>
             </div>
             <div class="col4">
-                <i class="fa fa-user"></i>
-                <h2>{{ mainData.testing_count_total }}</h2>
-                <p>用户量</p>
+                <i><img src="./images/xuexirenshu.png"/></i>
+                <p>昨日学习人数</p>
+                <h2>{{ mainData.user_learn_cnt }}</h2>
                 <div>
-                    <i>昨日新增用户 {{ mainData.user_yesterday }}</i>
+                    <i>比前天新增 {{ mainData.user_learn2_cnt }}人 （{{ mainData.user_learn_added_rate }}）</i>
+                    <router-link tag="a" :to="{name: 'data-course-history', query: {yesterday}}">查看详情</router-link>
                 </div>
             </div>
             <div class="col4">
-                <i class="fa fa-user"></i>
-                <h2>{{ mainData.testing_pass_user_total }}</h2>
-                <p>课程数</p>
+                <i><img src="./images/kaoshirenshu.png"/></i>
+                <p>昨日考试人数</p>
+                <h2>{{ mainData.user_testing_cnt }}</h2>
                 <div>
-                    <i>昨日新增课程 {{ mainData.course_yesterday }}</i>
+                    <i>比前天减少 {{ mainData.user_testing2_cnt }}人 （{{ mainData.user_testing_added_rate }}）</i>
+                    <router-link tag="a" :to="{name: 'data-testing', query: {yesterday}}">查看详情</router-link>
                 </div>
             </div>
         </section>
-
-        <el-card class="box-card">
-            <div slot="header" class="clearfix">
-                近30天课程观看情况
+        <section >
+             <section class="course-analytics">
+            <div>
+                <i class="sign test"><img src="./images/gongkaikecheng.png"/></i>
+                <div>
+                    <i>平台公开课程</i>
+                    <p>{{mainData.course_num}}</p>
+                </div>
             </div>
-            <section id="lineChart"></section>
-        </el-card>
-        <section class="analyics-list">
-            <el-card class="box-card">
-                <div slot="header" class="clearfix">
-                    销售金额 TOP 5
+            <div>
+                <i class="sign public"><img src="./images/xuexi_cishu.png"/></i>
+                <div>
+                    <i>村医学习次数</i>
+                    <p>{{mainData.total_village_learn_cnt}}</p>
                 </div>
-                <!--<el-table :data="listData.finance_money.total" style="width: 100%">-->
-                <el-table  style="width: 100%">
-                    <el-table-column :show-overflow-tooltip="true" prop="title" label="课程名称">
-                    </el-table-column>
-                    <el-table-column prop="num" width="90" label="销售金额">
-                    </el-table-column>
-                </el-table>
-            </el-card>
-            <el-card class="box-card">
-                <div slot="header" class="clearfix">
-                    课程销售量 TOP 5
+            </div>
+            <div>
+                <i class="sign primary"><img src="./images/kechengrenwu.png"/></i>
+                <div>
+                    <i>课程任务</i>
+                    <p>{{mainData.course_task_num}}</p>
                 </div>
-                <!--<el-table :data="listData.finance_course.total" style="width: 100%">-->
-                <el-table  style="width: 100%">
-                    <el-table-column :show-overflow-tooltip="true" prop="title" label="课程名称">
-                    </el-table-column>
-                    <el-table-column prop="num" width="90" label="销售量">
-                    </el-table-column>
-                </el-table>
-            </el-card>
-            <el-card class="box-card">
+            </div>
+            </section>    
+            <el-card class="box-card l">
                 <div slot="header" class="clearfix">
-                    学习人数 TOP 5
+                    人员学习情况和考试情况
                 </div>
-                <!--<el-table :data="listData.view_user.total" style="width: 100%">-->
-                <el-table style="width: 100%">
-                    <el-table-column :show-overflow-tooltip="true" prop="title" label="课程名称">
-                    </el-table-column>
-                    <el-table-column prop="num" width="90" label="学习人数">
-                    </el-table-column>
-                </el-table>
+                <section id="lineChart"></section>
             </el-card>
+            <section class="analyics-list">
+                <el-card class="box-card box-card-2">
+                    <div slot="header" class="clearfix">
+                        本县学习TOP 10
+                    </div>
+                    <el-table  :data="mainData.total_learn_detail_top" style="width: 100%">
+                        <el-table-column :show-overflow-tooltip="true" prop="name" label="姓名">
+                        </el-table-column>
+                        <el-table-column prop="gov_name" width="200" label="部门名称">
+                        </el-table-column>
+                        <el-table-column prop="total_duration_name" width="120" label="观看时长">
+                        </el-table-column>
+                    </el-table>
+                </el-card>
+                <el-card class="box-card box-card-2">
+                    <div slot="header" class="clearfix">
+                        本县昨日学习TOP 10
+                    </div>
+                    <el-table  :data="mainData.added_learn_detail_top" style="width: 100%">
+                        <el-table-column :show-overflow-tooltip="true" prop="name" label="姓名">
+                        </el-table-column>
+                        <el-table-column prop="gov_name" width="200" label="部门名称">
+                        </el-table-column>
+                        <el-table-column prop="total_duration_name" width="120" label="观看时长">
+                        </el-table-column>
+                    </el-table>
+                </el-card>
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        昨日平台课程TOP 10
+                    </div>
+                    <el-table  :data="mainData.site_course_top" style="width: 100%">
+                        <el-table-column :show-overflow-tooltip="true" prop="course_name" label="课程名称">
+                        </el-table-column>
+                        <el-table-column prop="category_name" width="120" label="课程栏目">
+                        </el-table-column>
+                    </el-table>
+                </el-card>
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        本县昨日课程TOP 10
+                    </div>
+                    <el-table  :data="mainData.area_course_top" style="width: 100%">
+                        <el-table-column :show-overflow-tooltip="true" prop="course_name" label="课程名称">
+                        </el-table-column>
+                        <el-table-column prop="category_name" width="120" label="课程栏目">
+                        </el-table-column>
+                    </el-table>
+                </el-card>
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        平台新增课程TOP 10
+                    </div>
+                    <el-table :data="mainData.newer_course_detail" style="width: 100%">
+                        <el-table-column :show-overflow-tooltip="true" prop="course_name" label="课程名称">
+                        </el-table-column>
+                        <el-table-column prop="category_name" width="120" label="课程栏目">
+                        </el-table-column>
+                    </el-table>
+                </el-card>
+            </section>
         </section>
+       
     </main>
 </template>
 
 <script>
 import Echars from 'echarts'
-// import mainService from '../../services/base/mainService'
+import mainService from '../../services/base/mainService'
 import * as timeUtils from '../../utils/timeUtils'
 let d = new Date()
 export default {
@@ -255,39 +394,81 @@ export default {
         }
     },
     created() {
-        //this.mainData={'course_plan': 222, 'course_plan_offline': 3434,'user_yesterday': 666}
-        // mainService.getMain().then((ret) => {
-        //     this.mainData = ret.stat
-        //     this.listData = ret.list
-        //     let chartData = ret.chart
-        //     chartData.forEach((item) => {
-        //         this.xData.push(item.day)
-        //         this.viewUserData.push(item.num1)   // 学习人数
-        //         this.viewCourseData.push(item.num2) // 学习课程数
-        //         this.tryUserData.push(item.num3)    // 试看人数
-        //         this.tryCourseData.push(item.num4)  // 试看课程数
-        //     })
-        // }).then(() => {
-        //     this.getLineChart()
-        //     var max1 = this.viewUserData.reduce(function(a, b) {
-        //         return Math.max(a, b)
-        //     })
-        //     var max2 = this.viewCourseData.reduce(function(a, b) {
-        //         return Math.max(a, b)
-        //     })
-        //     var max3 = this.tryUserData.reduce(function(a, b) {
-        //         return Math.max(a, b)
-        //     })
-        //     var max4 = this.tryCourseData.reduce(function(a, b) {
-        //         return Math.max(a, b)
-        //     })
-        //     var arr = [max1, max2, max3, max4]
-        //     this.maxResult = arr.reduce(function(a, b) {
-        //         return Math.max(a, b)
-        //     })
-        // }).then(() => {
-        //     xmview.setContentLoading(false)
-        // })
+        xmview.setContentLoading(false)//加载数据结束关闭加载动画
+        //这里是假数据
+        // this.mainData={'course_plan': 222, 'course_plan_offline': 3434,'user_yesterday': 666,'testing': 4711}
+   
+
+        mainService.getMain().then((ret) => {
+            this.mainData = ret.data
+            this.listData = ret.data
+            // let chartData = ret.chart
+                // chartData.forEach((item) => {
+                //     this.xData.push(item.day)
+                //     this.viewUserData.push(item.num1)   // 学习人数
+                //     this.viewCourseData.push(item.num2) // 考试人数
+                //     this.tryUserData.push(item.num3)    // 试看人数
+                //     this.tryCourseData.push(item.num4)  // 试看课程数
+                // })
+        }).then(() => {
+            // this.getLineChart()
+                // var max1 = this.viewUserData.reduce(function(a, b) {
+                //     return Math.max(a, b)
+                // })
+                // var max2 = this.viewCourseData.reduce(function(a, b) {
+                //     return Math.max(a, b)
+                // })
+                // var max3 = this.tryUserData.reduce(function(a, b) {
+                //     return Math.max(a, b)
+                // })
+                // var max4 = this.tryCourseData.reduce(function(a, b) {
+                //     return Math.max(a, b)
+                // })
+                // var arr = [max1, max2, max3, max4]
+                // this.maxResult = arr.reduce(function(a, b) {
+                //     return Math.max(a, b)
+                // })
+        }).then(() => {
+            xmview.setContentLoading(false)
+        })
+
+        mainService.getUserlearn().then((ret) => {
+            let chartData = ret.data
+            console.log(ret.data)
+            // if(chartData==null||chartData==undefined){ return flase}
+            chartData.forEach((item) => {
+                this.xData.push(item.dt)
+                this.viewUserData.push(item.user_cnt)   // 学习人数
+            })
+        }).then(() => {
+            this.getLineChart()
+            var max1 = this.viewUserData.reduce(function(a, b) {
+                return Math.max(a, b)
+            })
+            var arr = [max1]
+            this.maxResult = arr.reduce(function(a, b) {
+                return Math.max(a, b)
+            })
+        })
+
+        mainService.getUsertesting().then((ret) => {
+            let chartData = ret.data
+            console.log(chartData)
+            chartData.forEach((item) => {
+                this.xData.push(item.dt)
+                this.viewCourseData.push(item.user_cnt) // 考试人数
+            })
+        }).then(() => {
+            this.getLineChart()
+            var max2 = this.viewCourseData.reduce(function(a, b) {
+                return Math.max(a, b)
+            })
+            var arr = [ max2]
+            this.maxResult = arr.reduce(function(a, b) {
+                return Math.max(a, b)
+            })
+        })
+
     },
     methods: {
         getLineChart() { // 线性
@@ -298,7 +479,7 @@ export default {
                         trigger: 'axis'
                     },
                     legend: {
-                        data: ['学习人数', '学习课程数']
+                        data: ['学习人数', '考试人数']
                     },
                     grid: {
                         left: '3%',
@@ -334,7 +515,7 @@ export default {
                             data: this.viewUserData
                         },
                         {
-                            name: '学习课程数',
+                            name: '考试人数',
                             type: 'line',
                             areaStyle: {
                                 normal: {

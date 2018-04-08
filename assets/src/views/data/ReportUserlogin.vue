@@ -71,63 +71,13 @@
 <template>
     <article class="analysis-company-manage">
         <el-card class="box-card">
-            <!--<section class="course-analytics" v-if="statData != null">
-                <div>
-                    <div>
-                        <i>今日登录</i>
-                        <p>{{statData.today_num}}</p>
-                        </div>
-                </div>
-                <div>
-                    <div>
-                        <i>昨日登录</i>
-                        <p>{{statData.yesterday_num}}</p>
-                        <span v-if="statData.today_status == 0">无变化</span>
-                        <span class="el-icon-caret-top red" v-if="statData.today_status == 1">{{statData.today_ratio}}%</span>
-                        <span class="el-icon-caret-bottom green" v-if="statData.today_status == 2">{{statData.today_ratio}}%</span>
-                        同比上周
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <i>本周登录</i>
-                        <p>{{statData.week_num}}</p>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <i>上周登录</i>
-                        <p>{{statData.lastweek_num}}</p>
-                        <span v-if="statData.week_status == 0">无变化</span>
-                        <span class="el-icon-caret-top red" v-if="statData.week_status == 1">{{statData.week_ratio}}%</span>
-                        <span class="el-icon-caret-bottom green" v-if="statData.week_status == 2">{{statData.week_ratio}}%</span>
-                        同比上周
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <i>本月登录</i>
-                        <p>{{statData.month_num}}</p>
-                    </div>
-                </div>
-            </section>-->
             <section class="search">
-                <!--<section>
-                    <label>姓名</label>
-                    <el-input class="name" @change="getData" v-model="search.name"></el-input>
-                    </section>-->
-    
                 <section>
                     <i>部门</i>
                     <CompanySelect  :change="getData" v-model="search.gov_id"
                                     v-on:change="val=>search.gov_id=val">
                     </CompanySelect>
                 </section>
-                <!--<DateRange title="登录时间" :start="search.createTime" :end="search.endTime"
-                           v-on:changeStart="val=> search.createTime=val"
-                           v-on:changeEnd="val=> search.endTime=val"
-                           :change="getData">
-                    </DateRange>-->
             </section>
             <el-table
                     v-loading="loading"
@@ -135,12 +85,6 @@
                     :data="manageData"
                     stripe
                     style="width: 100%">
-      
-                <!--<el-table-column
-                        prop="account"
-                        label="账号"
-                        min-width="200">
-                </el-table-column>-->
                 <el-table-column
                         min-width="180"
                         label="所属部门" >
@@ -151,12 +95,22 @@
                 <el-table-column
                         prop="user_cnt"
                         min-width="180"
-                        label="注册人数">
+                        label="录入人数">
                 </el-table-column>
                 <el-table-column
                         prop="logined_cnt"
                         min-width="180"
-                        label="登录人数">
+                        label="激活人数">
+                </el-table-column>
+                <el-table-column
+                        prop="logined_rate"
+                        min-width="180"
+                        label="激活率">
+                </el-table-column>
+                <el-table-column
+                        prop="active_rate"
+                        min-width="180"
+                        label="活跃率">
                 </el-table-column>
             </el-table>
             <div class="block">
@@ -174,9 +128,7 @@
     </article>
 </template>
 <script>
-    import DateRange from '../component/form/DateRangePicker.vue'
     import CompanySelect from '../component/select/IndustryCompany.vue'
-    import DepSelect from '../component/select/Department.vue'
     import govService from '../../services/gov/govService.js'
     import authUtils from '../../utils/authUtils'
     function clearFn() {
@@ -193,10 +145,9 @@
 
     export default {
         components: {
-            DepSelect,
             CompanySelect,
-            DateRange
         },
+        name:'data-report-userlogin',
         data () {
             return {
                 loading: false,
@@ -209,25 +160,24 @@
                 level: void 0,
                 govID: void 0,
                 govLevel: authUtils.getUserInfo().gov_level,
+                isVillage: '',
             }
         },
-        mounted () {
-            // govService.getCompanyManageStat().then((ret) => {
-            //     this.statData = ret.data
-            // }).then(() => {
-                // xmview.setContentLoading(false)
-            // })
-        },
-
-        activated () {
+        created () {
             this.getData().then(() => {
                 xmview.setContentLoading(false)
             })
         },
         watch: {
-            'search.gov_id'(){
-                // this.search.level = Number(this.govLevel) + 2
+            "$route":function(to,from){
+                xmview.setContentLoading(false)
+                if(this.$route.path=='/data/report-userlogin-isVillage'){
+                    this.isVillage = authUtils.getUserInfo().isVillage
+                }
+                this.getData()
+                
             }
+
         },
         methods: {
             initFetchParam() {
@@ -260,6 +210,7 @@
                     date_start: this.search.createTime,
                     date_end: this.search.endTime,
                     level:this.level,
+                    isVillage:this.isVillage,
                 }).then((ret) => {
                     xmview.setContentLoading(false)
                     this.loadingData = false

@@ -337,6 +337,14 @@
 
                     this.menuTree = [
                         {
+                            "id": 28,
+                            "menu_name": "主页",
+                            "menu_node": "/main",
+                            "remark": "",
+                            "pid": 0,
+                            "level": 0,
+                        },
+                        {
                             "id": 2,
                             "menu_name": "医政管理",
                             "menu_node": "/medical",
@@ -443,15 +451,15 @@
                                 "level": 1,
                                 "items": []
                             },
-                            {
-                                "id": 15,
-                                "menu_name": "登录日志",
-                                "menu_node": "/data/user-loginlog",
-                                "remark": "",
-                                "pid": 2,
-                                "level": 1,
-                                "items": []
-                            },
+                            // {
+                            //     "id": 15,
+                            //     "menu_name": "登录日志",
+                            //     "menu_node": "/data/user-loginlog",
+                            //     "remark": "",
+                            //     "pid": 2,
+                            //     "level": 1,
+                            //     "items": []
+                            // },
                             {
                                 "id": 16,
                                 "menu_name": "课程观看日志",
@@ -472,8 +480,17 @@
                             // },
                             {
                                 "id": 17,
-                                "menu_name": "注册登录统计",
+                                "menu_name": "部门统计",
                                 "menu_node": "/data/report-userlogin",
+                                "remark": "",
+                                "pid": 2,
+                                "level": 1,
+                                "items": []
+                            },
+                            {
+                                "id": 17,
+                                "menu_name": "村医统计",
+                                "menu_node": "/data/report-userlogin-isVillage",
                                 "remark": "",
                                 "pid": 2,
                                 "level": 1,
@@ -544,71 +561,6 @@
                                 // }
                             ]
                         },
-                        
-
-                     // {
-                        //     "id": 1,
-                        //     "menu_name": "系统设置",
-                        //     "menu_node": "/sys",
-                        //     "remark": "",
-                        //     "pid": 0,
-                        //     "level": 0,
-                        //     "items": [{
-                        //             "id": 24,
-                        //             "menu_name": "用户管理",
-                        //             "menu_node": "/users",
-                        //             "remark": "",
-                        //             "pid": 1,
-                        //             "level": 1,
-                        //             "items": [{
-                        //                     "id": 7,
-                        //                     "menu_name": "角色管理",
-                        //                     "menu_node": "/sys/role",
-                        //                     "remark": "'",
-                        //                     "pid": 24,
-                        //                     "level": 2,
-                        //                     "items": null
-                        //                 },
-                        //                 {
-                        //                     "id": 5,
-                        //                     "menu_name": "管理员",
-                        //                     "menu_node": "/sys/admin",
-                        //                     "remark": "",
-                        //                     "pid": 24,
-                        //                     "level": 2,
-                        //                     "items": null
-                        //                 }
-                        //             ]
-                        //         },
-                        //         {
-                        //             "id": 15,
-                        //             "menu_name": "列表",
-                        //             "menu_node": "/setting/lists",
-                        //             "remark": "",
-                        //             "pid": 1,
-                        //             "level": 1,
-                        //             "items": []
-                        //         },
-                        //         {
-                        //             "id": 9,
-                        //             "menu_name": "节点  ",
-                        //             "menu_node": "/sys/node",
-                        //             "remark": "",
-                        //             "pid": 1,
-                        //             "level": 1,
-                        //             "items": []
-                        //         },
-                        //         {
-                        //             "id": 8,
-                        //             "menu_name": "菜单管理",
-                        //             "menu_node": "/sys/menu",
-                        //             "remark": "",
-                        //             "pid": 1,
-                        //             "level": 1,
-                        //             "items": []
-                        //         }
-                        //     ]
-                     // }
                     ]
 
                     this.$store.dispatch('setIndexNavMenu', {

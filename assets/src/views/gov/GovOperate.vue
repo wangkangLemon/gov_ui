@@ -93,7 +93,7 @@
                 callback()
             }
             let validateMobile = (rule, value, callback) => {
-                if (!(value || '').match(/^1[34578]\d{9}$/)) {
+                if (!(value || '').match(/^1[3456789]\d{9}$/)) {
                     callback(new Error('请输入正确的手机号'))
                 }
                 callback()

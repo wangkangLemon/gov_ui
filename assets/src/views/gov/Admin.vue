@@ -33,7 +33,7 @@
                 <p><i class="title">所属部门：</i> <span class="value">{{clerkDetail.gov_name}}</span></p>
                 <p><i class="title">手机：</i> <span class="value">{{clerkDetail.mobile}}</span></p>
                 <p><i class="title">昵称：</i> <span class="value">{{clerkDetail.nickname}}</span></p>
-                <p><i class="title">邮箱：</i> <span class="value">{{clerkDetail.email}}</span></p>
+                <!-- <p><i class="title">邮箱：</i> <span class="value">{{clerkDetail.email}}</span></p> -->
                 <p>
                     <i class="title">状态：</i>
                     <span class="value">
@@ -123,11 +123,6 @@
                         min-width="150">
                 </el-table-column>
                 <el-table-column
-                        prop="email"
-                        label="邮箱"
-                        min-width="150">
-                </el-table-column>
-                <el-table-column
                         prop="addate"
                         label="上次登录时间"
                         min-width="200">
@@ -198,7 +193,7 @@
         },
         data () {
             let validateMobile = (rule, value, callback) => {
-                if (!(value || '').match(/^1[34578]\d{9}$/)) {
+                if (!(value || '').match(/^1[3456789]\d{9}$/)) {
                     callback(new Error('请填写正确的手机号'))
                 }
                 callback()

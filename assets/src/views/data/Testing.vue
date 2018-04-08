@@ -69,17 +69,18 @@
             <el-table v-loading="loading" border :data="testingData" stripe style="width: 100%">
                 <el-table-column prop="course_name" min-width="200" label="课程">
                 </el-table-column>
-                <el-table-column prop="grade" label="考核等级" min-width="100">
-                    <template scope="scope">
-                        <el-button type='text'>{{scope.row.grade=='1'?'满分':(scope.row.grade=='2'?'及格':'不及格')}}</el-button>
-                    </template>
-                </el-table-column>
                 <el-table-column prop="user_name" label="考试人员"  min-width="180">
                 </el-table-column>
+                <el-table-column prop="grade" label="考核等级" min-width="100">
+                    <template scope="scope">
+                        <el-button type='text'>{{scope.row.grade=='1'?'优秀':(scope.row.grade=='2'?'良好':'较差')}}</el-button>
+                    </template>
+                </el-table-column>
+                
                 <!--<el-table-column prop="user_id"  :formatter="user_id" label="管理员"  min-width="180">
                 </el-table-column>-->
-                <el-table-column prop="score" label="分值"  min-width="180">
-                </el-table-column>
+                <!-- <el-table-column prop="score" label="分值"  min-width="180">
+                </el-table-column> -->
                 <el-table-column prop="addate" min-width="180" label="创建时间">
                 </el-table-column>
             </el-table>

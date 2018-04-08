@@ -46,7 +46,7 @@ export default {
                 })
             },
             meta: {
-                title: '编辑课程任务',
+                title: '查看课程任务',
             }
         },
         {

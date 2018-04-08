@@ -124,7 +124,7 @@
                     </div>
                     <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" class="demo-ruleForm form">
                         <el-form-item prop="account">
-                            <el-input size="large" placeholder="手机号或邮箱" type="text" v-model="ruleForm2.account"
+                            <el-input size="large" placeholder="手机号" type="text" v-model="ruleForm2.account"
                                       :autofocus="true"
                                       auto-complete="off"></el-input>
                         </el-form-item>
@@ -165,14 +165,14 @@
             var validateAccount = (rule, value, callback) => {
                 let newValue = value || ''
                 if (newValue === '') {
-                    callback(new Error('请输入手机号或邮箱'))
+                    callback(new Error('请输入手机号'))
                 }
                 if (newValue.indexOf('@') != -1) {
                     if (!newValue.match(/^\w+([-+.]\w+)*@\w+([-+.]\w+)*.\w+([-+.]\w+)*$/)) {
                         callback(new Error('请输入正确的邮箱'))
                     }
                 } else {
-                    if (!newValue.match(/^1[34578]\d{9}$/)) {
+                    if (!newValue.match(/^1[3456789]\d{9}$/)) {
                         callback(new Error('请输入正确的手机号'))
                     }
                 }

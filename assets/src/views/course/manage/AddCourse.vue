@@ -215,14 +215,14 @@ export default {
             console.log(this.fetchParam)
             this.fetchParam.material_name = this.$route.params.courseInfo.course_name // 拿到视频名称
             this.courseTags = this.fetchParam.tags ? this.fetchParam.tags.split(',') : []
-            xmview.setContentTile('编辑课程-培训')
+            xmview.setContentTile('查看课程-审核')
         } else if (this.$route.query.contentid) {
             this.activeTab= 'first'
             courseService.getCourseInfo({ course_id: this.$route.query.contentid }).then((ret) => {
                 this.fetchParam = ret.course
                 this.fetchParam.course_name= this.$route.params.courseInfo.course_name
                 this.courseTags = this.fetchParam.tags ? this.fetchParam.tags.split(',') : []
-                xmview.setContentTile('编辑课程-培训')
+                xmview.setContentTile('查看课程-审核')
             }).catch((ret) => {
                 xmview.showTip('error', ret.message)
             })
