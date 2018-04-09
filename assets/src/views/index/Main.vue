@@ -338,6 +338,8 @@
                                  <DateRange   
                                     :start="chartParam.stime" 
                                     :end="chartParam.etime" 
+                                    :defaultStart="chartParam.stime"
+                                    :defaultEnd="chartParam.etime"
                                     v-on:changeStart="val=> chartParam.stime=val" 
                                     v-on:changeEnd="val=> chartParam.etime=val"
                                     :change="getChartData" ref="DateRange">
@@ -358,7 +360,7 @@
             <section class="analyics-list">
                 <el-card class="box-card box-card-2">
                     <div slot="header" class="clearfix">
-                        本县学习TOP 10
+                        本{{this.level_name}}学习TOP 10
                     </div>
                     <el-table  :data="mainData.total_learn_detail_top" style="width: 100%">
                         <el-table-column :show-overflow-tooltip="true" prop="name" label="姓名">
@@ -371,7 +373,7 @@
                 </el-card>
                 <el-card class="box-card box-card-2">
                     <div slot="header" class="clearfix">
-                        本县昨日学习TOP 10
+                        本{{this.level_name}}昨日学习TOP 10
                     </div>
                     <el-table  :data="mainData.added_learn_detail_top" style="width: 100%">
                         <el-table-column :show-overflow-tooltip="true" prop="name" label="姓名">
@@ -395,7 +397,7 @@
                 </el-card>
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        本县昨日课程TOP 10
+                        本{{this.level_name}}昨日课程TOP 10
                     </div>
                     <el-table  :data="mainData.area_course_top" style="width: 100%">
                         <el-table-column :show-overflow-tooltip="true" prop="course_name" label="课程名称">
@@ -425,6 +427,7 @@
 import Echars from 'echarts'
 import mainService from '../../services/base/mainService'
 import DateRange from '../component/form/DateRangePicker'
+import authUtils from '../../utils/authUtils' 
 import * as timeUtils from '../../utils/timeUtils'
 let d = new Date()
 export default {
@@ -447,12 +450,13 @@ export default {
                 stime:'',
                 etime:''
             },
+            levels:['省','市','县','镇','村'],
+            level_name:'',
         }
     },
     created() {
+        this.level_name=this.levels[authUtils.getUserInfo().gov_level]
         xmview.setContentLoading(false)//加载数据结束关闭加载动画
-        //这里是假数据
-        // this.mainData={'course_plan': 222, 'course_plan_offline': 3434,'user_yesterday': 666,'testing': 4711}
     },
     mounted () {
           mainService.getMain().then((ret) => {
@@ -467,16 +471,8 @@ export default {
     },
     watch:{
         'chartRadio'(){
-             console.log(this.$refs.DateRange)
-            //  this.$refs.DateRange.start.$el.querySelector('input').value = ''
-             this.$refs.DateRange.start = []
-            //  this.$refs.DateRange.end.$el.querySelector('input').value = ''
-             this.$refs.DateRange.end = []
-            // this.chartParam.stime=[]
-            // this.chartParam.etime=[]
             if(this.chartRadio=='month'){
                 this.getPreMonth(this. getNow())
-                console.log(this.getPreMonth(this. getNow()))
                    this.chartParam={
                     stime:this.getPreMonth(this. getNow()),
                     etime:this.getNow()
@@ -485,7 +481,6 @@ export default {
             }
              if(this.chartRadio=='week'){
                 this.getlastweekday(this. getNow())
-                console.log(this.getlastweekday(this. getNow()))
                    this.chartParam={
                     stime:this.getlastweekday(this. getNow()),
                     etime:this.getNow()
@@ -504,7 +499,7 @@ export default {
             let date= new Date()
             let Y = date.getFullYear() + '-';
             let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-            let D = (date.getDate()+1 < 10 ? '0'+(date.getDate()+1) : date.getDate()+1) 
+            let D = (date.getDate() < 10 ? '0'+(date.getDate()) : date.getDate()) 
             return(Y+M+D)
         },
         /** 
@@ -531,7 +526,6 @@ export default {
             return datastr;     
         },     
         getPreMonth(date) {
-            console.log(date)
             var arr = date.split('-');
             var year = arr[0]; //获取当前日期的年份
             var month = arr[1]; //获取当前日期的月份
@@ -561,7 +555,6 @@ export default {
              mainService.getchart(this.chartParam).then((ret) => {
                 this.xData=[]
                 let chartData = ret.data
-                console.log(chartData)
                 chartData.forEach((item) => {
                     this.xData.push(item.dt)
                     this.viewUserData.push(item.learn_cnt)   // 学习人数

@@ -64,6 +64,7 @@
             'start'(val) {
                 if (getTimeStr(this.timespan[0]) != val) {
                     this.timespan[0] = val
+                    // console.log(this.timespan[0])
                     // 置空之后, 控件上面显示的值不会被清空  所以要自己操作dom进行操作
                     if (!val) this.$refs.start.$el.querySelector('input').value = ''
                 }
@@ -71,7 +72,6 @@
             'end'(val) {
                 if (getTimeStr(this.timespan[1]) != val) {
                     this.timespan[1] = val
-                    // console.log(val)
                     if (!val) this.$refs.end.$el.querySelector('input').value = ''
                 }
             }

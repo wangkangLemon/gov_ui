@@ -183,9 +183,7 @@
                     }
                     this.getData()
                 }
-               
             }
-
         },
         methods: {
             initFetchParam() {
