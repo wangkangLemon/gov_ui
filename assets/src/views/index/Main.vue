@@ -103,8 +103,8 @@
         border: 1px solid #ddd;
         background: #fff;
         border-radius: 5px;
-        padding: 1.5% 0.7%;
-        overflow-x: auto;
+        padding: 25px 13px;
+
         > div {
             display: inline-block;
             vertical-align: top;
@@ -141,6 +141,12 @@
                     width: 35px;
                     // height: 50%;
                 }
+                @media (max-width: 1121px) {
+                    display:none;
+                    // transform: translateX(-100%);
+                    // top: 0px;
+                    // z-index:10;
+                }
             }
             > div {
                 margin-top: 10px;
@@ -153,6 +159,12 @@
                     color: #333;
                     font-weight:500;
                 }
+            }
+            @media (max-width: 1121px) {
+                padding:15px 20px;
+                // transform: translateX(-100%);
+                // top: 0px;
+                // z-index:10;
             }
         }
     }
@@ -329,11 +341,7 @@
             <el-card class="box-card l">
                 <div slot="header" class="clearfix">
                     <div slot="header" class="clearfix header-title">人员学习情况和考试情况     
-                           <!-- <DateRange :start="chartParam.stime" :end="chartParam.etime" @changeStart="val=> chartParam.stime=val "
-                                        @changeEnd="val=> chartParam.etime=val" :change="getChartData">
-                                    </DateRange>                -->
                         <div class="fr">
-                          
                             <span class="fr">
                                  <DateRange   
                                     :start="chartParam.stime" 
@@ -455,6 +463,7 @@ export default {
         }
     },
     created() {
+        console.log(authUtils.getUserInfo())
         this.level_name=this.levels[authUtils.getUserInfo().gov_level]
         xmview.setContentLoading(false)//加载数据结束关闭加载动画
     },
@@ -487,7 +496,7 @@ export default {
                 },
                 this.getChartData()
             }
-        }
+        },
     },
     methods: {
         /**
@@ -552,6 +561,11 @@ export default {
         },
 
         getChartData(){
+            // console.log(this.chartParam.stime,this.chartParam.etime)
+            if(this.chartParam.stime==undefined||this.chartParam.etime==undefined){
+                return false
+            }
+            // console.log('轻取数据')
              mainService.getchart(this.chartParam).then((ret) => {
                 this.xData=[]
                 let chartData = ret.data
