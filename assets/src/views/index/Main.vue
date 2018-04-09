@@ -285,8 +285,8 @@
                 <p>昨日学习人数</p>
                 <h2>{{ mainData.user_learn_cnt }}</h2>
                 <div>
-                    <i v-if=" mainData.user_learn_cnt-mainData.user_learn2_cnt >=0">比前天新增 {{ mainData.user_learn_cnt-mainData.user_learn2_cnt }}人 （{{ mainData.user_learn_added_rate }}）</i>
-                    <i v-else>比前天减少 {{ mainData.user_learn2_cnt-mainData.user_learn_cnt}}人 （{{ mainData.user_learn_added_rate }}）</i>
+                    <i v-if=" mainData.user_learn_cnt-mainData.user_learn2_cnt >=0">比前天新增 {{ mainData.user_learn_cnt-mainData.user_learn2_cnt }}人 </i>
+                    <i v-else>比前天减少 {{ mainData.user_learn2_cnt-mainData.user_learn_cnt}}人 </i>
                     <!-- <i>比前天新增 {{ mainData.user_learn2_cnt }}人 （{{ mainData.user_learn_added_rate }}）</i> -->
                     <router-link tag="a" :to="{name: 'data-course-history', query: {yesterday}}">查看详情</router-link>
                 </div>
@@ -296,8 +296,8 @@
                 <p>昨日考试人数</p>
                 <h2>{{ mainData.user_testing_cnt }}</h2>
                 <div>
-                    <i v-if="mainData.user_testing_cnt-mainData.user_testing2_cnt>=0">比前天新增{{ mainData.user_testing_cnt-mainData.user_testing2_cnt }}人 （{{ mainData.user_testing_added_rate }}）</i>
-                    <i v-else>比前天减少 {{ mainData.user_testing2_cnt-mainData.user_testing_cnt  }}人 （{{ mainData.user_testing_added_rate }}）</i>
+                    <i v-if="mainData.user_testing_cnt-mainData.user_testing2_cnt>=0">比前天新增{{ mainData.user_testing_cnt-mainData.user_testing2_cnt }}人 </i>
+                    <i v-else>比前天减少 {{ mainData.user_testing2_cnt-mainData.user_testing_cnt  }}人 </i>
                     <router-link tag="a" :to="{name: 'data-testing', query: {yesterday}}">查看详情</router-link>
                 </div>
             </div>

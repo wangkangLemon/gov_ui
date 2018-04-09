@@ -116,11 +116,9 @@
             <div class="block">
                 <el-pagination
                         @size-change="handleSizeChange"
-                        @current-change="handleCurrentChange"
-                        :current-page="currentPage"
-                        :page-sizes="[15, 30, 60, 100]"
+                        :page-sizes="[16, 30, 60, 100]"
                         :page-size="pageSize"
-                        layout="total, sizes, total, prev, pager, next"
+                        layout=" sizes"
                         :total="total">
                 </el-pagination>
             </div>
@@ -164,19 +162,24 @@
             }
         },
         created () {
+            this.isVillage = ''
+            if(this.$route.path=='/data/report-userlogin-isVillage'){
+                        this.isVillage = 1
+                    }
             this.getData().then(() => {
                 xmview.setContentLoading(false)
             })
         },
         watch: {
             "$route":function(to,from){
+                this.isVillage = ''
                 console.log(to,from)
                 console.log(to.name)
                 console.log(from.name)
                 if(to.name!==from.name){
                      xmview.setContentLoading(false)
                     if(this.$route.path=='/data/report-userlogin-isVillage'){
-                        this.isVillage = authUtils.getUserInfo().isVillage
+                        this.isVillage = 1
                     }
                     this.getData()
                 }
