@@ -452,14 +452,14 @@
                                 "items": []
                             },
                             // {
-                            //     "id": 15,
-                            //     "menu_name": "登录日志",
-                            //     "menu_node": "/data/user-loginlog",
-                            //     "remark": "",
-                            //     "pid": 2,
-                            //     "level": 1,
-                            //     "items": []
-                            // },
+                                //     "id": 15,
+                                //     "menu_name": "登录日志",
+                                //     "menu_node": "/data/user-loginlog",
+                                //     "remark": "",
+                                //     "pid": 2,
+                                //     "level": 1,
+                                //     "items": []
+                                // },
                             {
                                 "id": 16,
                                 "menu_name": "课程观看日志",
@@ -470,14 +470,14 @@
                                 "items": []
                             },
                             // {
-                            //     "id": 13,
-                            //     "menu_name": "课时记录",
-                            //     "menu_node": "/data/course-log",
-                            //     "remark": "",
-                            //     "pid": 2,
-                            //     "level": 1,
-                            //     "items": []
-                            // },
+                                //     "id": 13,
+                                //     "menu_name": "课时记录",
+                                //     "menu_node": "/data/course-log",
+                                //     "remark": "",
+                                //     "pid": 2,
+                                //     "level": 1,
+                                //     "items": []
+                                // },
                             {
                                 "id": 17,
                                 "menu_name": "部门统计",
@@ -551,14 +551,14 @@
                                     "items": []
                                 },
                                 // {
-                                //     "id": 21,
-                                //     "menu_name": "公告联系人",
-                                //     "menu_node": "/announce/contacts",
-                                //     "remark": "",
-                                //     "pid": 2,
-                                //     "level": 1,
-                                //     "items": []
-                                // }
+                                    //     "id": 21,
+                                    //     "menu_name": "公告联系人",
+                                    //     "menu_node": "/announce/contacts",
+                                    //     "remark": "",
+                                    //     "pid": 2,
+                                    //     "level": 1,
+                                    //     "items": []
+                                    // }
                             ]
                         },
                     ]

@@ -113,7 +113,7 @@
                         label="活跃率">
                 </el-table-column>
             </el-table>
-            <div class="block">
+            <!-- <div class="block">
                 <el-pagination
                         @size-change="handleSizeChange"
                         :page-sizes="[16, 30, 60, 100]"
@@ -121,7 +121,7 @@
                         layout=" sizes"
                         :total="total">
                 </el-pagination>
-            </div>
+            </div> -->
         </el-card>
     </article>
 </template>
@@ -152,7 +152,7 @@
                 manageData: [],
                 statData: null,
                 currentPage: 1,
-                pageSize: 15,
+                pageSize: -1,
                 total: 0,
                 search: clearFn(),
                 level: void 0,
