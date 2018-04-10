@@ -565,11 +565,16 @@ export default {
             if(this.chartParam.stime==undefined||this.chartParam.etime==undefined){
                 return false
             }
-            // console.log('轻取数据')
+            console.log('轻取数据')
              mainService.getchart(this.chartParam).then((ret) => {
                 this.xData=[]
+                this.viewUserData=[]
+                this.viewCourseData=[]
+                // this.viewUserData
                 let chartData = ret.data
                 chartData.forEach((item) => {
+                    // console.log(item.dt)
+                    console.log(this.viewUserData)
                     this.xData.push(item.dt)
                     this.viewUserData.push(item.learn_cnt)   // 学习人数
                     this.viewCourseData.push(item.testing_cnt) // 考试人数
