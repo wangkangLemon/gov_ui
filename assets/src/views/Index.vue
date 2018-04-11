@@ -285,7 +285,6 @@
                 mainTitle: this.$store.state.index.webpathMain,
                 subTitle: this.$store.state.index.webpathSub,
                 isShowBack: false,
-                menuTree: null,
             }
         },
         computed: {
@@ -310,18 +309,16 @@
             }
         },
         created() {
-            //  getMenutree().then(ret=>{
-            //this.$store.dispatch('setIndexNavMenu',{menu:this.menuTree});
-            //  })
-            this.getMenutree()
+             getMenutree().then(ret=>{
+            this.$store.dispatch('setIndexNavMenu',{menu:ret});
+             })
+            // this.getMenutree()
 
             authUtils.authRefreshtoken() // 开启自动更新token
             xmview.setContentLoading = this.setContentLoading.bind(this)
             xmview.setContentBack = this.showContentBack.bind(this)
             // this.$store.dispatch('setIndexMenuActive', this.$route.path) // 设置选中的菜单
-            this.$store.dispatch('setIndexNavMenu', {
-                menu: authUtils.getNavMenu()
-            }) // 获取菜单
+            this.$store.dispatch('setIndexNavMenu', {menu: authUtils.getNavMenu()}) // 获取菜单
         },
         mounted() {
             window.onresize = () => {
@@ -332,242 +329,242 @@
             window.onresize = null
         },
         methods: {
-            getMenutree() {
-                setTimeout(() => {
+            // getMenutree() {
+                //     setTimeout(() => {
 
-                    this.menuTree = [
-                        {
-                            "id": 28,
-                            "menu_name": "主页",
-                            "menu_node": "/main",
-                            "remark": "",
-                            "pid": 0,
-                            "level": 0,
-                        },
-                        {
-                            "id": 2,
-                            "menu_name": "医政管理",
-                            "menu_node": "/medical",
-                            "remark": "",
-                            "pid": 0,
-                            "level": 0,
-                            "items": [{
-                                    "id": 13,
-                                    "menu_name": "部门管理",
-                                    "menu_node": "/medical/gov",
-                                    "remark": "",
-                                    "pid": 2,
-                                    "level": 1,
-                                    "items": []
-                                },
-                                {
-                                    "id": 3,
-                                    "menu_name": "人员管理",
-                                    "menu_node": "/medical/user",
-                                    "remark": "",
-                                    "pid": 2,
-                                    "level": 1,
-                                    "items": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 22,
-                            "menu_name": "审核管理",
-                            "menu_node": "/review",
-                            "remark": "",
-                            "pid": 0,
-                            "level": 0,
-                            "items": [{
-                                    "id": 23,
-                                    "menu_name": "课程审核",
-                                    "menu_node": "/review/course",
-                                    "remark": "",
-                                    "pid": 2,
-                                    "level": 1,
-                                    "items": []
-                                },
-                            ]
-                        },
-                        {
-                            "id": 24,
-                            "menu_name": "政府服务",
-                            "menu_node": "/server",
-                            "remark": "",
-                            "pid": 0,
-                            "level": 0,
-                            "items": [{
-                                    "id": 25,
-                                    "menu_name": "课程任务",
-                                    "menu_node": "/server/coursetask",
-                                    "remark": "",
-                                    "pid": 2,
-                                    "level": 1,
-                                    "items": [{
-                                            "id": 25,
-                                            "menu_name": "任务管理",
-                                            "menu_node": "/server/coursetask/manage",
-                                            "remark": "",
-                                            "pid": 2,
-                                            "level": 1,
-                                            "items": []
-                                    },
-                                    {
-                                            "id": 26,
-                                            "menu_name": "模板推荐",
-                                            "menu_node": "/server/coursetak/template",
-                                            "remark": "",
-                                            "pid": 2,
-                                            "level": 1,
-                                            "items": []
-                                    },
-                                    {
-                                            "id": 27,
-                                            "menu_name": "任务统计",
-                                            "menu_node": "/server/coursetak/stat",
-                                            "remark": "",
-                                            "pid": 2,
-                                            "level": 1,
-                                            "items": []
-                                    }
-                                    ]
-                                },
-                               
-                            ]
-                        },
-                        {
-                            "id": 2,
-                            "menu_name": "数据分析",
-                            "menu_node": "/data",
-                            "remark": "",
-                            "pid": 0,
-                            "level": 0,
-                            "items": [{
-                                "id": 13,
-                                "menu_name": "成绩管理",
-                                "menu_node": "/data/testing",
-                                "remark": "",
-                                "pid": 2,
-                                "level": 1,
-                                "items": []
-                            },
-                            // {
-                                //     "id": 15,
-                                //     "menu_name": "登录日志",
-                                //     "menu_node": "/data/user-loginlog",
-                                //     "remark": "",
-                                //     "pid": 2,
-                                //     "level": 1,
-                                //     "items": []
-                                // },
-                            {
-                                "id": 16,
-                                "menu_name": "课程观看日志",
-                                "menu_node": "/data/course-history",
-                                "remark": "",
-                                "pid": 2,
-                                "level": 1,
-                                "items": []
-                            },
-                            // {
-                                //     "id": 13,
-                                //     "menu_name": "课时记录",
-                                //     "menu_node": "/data/course-log",
-                                //     "remark": "",
-                                //     "pid": 2,
-                                //     "level": 1,
-                                //     "items": []
-                                // },
-                            {
-                                "id": 17,
-                                "menu_name": "部门统计",
-                                "menu_node": "/data/report-userlogin",
-                                "remark": "",
-                                "pid": 2,
-                                "level": 1,
-                                "items": []
-                            },
-                            {
-                                "id": 17,
-                                "menu_name": "村医统计",
-                                "menu_node": "/data/report-userlogin-isVillage",
-                                "remark": "",
-                                "pid": 2,
-                                "level": 1,
-                                "items": []
-                            }
-                            ]
-                        },
-                        {
-                            "id": 2,
-                            "menu_name": "客户端管理",
-                            "menu_node": "/app",
-                            "remark": "",
-                            "pid": 0,
-                            "level": 0,
-                            "items": [{
-                                    "id": 13,
-                                    "menu_name": "医政设置",
-                                    "menu_node": "/app/setting",
-                                    "remark": "",
-                                    "pid": 2,
-                                    "level": 1,
-                                    "items": []
-                                },
-                                {
-                                    "id": 3,
-                                    "menu_name": "启动图",
-                                    "menu_node": "/app/boot",
-                                    "remark": "",
-                                    "pid": 2,
-                                    "level": 1,
-                                    "items": []
-                                }
-                            ]
-                        },
-                        {
-                            "id": 18,
-                            "menu_name": "公告管理",
-                            "menu_node": "/announce",
-                            "remark": "",
-                            "pid": 0,
-                            "level": 0,
-                            "items": [{
-                                    "id": 19,
-                                    "menu_name": "公告列表",
-                                    "menu_node": "/announce/lists",
-                                    "remark": "",
-                                    "pid": 2,
-                                    "level": 1,
-                                    "items": []
-                                },
-                                {
-                                    "id": 20,
-                                    "menu_name": "公告发送",
-                                    "menu_node": "/announce/send",
-                                    "remark": "",
-                                    "pid": 2,
-                                    "level": 1,
-                                    "items": []
-                                },
-                                // {
-                                    //     "id": 21,
-                                    //     "menu_name": "公告联系人",
-                                    //     "menu_node": "/announce/contacts",
-                                    //     "remark": "",
-                                    //     "pid": 2,
-                                    //     "level": 1,
-                                    //     "items": []
-                                    // }
-                            ]
-                        },
-                    ]
+                //         this.menuTree = [
+                //             {
+                //                 "id": 28,
+                //                 "menu_name": "主页",
+                //                 "menu_node": "/main",
+                //                 "remark": "",
+                //                 "pid": 0,
+                //                 "level": 0,
+                //             },
+                //             {
+                //                 "id": 2,
+                //                 "menu_name": "医政管理",
+                //                 "menu_node": "/medical",
+                //                 "remark": "",
+                //                 "pid": 0,
+                //                 "level": 0,
+                //                 "items": [{
+                //                         "id": 13,
+                //                         "menu_name": "部门管理",
+                //                         "menu_node": "/medical/gov",
+                //                         "remark": "",
+                //                         "pid": 2,
+                //                         "level": 1,
+                //                         "items": []
+                //                     },
+                //                     {
+                //                         "id": 3,
+                //                         "menu_name": "人员管理",
+                //                         "menu_node": "/medical/user",
+                //                         "remark": "",
+                //                         "pid": 2,
+                //                         "level": 1,
+                //                         "items": []
+                //                     }
+                //                 ]
+                //             },
+                //             {
+                //                 "id": 22,
+                //                 "menu_name": "审核管理",
+                //                 "menu_node": "/review",
+                //                 "remark": "",
+                //                 "pid": 0,
+                //                 "level": 0,
+                //                 "items": [{
+                //                         "id": 23,
+                //                         "menu_name": "课程审核",
+                //                         "menu_node": "/review/course",
+                //                         "remark": "",
+                //                         "pid": 2,
+                //                         "level": 1,
+                //                         "items": []
+                //                     },
+                //                 ]
+                //             },
+                //             {
+                //                 "id": 24,
+                //                 "menu_name": "政府服务",
+                //                 "menu_node": "/server",
+                //                 "remark": "",
+                //                 "pid": 0,
+                //                 "level": 0,
+                //                 "items": [{
+                //                         "id": 25,
+                //                         "menu_name": "课程任务",
+                //                         "menu_node": "/server/coursetask",
+                //                         "remark": "",
+                //                         "pid": 2,
+                //                         "level": 1,
+                //                         "items": [{
+                //                                 "id": 25,
+                //                                 "menu_name": "任务管理",
+                //                                 "menu_node": "/server/coursetask/manage",
+                //                                 "remark": "",
+                //                                 "pid": 2,
+                //                                 "level": 1,
+                //                                 "items": []
+                //                         },
+                //                         {
+                //                                 "id": 26,
+                //                                 "menu_name": "模板推荐",
+                //                                 "menu_node": "/server/coursetak/template",
+                //                                 "remark": "",
+                //                                 "pid": 2,
+                //                                 "level": 1,
+                //                                 "items": []
+                //                         },
+                //                         {
+                //                                 "id": 27,
+                //                                 "menu_name": "任务统计",
+                //                                 "menu_node": "/server/coursetak/stat",
+                //                                 "remark": "",
+                //                                 "pid": 2,
+                //                                 "level": 1,
+                //                                 "items": []
+                //                         }
+                //                         ]
+                //                     },
+                                
+                //                 ]
+                //             },
+                //             {
+                //                 "id": 2,
+                //                 "menu_name": "数据分析",
+                //                 "menu_node": "/data",
+                //                 "remark": "",
+                //                 "pid": 0,
+                //                 "level": 0,
+                //                 "items": [{
+                //                     "id": 13,
+                //                     "menu_name": "成绩管理",
+                //                     "menu_node": "/data/testing",
+                //                     "remark": "",
+                //                     "pid": 2,
+                //                     "level": 1,
+                //                     "items": []
+                //                 },
+                //                 // {
+                //                     //     "id": 15,
+                //                     //     "menu_name": "登录日志",
+                //                     //     "menu_node": "/data/user-loginlog",
+                //                     //     "remark": "",
+                //                     //     "pid": 2,
+                //                     //     "level": 1,
+                //                     //     "items": []
+                //                     // },
+                //                 {
+                //                     "id": 16,
+                //                     "menu_name": "课程观看日志",
+                //                     "menu_node": "/data/course-history",
+                //                     "remark": "",
+                //                     "pid": 2,
+                //                     "level": 1,
+                //                     "items": []
+                //                 },
+                //                 // {
+                //                     //     "id": 13,
+                //                     //     "menu_name": "课时记录",
+                //                     //     "menu_node": "/data/course-log",
+                //                     //     "remark": "",
+                //                     //     "pid": 2,
+                //                     //     "level": 1,
+                //                     //     "items": []
+                //                     // },
+                //                 {
+                //                     "id": 17,
+                //                     "menu_name": "部门统计",
+                //                     "menu_node": "/data/report-userlogin",
+                //                     "remark": "",
+                //                     "pid": 2,
+                //                     "level": 1,
+                //                     "items": []
+                //                 },
+                //                 {
+                //                     "id": 17,
+                //                     "menu_name": "村医统计",
+                //                     "menu_node": "/data/report-userlogin-isVillage",
+                //                     "remark": "",
+                //                     "pid": 2,
+                //                     "level": 1,
+                //                     "items": []
+                //                 }
+                //                 ]
+                //             },
+                //             {
+                //                 "id": 2,
+                //                 "menu_name": "客户端管理",
+                //                 "menu_node": "/app",
+                //                 "remark": "",
+                //                 "pid": 0,
+                //                 "level": 0,
+                //                 "items": [{
+                //                         "id": 13,
+                //                         "menu_name": "医政设置",
+                //                         "menu_node": "/app/setting",
+                //                         "remark": "",
+                //                         "pid": 2,
+                //                         "level": 1,
+                //                         "items": []
+                //                     },
+                //                     {
+                //                         "id": 3,
+                //                         "menu_name": "启动图",
+                //                         "menu_node": "/app/boot",
+                //                         "remark": "",
+                //                         "pid": 2,
+                //                         "level": 1,
+                //                         "items": []
+                //                     }
+                //                 ]
+                //             },
+                //             {
+                //                 "id": 18,
+                //                 "menu_name": "公告管理",
+                //                 "menu_node": "/announce",
+                //                 "remark": "",
+                //                 "pid": 0,
+                //                 "level": 0,
+                //                 "items": [{
+                //                         "id": 19,
+                //                         "menu_name": "公告列表",
+                //                         "menu_node": "/announce/lists",
+                //                         "remark": "",
+                //                         "pid": 2,
+                //                         "level": 1,
+                //                         "items": []
+                //                     },
+                //                     {
+                //                         "id": 20,
+                //                         "menu_name": "公告发送",
+                //                         "menu_node": "/announce/send",
+                //                         "remark": "",
+                //                         "pid": 2,
+                //                         "level": 1,
+                //                         "items": []
+                //                     },
+                //                     // {
+                //                         //     "id": 21,
+                //                         //     "menu_name": "公告联系人",
+                //                         //     "menu_node": "/announce/contacts",
+                //                         //     "remark": "",
+                //                         //     "pid": 2,
+                //                         //     "level": 1,
+                //                         //     "items": []
+                //                         // }
+                //                 ]
+                //             },
+                //         ]
 
-                    this.$store.dispatch('setIndexNavMenu', {
-                        menu: this.menuTree
-                    });
-                }, 100)
-            },
+                //         this.$store.dispatch('setIndexNavMenu', {
+                //             menu: this.menuTree
+                //         });
+                //     }, 100)
+                // },
             handleIsShowMenue(val) {
                 this.isShowMenue = val
             },

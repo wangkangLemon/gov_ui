@@ -458,7 +458,7 @@ export default {
                 stime:'',
                 etime:''
             },
-            levels:['省','市','县','镇','村'],
+            levels:['省','市','区(县)','乡镇','村'],
             level_name:'',
         }
     },

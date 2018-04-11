@@ -5,7 +5,7 @@ const urlPre = config.apiHost + '/auth/menus'
 
 export default function getMenutree () {
     let url = urlPre
-    return api.post(url,{
+    return api.get(url,{
     }).then(ret => {
         if (ret.code == 0) {
             return ret.data
