@@ -8,20 +8,20 @@
 </style>
 
 <template>
-    <el-submenu :index="data.menu_node" v-if="data && data.items != null"> <!-- 最外层 el-submenu -if  ,el-menu-item -else -->
+    <el-submenu :index="data.menu_node" v-if="data && data.items.length !== 0"> <!-- 最外层 el-submenu -if  ,el-menu-item -else -->
         <template slot="title">  <!-- 第1层 要用slot-->
             <i class="fa" :class="data.menu_icon" v-if="data.menu_icon"></i>
             <i class="fa fa-th-large" v-else></i> {{data.menu_name}}
         </template>
         <template>  <!-- 第2层  el-submenu -if  ,el-menu-item -else -->
-            <el-submenu :index="subItem.menu_node" v-for="subItem in data.items" :key="subItem.id" v-if="subItem.items.length!=0">
+            <el-submenu :index="subItem.menu_node" v-for="subItem in data.items" :key="subItem.id" v-if="subItem.items.length!==0">
                 <template slot="title">
                     <i class="fa" :class="subItem.menu_icon" v-if="subItem.menu_icon"></i>
                     <i class="fa fa-circle-o" v-else></i> {{subItem.menu_name}}
                 </template>
                 <template>
-                    <el-menu-item :index="subSubItem.menu_node" v-for="subSubItem in subItem.items"  :key="subSubItem.id">
-                        <!--<template slot="title">-->
+                    <el-menu-item :index="subSubItem.menu_node" v-for="subSubItem in subItem.items"  :key="subSubItem.id" >
+                        <!--<template slot="title"   v-if="subSubItem.length!=0">-->
                         <i class="fa" :class="subSubItem.menu_icon" v-if="subSubItem.menu_icon"></i>
                         <i class="fa fa-circle-o" v-else></i> {{subSubItem.menu_name}}
                         <!--</template>-->
@@ -58,6 +58,7 @@
             }
             let hasChildCItems = []
             let leafChildren = []
+            //返回数据是this.data.items,现在视图处理数据，以下代码暂时没用！
             if (this.data.children) {
                 this.data.children.forEach((item) => {
                     if (item.children != null) {
@@ -67,7 +68,6 @@
                     }
                 })
             }
-
             this.hasChildCItems = hasChildCItems
             this.leafChildren = leafChildren
         },
