@@ -35,7 +35,6 @@
                 padding-left: 10px;
                 cursor: pointer;
                 margin-top: 20px;
-                
             }
             >div {
                 position: absolute;
@@ -104,7 +103,6 @@
         background: #fff;
         border-radius: 5px;
         padding: 25px 13px;
-
         > div {
             display: inline-block;
             vertical-align: top;
@@ -211,9 +209,7 @@
                     display: inline-block;
                     padding: 10px 13px;
                  }
-
             }
-            
         }
     }
     .analyics-list {
@@ -362,7 +358,6 @@
                         </div> 
                     </div>    
                 </div>
-
                 <section id="lineChart"></section>
             </el-card>
             <section class="analyics-list">
@@ -370,7 +365,13 @@
                     <div slot="header" class="clearfix">
                         本{{this.level_name}}学习TOP 10
                     </div>
-                    <el-table  :data="mainData.total_learn_detail_top" style="width: 100%">
+                    <el-table  :data="mainData.total_learn_detail_top" style="width: 100%"  v-if="this.level_name!=='区(县)'">
+                        <el-table-column :show-overflow-tooltip="true" prop="name" label="姓名">
+                        </el-table-column> 
+                        <el-table-column :show-overflow-tooltip="true" prop="name" label="活跃度">
+                        </el-table-column>
+                    </el-table>
+                    <el-table  :data="mainData.total_learn_detail_top" style="width: 100%" v-else>
                         <el-table-column :show-overflow-tooltip="true" prop="name" label="姓名">
                         </el-table-column>
                         <el-table-column prop="gov_name" width="200" label="部门名称">
@@ -383,7 +384,13 @@
                     <div slot="header" class="clearfix">
                         本{{this.level_name}}昨日学习TOP 10
                     </div>
-                    <el-table  :data="mainData.added_learn_detail_top" style="width: 100%">
+                    <el-table  :data="mainData.added_learn_detail_top" style="width: 100%"  v-if="this.level_name!=='区(县)'">
+                        <el-table-column :show-overflow-tooltip="true" prop="name" label="姓名">
+                        </el-table-column>
+                        <el-table-column :show-overflow-tooltip="true" prop="name" label="活跃度">
+                        </el-table-column>
+                    </el-table>
+                    <el-table  :data="mainData.added_learn_detail_top" style="width: 100%" v-else>
                         <el-table-column :show-overflow-tooltip="true" prop="name" label="姓名">
                         </el-table-column>
                         <el-table-column prop="gov_name" width="200" label="部门名称">
@@ -463,7 +470,6 @@ export default {
         }
     },
     created() {
-        console.log(authUtils.getUserInfo())
         this.level_name=this.levels[authUtils.getUserInfo().gov_level]
         xmview.setContentLoading(false)//加载数据结束关闭加载动画
     },
@@ -565,8 +571,10 @@ export default {
             if(this.chartParam.stime==undefined||this.chartParam.etime==undefined){
                 return false
             }
-            console.log('轻取数据')
-             mainService.getchart(this.chartParam).then((ret) => {
+            mainService.getchart(this.chartParam).then((ret) => {
+                if(ret.data==null){
+                    ret.data=[{dt:this.chartParam.stime,learn_cnt:0,testing_cnt:0},{dt:this.chartParam.etime,learn_cnt:0,testing_cnt:0}]
+                }
                 this.xData=[]
                 this.viewUserData=[]
                 this.viewCourseData=[]

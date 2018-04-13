@@ -62,19 +62,6 @@ export default {
                 title: '管理员',
             }
         },
-        //  // 人员
-        // {
-        //     path: 'user/:gov_id',
-        //     name: 'gov-person',
-        //     component: resolve => {
-        //         require.ensure([], () => {
-        //             resolve(require('../views/gov/Person.vue'))
-        //         })
-        //     },
-        //     meta: {
-        //         title: '管理员',
-        //     }
-        // },
         // // 部门人员查询
         {
             path: 'user',
@@ -89,20 +76,6 @@ export default {
                 noback: true
             }
         },
-        // {
-        //     path: 'user/add',
-        //     name: 'user-add',
-        //     component: resolve => {
-        //         require.ensure([], () => {
-        //             resolve(require('../views/gov/user/Form.vue'))
-        //         })
-        //     },
-        //     meta: {
-        //         title: '角色组添加',
-        //         noback: false
-        //     }
-        // },
-        
         //编辑管理员
         {
             path: 'user/edit/:user_id',
@@ -143,6 +116,20 @@ export default {
             meta: {
                 title: '人员修改',
                 noback: false
+            }
+        },
+        //权限管理
+        {
+            path: 'authority',
+            name: 'gov-authority',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/gov/Authority.vue'))
+                })
+            },
+            meta: {
+                title: '权限管理',
+                noback: true
             }
         },
     ]

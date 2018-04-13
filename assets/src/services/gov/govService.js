@@ -438,19 +438,6 @@ class govService {
         })
     }
     //------------------------------------------------课程观看日志---------------------------------------------------------------------------
-    // // 企业活跃情况
-    // getCourseHistory ({
-    //                   page,
-    //                   pagesize,
-    //                   gov_id,
-    //                   stat_date,
-    //               }) {
-    //     let finalUrl = `${urlPre}/course/history/lists`
-    //     return api.get(finalUrl, {page, pagesize, gov_id, stat_date}).then((ret) => {
-    //         return ret.data
-    //     })
-    // }
-
     // 课程观看情况 详细内容
     getCourseHistory({
         page,
@@ -686,5 +673,32 @@ class govService {
             return ret.data
         })
     }
+
+    // 搜索
+    getAuthorize() {
+        //${config.apiHost}
+        let url = `${config.apiHost}/auth/data/authorize` //传递的地址的id
+        return api.get(url, {}, false).then(ret => {
+            if (ret.code == 0) {
+                return ret.data
+            } else {
+                return Promise.reject(ret)
+            }
+        })
+    }
+    // 权限管理
+    authorize(param) {
+        let url = `${config.apiHost}/auth/data/authorize`
+        return api.post(url, param).then(ret => {
+            if (ret.code == 0) {
+                return ret.data
+            } else {
+                xmview.showTip('error', ret.message)
+                return Promise.reject(ret)
+            }
+        })
+    }
+
+   
 }
 export default new govService()

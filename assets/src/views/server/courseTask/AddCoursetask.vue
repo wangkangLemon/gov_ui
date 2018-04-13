@@ -315,7 +315,7 @@
                     else if(ret.data.users.length!==0){
                         this.pushTypeDialog.selectedData[this.pushTypeDialog.type] = this.generatorList(ret.data.users || [])
                     }
-                    xmview.setContentTile('编辑课程任务 ')
+                    xmview.setContentTile('查看课程任务 ')
                     xmview.setContentLoading(false)
                 })
             }
