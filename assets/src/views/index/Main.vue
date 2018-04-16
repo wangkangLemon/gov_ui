@@ -361,12 +361,15 @@
                 <section id="lineChart"></section>
             </el-card>
             <section class="analyics-list">
-                <el-card class="box-card box-card-2">
-                    <div slot="header" class="clearfix">
+                <el-card class="box-card box-card-2" >
+                    <div slot="header" class="clearfix"  v-if="this.level_name=='市'"> 
+                        本{{this.level_name}}活跃度TOP 10
+                    </div>
+                    <div slot="header" class="clearfix" v-else>
                         本{{this.level_name}}学习TOP 10
                     </div>
-                    <el-table  :data="mainData.total_active_rank_top" style="width: 100%"  v-if="this.level_name!=='区(县)'">
-                        <el-table-column :show-overflow-tooltip="true" prop="town_name" label="姓名">
+                    <el-table  :data="mainData.total_active_rank_top" style="width: 100%"  v-if="this.level_name=='市'">
+                        <el-table-column :show-overflow-tooltip="true" prop="town_name" label="部门名称">
                         </el-table-column> 
                         <el-table-column :show-overflow-tooltip="true" prop="total_learn_ratio" label="活跃度">
                         </el-table-column>
@@ -381,11 +384,14 @@
                     </el-table>
                 </el-card>
                 <el-card class="box-card box-card-2">
-                    <div slot="header" class="clearfix">
+                    <div slot="header" class="clearfix"  v-if="this.level_name=='市'"> 
+                        本{{this.level_name}}昨日活跃度TOP 10
+                    </div>
+                    <div slot="header" class="clearfix" v-else>
                         本{{this.level_name}}昨日学习TOP 10
                     </div>
-                    <el-table  :data="mainData.added_active_rank_top" style="width: 100%"  v-if="this.level_name!=='区(县)'">
-                        <el-table-column :show-overflow-tooltip="true" prop="town_name" label="姓名">
+                    <el-table  :data="mainData.added_active_rank_top" style="width: 100%"  v-if="this.level_name=='市'">
+                        <el-table-column :show-overflow-tooltip="true" prop="town_name" label="部门名称">
                         </el-table-column>
                         <el-table-column :show-overflow-tooltip="true" prop="added_learn_ratio" label="活跃度">
                         </el-table-column>
