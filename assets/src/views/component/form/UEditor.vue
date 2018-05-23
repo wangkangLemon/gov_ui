@@ -111,7 +111,6 @@
                         // 绑定事件，当 UEditor 初始化完成后，将编辑器实例通过自定义的 ready 事件交出去
                         this.instance.addListener('ready', () => {
                             this.$emit('ready', this.instance)
-
                             this.setContent(this.currVal || this.value)
                             // 监听文本变化
                             this.instance.addListener('contentChange', () => {

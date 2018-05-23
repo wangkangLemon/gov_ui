@@ -132,5 +132,46 @@ export default {
                 noback: true
             }
         },
+        //资讯管理
+        {
+            path: 'news',
+            name: 'gov-news',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/gov/news/News.vue'))
+                })
+            },
+            meta: {
+                title: '资讯管理',
+                noback: true
+            }
+        },
+        {
+            path: 'news/add', //专家管理表单 -修改
+            name: 'gov-news-add',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/gov/news/NewsForm.vue'))
+                })
+            },
+            meta: {
+                title: '资讯新建',
+                noback: false
+            }
+        },
+        {
+            path: 'news/edit/:id', //专家管理表单 -修改
+            name: 'gov-news-edit',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/gov/news/NewsForm.vue'))
+                })
+            },
+            meta: {
+                title: '资讯修改',
+                noback: false
+            }
+        },
+
     ]
 }

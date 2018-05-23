@@ -1,5 +1,5 @@
 <template>
-    <keep-alive exclude="user-form,gov-authority">
+    <keep-alive exclude="user-form,gov-authority,gov-news-edit">
         <router-view></router-view>
     </keep-alive>
 </template>

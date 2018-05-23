@@ -1,0 +1,2 @@
+webpackJsonp([39],{110:function(e,t,r){var n=r(5)(r(692),r(854),null,null);e.exports=n.exports},692:function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.default={}},854:function(e,t){e.exports={render:function(){var e=this,t=e.$createElement,r=e._self._c||t;return r("keep-alive",{attrs:{exclude:"user-form,gov-authority,gov-news-edit"}},[r("router-view")],1)},staticRenderFns:[]}}});
+//# sourceMappingURL=39.0c996327c5bd0690aa63.js.map

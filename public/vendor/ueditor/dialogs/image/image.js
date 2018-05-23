@@ -238,7 +238,7 @@
                 this.updateLocker();
             }
         },
-        fetchData: function(){
+        getData: function(){
             var data = {};
             for(var k in this.dom){
                 data[k] = this.dom[k].value;
@@ -267,7 +267,7 @@
             }
         },
         getInsertList: function () {
-            var data = this.fetchData();
+            var data = this.getData();
             if(data['url']) {
                 return [{
                     src: data['url'],

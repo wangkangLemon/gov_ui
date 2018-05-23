@@ -8081,16 +8081,20 @@ UE.Editor.defaultOptions = function(editor){
 
                 var configUrl = me.getActionUrl('config');
                 if(configUrl.indexOf('action=config') > -1) {
-                    configUrl = xmconfig.apiHost + '/api/ueditor/config'
+                    configUrl = xmconfig.apiHost + '/ueditor/config'
                 }
-
+                debugger
+                
                 isJsonp = utils.isCrossDomainUrl(configUrl);
                 /* 发出ajax请求 */
                 me._serverConfigLoaded = false;
-
                 configUrl && UE.ajax.request(configUrl,{
                     'method': 'GET',
                     'dataType': isJsonp ? 'jsonp':'',
+                    // 'beforeSend':function(xhr){
+                    //     xhr.setRequestHeader('aaa', 'abbb');
+                    //     // xhr.setRequestHeader('Authorization', 'Bearer ' + authUtils.getAuthToken())
+                    // },
                     'onsuccess':function(r){
                         try {
                             var config = isJsonp ? r:eval("("+r.responseText+")");
@@ -8243,6 +8247,11 @@ UE.ajax = function() {
                 }
             }
         };
+        // if (ajaxOptions.beforeSend){
+        //     console.log(xhr)
+        //     ajaxOptions.beforeSend(xhr)
+        // }
+
         if (method == "POST") {
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.send(submitStr);
