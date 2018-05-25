@@ -78,7 +78,7 @@
         <!--添加/编辑表单-->
         <!--点击添加 form数据取邮箱/手机号 密码-->
         <article class="manage-container">
-            <el-button icon="plus" type="primary" @click="()=> $router.push({name:'server-manage-add',params: {coursetaskInfo:row, type:'add'} })">添加
+            <el-button icon="plus" type="primary" @click="()=> $router.push({name:'server-manage-add',params: { type:'add'} })">添加
                    <!-- this.$router.push({name: 'server-manage-edit' ,params: {coursetaskInfo:row, type:'task'}, query: {id: row.id},type:'look'}) -->
             <!--添加-->
             </el-button>

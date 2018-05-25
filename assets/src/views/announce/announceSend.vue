@@ -308,9 +308,6 @@
             //             console.log(ret.data)
             //             //this.uploadImgUrl
             //         })
-
- 
-
             console.log(this.uploadImgUrl)
             this.$refs.uploadImg.clearFiles()
             this.fetchData()
@@ -355,6 +352,7 @@
                 // console.log(param)
                 // map[this.pushTypeDialog.type](param).then(ret => {
                 announceService.fetchAllCheckData(param).then(ret => {
+                    
 
                     // this.pushTypeDialog.total = ret._exts.total
                     this.pushTypeDialog.total = ret._exts.total
