@@ -20,7 +20,8 @@
     <main id="medical-form">
         <section class="submit-form">   
             <el-form label-width="120px" ref="form" :rules="rules" :model="fetchParam">
-                <el-form-item label="资讯标题" prop="title">
+                <el-form-item label="
+                " prop="title">
                     <el-input v-model="fetchParam.title"></el-input>
                 </el-form-item>
                 <el-form-item label="作者" prop="author">
@@ -32,7 +33,7 @@
                 </el-form-item>
                 <el-form-item prop="imgUrl" label="封面" :label-width="formLabelWidth">
                     <div class="img-wrap" v-if="fetchParam.image">
-                        <img :src="fetchParam.image | fillImgPath" alt=""/>
+                        <img :src="fetchParam.image | fillImgPath" width="200" height="112" alt=""/>
                     </div>
                     <ImagEcropperInput :isRound="false" :confirmFn="cropperFn"
                                        class="upload-btn"></ImagEcropperInput>

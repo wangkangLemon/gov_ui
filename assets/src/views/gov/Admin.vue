@@ -41,8 +41,6 @@
                         <el-tag type="danger" v-else="clerkDetail.disabled">异常</el-tag>
                     </span>
                 </p>
-                <!--<p><i class="title">性别：</i> <span class="value">{{clerkDetail.sex ? '男' : '女'}}</span></p>-->
-                <p><i class="title">生日：</i> <span class="value">{{clerkDetail.birthday}}</span></p>
                 <p><i class="title">地址：</i> <span class="value">{{clerkDetail.address}}</span></p>
                 <p><i class="title">注册时间：</i><span class="value">{{clerkDetail.addate}}</span></p>
             </div>
@@ -218,7 +216,6 @@
                     pass: '',          // 密码
                     address: '',       // 地址
                     sex: 0,            // 性别
-                    birthday: '',          // 生日
                     create_time_name: ''
                 },
                 departmentData: [],
@@ -263,6 +260,9 @@
             }
         },
         activated () {
+            console.log(this.$route.params.govInfo);
+            
+            this.form=clearFormFn() 
             xmview.setContentLoading(false)
             this.getData().then(() => {
                 xmview.setContentLoading(false)
@@ -278,7 +278,7 @@
 
         },
         methods: {
-                // 禁用
+            // 禁用
             offline(index, row) {
                 if(row.deleted == 0){
                     xmview.showDialog(`你将要禁用管理员 <span style="color:red">${row.name}</span> 确认吗?`, () => {
@@ -365,8 +365,14 @@
             submit (form) {
                 this.$refs[form].validate((valid) => {
                     if (valid) {
-                        this.form.gov_id = this.$route.params.gov_id
-                        this.form.birthday = timeUtils.date2Str(this.form.birthday)
+                        let p=this.$route.params.govInfo
+                        this.form.gov_id = p.id
+                        this.form.province_id= p.province_id 
+                        this.form.city_id= p.city_id
+                        this.form.area_id= p.area_id
+                        this.form.town_id= p.town_id
+                        this.form.village_id=p.village_id
+                        console.log(this.form)
                         govService.addGovAdmin(this.form).then((ret) => {
                             xmview.showTip('success', '添加成功')
                         }).then(() => {
@@ -397,7 +403,6 @@
     function clearFormFn(){
         return{                // 表单属性值
                     role_id: 1,        //角色 无管理权限0 
-                    // area_id:0,         //地区id
                     gov_id: void 0,    //部门id
                     name: '',          // 姓名
                     mobile: '',        // 手机
@@ -405,7 +410,6 @@
                     nickname: '',
                     // address: '',       // 地址
                     // sex: 0,            // 性别
-                    // birthday: ''       // 生日
                 }
     }
 </script>

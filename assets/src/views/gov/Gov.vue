@@ -217,6 +217,7 @@
                     name: 'gov-admin',
                     params: {
                         gov_id: item.id || 1,
+                        govInfo: item,
                         area_id: item.area_id,
                     },
                     query: {

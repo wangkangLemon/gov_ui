@@ -260,31 +260,9 @@ class govService {
     }
 
     // 新增管理员
-    addGovAdmin({
-        name,
-        sex,
-        mobile,
-        passwd,
-        // birthday,
-        // address,
-        gov_id,
-        role_id,
-        area_id,
-        nickname
-    }) {
+    addGovAdmin(param) {
         let finalUrl = `${urlPre1}/user/create`
-        return api.post(finalUrl, {
-            name,
-            // sex,
-            mobile,
-            passwd,
-            // birthday,
-            // address,
-            gov_id,
-            role_id,
-            // area_id,
-            nickname
-        }).then((ret) => {
+        return api.post(finalUrl, param).then((ret) => {
             if (ret.code) {
                 return Promise.reject(ret)
             }

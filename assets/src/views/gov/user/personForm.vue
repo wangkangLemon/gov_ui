@@ -80,7 +80,7 @@
                 </el-form-item>
                 <el-form-item label="角色" prop="role_id" :fetch-suggestions="querySearch">
                     <el-select class="select" v-model="fetchParam.role_id" placeholder="请输入角色">
-                        <el-option  v-for="item in  role_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                        <el-option  v-for="item in  role_list" :key="item.id" :label="item.name" :value="item.id" ></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="密码" prop="password" v-if="fetchParam.role_id==1">
@@ -106,17 +106,6 @@
     import ImagEcropperInput from '../../component/upload/ImagEcropperInput.vue'
     import clone from 'clone'
 
-    function clearFn() {
-        return {
-            typeSelect: '',
-            provinceSelect: '',
-            citySelect: '',
-            areaSelect: '',
-            townSelect: '',
-            villageSelect: '',
-            name: ''
-        }
-    }
     export default {
         name: 'user-form',
         components: {
@@ -126,11 +115,6 @@
             return {
                 imgUrl: '',
                 loadingData: false,
-                currentData: {
-                    data: {},
-                    pindex: -1,
-                    index: -1
-                },
                 fetchParam: getOriginData(),
                 // passValue: true,
                 role_list:[
@@ -187,6 +171,25 @@
             }
         },
         methods: {
+            getIds(a){
+                    let _this=this
+                    let p=_this.$route.params
+                    govService.getGovInfo(this.fetchParam.gov_id).then((ret) => {
+                        console.log(ret)
+                           let f=this.fetchParam,d=ret
+                            for(let i in d){  
+                                f[i]=d[i]   
+                            }
+                            console.log(this.fetchParam);
+                    })
+                // f.province_id= d.province_id,
+                // f.city_id= d.city_id,
+                // f.area_id= d.area_id,
+                // f.town_id= d.town_id,
+                // f.village_id= d.village_id,
+                console.log('this.fetchParam',this.fetchParam);
+                
+            },
             // passFn(){
             //     return this.$route.params.id != undefined?false:true
             // },
@@ -217,22 +220,52 @@
                     let req = userService.create
                     if (this.fetchParam.id) req = userService.update
                     console.log(this.fetchParam.id)
-                    req(this.fetchParam).then((ret) => {
-                        console.log(111111111111)
+                    
+                    let _this=this
+                    let p=_this.$route.params
+                    
+                    govService.getGovInfo(this.fetchParam.gov_id).then((ret) => {
                         console.log(ret)
-                        // 重置当前数据
-                        //this.$refs[fetchParam].resetFields();//自己加的方法
-                        xmview.showTip('success', '数据提交成功')
-                        // this.fetchParam=getOriginData(),
-                        this.$refs['form'].resetFields();
-                        this.currentData = {
-                            data: [],
-                            pindex: -1,
-                            index: -1
-                        }
-                        if (!this.fetchParam.id) this.fetchParam.id = ret.id;
-                        this.$router.push({'name': 'user-index'})
+                           let f=this.fetchParam,r=ret
+                           f.province_id=r.province_id
+                           f.city_id=r.city_id
+                           f.town_id=r.town_id
+                           f.area_id=r.area_id
+                           f.village_id=r.village_id
+                            // for(let i in d){  
+                            //     f[i]=d[i]   //修改的user的 id 被获取的govid(后台叫id)替换 导致提交接口ID错
+                            // }
+                            console.log(111,this.fetchParam);
                     })
+                    setTimeout(() => {
+                        console.log(2222,this.fetchParam);
+                        if(!this.fetchParam.province_id) return
+                         req(this.fetchParam).then((ret) => {
+                            console.log(111111111111)
+                            console.log(ret)
+                            // 重置当前数据
+                            xmview.showTip('success', '数据提交成功')
+                            this.$refs['form'].resetFields();
+                            if (!this.fetchParam.id) this.fetchParam.id = ret.id;
+                            this.$router.push({'name': 'user-index'})
+                         })
+                    }, 500);
+                    // .then((ret)=>{
+                        // console.log(2222,this.fetchParam);
+                        // req(this.fetchParam).then((ret) => {
+                        //     console.log(111111111111)
+                        //     console.log(ret)
+                        //     // 重置当前数据
+                        //     xmview.showTip('success', '数据提交成功')
+                        //     this.$refs['form'].resetFields();
+                        //     if (!this.fetchParam.id) this.fetchParam.id = ret.id;
+                        //     this.$router.push({'name': 'user-index'})
+                        //  })
+
+
+                    // })
+                    
+                    
                 })
             },
             //拿到角色组
@@ -271,14 +304,12 @@
             gov_id: void 0,
             nickname:'',
             typeSelect: '',
-            provinceSelect: '',
-            citySelect: '',
-            areaSelect: '',
-            townSelect: '',
-            villageSelect: '',
+            province_id: '',
+            city_id: '',
+            area_id: '',
+            town_id: '',
+            village_id: '',
             pid: void -1,
-            area_id:''
-
         }
     }
 

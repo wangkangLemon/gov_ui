@@ -1,4 +1,4 @@
-<!--课程表单：添加/修改-->
+<!--课程表单：部门人员修改-->
 <style lang="scss" rel="stylesheet/scss">
     @import "../../../utils/mixins/common";
     #medical-form {
