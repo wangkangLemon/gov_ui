@@ -133,10 +133,9 @@
                     <el-form-item label="考试次数限制">
                         <el-input :disabled="fetchParam.need_testing == 0" placeholder="留空或0位不限制" v-model="fetchParam.limit_repeat"></el-input>
                     </el-form-item>
-                    <el-form-item label="及格分数" prop="score_pass">
+                    <!-- <el-form-item label="及格分数" prop="score_pass">
                         <el-input :disabled="fetchParam.need_testing == 0" v-model="fetchParam.score_pass"></el-input>
-                    </el-form-item>
-    
+                    </el-form-item>-->
                     <!--<el-form-item label="" v-if="!readonly">
                         <el-button style="float: right" type="primary" @click="btnNextClick">
                             <i>{{ fetchParam.need_testing == 0 ? '保存' : '保存并下一步' }}</i>

@@ -387,7 +387,22 @@ class CourseService {
             return ret.data.stat
         })
     }
-    
+    //获取中草药课程
+    getHerbal({ contentid }) {
+        let finalUrl = `${config.apiHost}/course/herbal/get/${contentid}`
+        return api.get(finalUrl).then((ret) => {
+            console.log(ret)
+            return ret.data
+        })
+    }
+    // 图文系列获取
+    getImgTxt({ contentid }) {
+        let finalUrl = `${config.apiHost}/course/article/get/${contentid}`
+        return api.get(finalUrl).then((ret) => {
+            console.log(ret)
+            return ret.data
+        })
+    }
 
 
 }

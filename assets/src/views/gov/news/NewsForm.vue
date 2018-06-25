@@ -70,6 +70,12 @@
             townSelect: '',
             villageSelect: '',
             name: ''
+
+
+
+
+
+            
         }
     }
     export default {

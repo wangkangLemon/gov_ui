@@ -1,5 +1,5 @@
 <template>
-    <keep-alive exclude="user-form">
+    <keep-alive exclude="user-form,gov-authority,course-manage-addCourse-imgtxt">
         <router-view></router-view>
     </keep-alive>
 </template>

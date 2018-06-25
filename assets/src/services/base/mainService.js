@@ -14,12 +14,12 @@ class MainService {
     getchart(chartParam){
         let finalUrl = `${config.apiHost}/report/dashboard/area/linechart`
         return api.get(finalUrl, chartParam).then((ret) => {
+            console.log(JSON.stringify(ret));
             return ret
         })
     }
     getUserlearn(chartParam){
         console.log(chartParam)
-        
         let finalUrl = `${config.apiHost}/report/userlearn/lists`
         return api.get(finalUrl, chartParam).then((ret) => {
             return ret

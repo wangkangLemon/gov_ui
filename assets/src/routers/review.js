@@ -23,7 +23,6 @@ export default {
                 noback: true
             }
         },
-
         {
             path: 'manage/add-course', // 添加和编辑课程
             name: 'review-manage-addCourse',
@@ -34,6 +33,30 @@ export default {
             },
             meta: {
                 title: '添加课程-培训',
+            }
+        },
+        {
+            path: 'manage/add-course/herbal', // 添加和编辑中草药课程
+            name: 'review-manage-addCourse-herbal',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/course/manage/AddHerbal.vue'))
+                })
+            },
+            meta: {
+                title: '添加课程-中草药',
+            }
+        },
+        {
+            path: 'manage/add-course/imgtxt', // 添加和编辑中草药课程
+            name: 'review-manage-addCourse-imgtxt',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/course/manage/AddImgtxt.vue'))
+                })
+            },
+            meta: {
+                title: '添加课程-图文系列',
             }
         },
         // {

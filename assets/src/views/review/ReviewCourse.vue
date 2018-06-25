@@ -61,13 +61,11 @@
                 <i>管理栏目</i>
             </el-button>
         </section>-->
-
         <article class="search">
             <section>
                 <i>课程名称</i>
                 <el-input v-model="fetchParam.course_name" @keyup.enter.native="fetchData"></el-input>
             </section>
-
             <section>
                 <i>状态</i>
                 <el-select v-model="fetchParam.audited" placeholder="未选择" @change="fetchData" :clearable="true">
@@ -77,14 +75,13 @@
                     <el-option label="未审核 " value="1"></el-option>
                 </el-select>
             </section>
-
             <section><i>栏目</i>
                 <CourseCategorySelect :onchange="fetchData" v-model="fetchParam.category_id"></CourseCategorySelect>
             </section>
 
-            <DateRange title="创建时间" :start="fetchParam.time_start" :end="fetchParam.time_end" @changeStart="val=> fetchParam.time_start=val "
+            <!-- <DateRange title="创建时间" :start="fetchParam.time_start" :end="fetchParam.time_end" @changeStart="val=> fetchParam.time_start=val "
                 @changeEnd="val=> fetchParam.time_end=val" :change="fetchData">
-            </DateRange>
+            </DateRange> -->
 
             <!--<section>
                 <i>课后考试</i>
@@ -104,14 +101,14 @@
             </el-table-column>
             <el-table-column width="80" label="题目数">
                 <template scope="scope">
-                    <el-button style="width: 100%" @click="$router.push({name: 'review-manage-addCourse', params: {courseInfo: scope.row, tab:'second'}})"
+                    <!-- <el-button class="num" style="width: 100%" @click="$router.push({name: 'review-manage-addCourse', params: {courseInfo: scope.row, tab:'second'}})"
                         type="text" size="small">{{scope.row.subject_num}}
-                        <!--a-->
-                    </el-button>
+                    </el-button> -->
+                    {{scope.row.subject_num}}
                 </template>
             </el-table-column>
-            <el-table-column width="80" prop="total_score" label="总分数">
-            </el-table-column>
+            <!-- <el-table-column width="80" prop="total_score" label="总分数">
+            </el-table-column> -->
             <el-table-column width="80" prop="limit_time" label="限时">
             </el-table-column>
             <el-table-column width="100" label="状态">
@@ -128,22 +125,20 @@
             </el-table-column>
             <el-table-column width="190" prop="addate" label="创建时间">
             </el-table-column>
-            <!--<el-table-column width="100" prop="description" label="审核意见">
-            </el-table-column>-->
+
             <el-table-column fixed="right" width="227" label="操作">
                 <template scope="scope">
-                    <el-button @click="$router.push({name: 'review-manage-addCourse', params: {courseInfo: scope.row,type:'reviewCheck'}, query: {id: scope.row.contentid}})"
+                    <!-- <el-button @click="$router.push({name: 'review-manage-addCourse', params: {courseInfo: scope.row,type:'reviewCheck'}, query: {id: scope.row.contentid}})" -->
+                    <el-button @click="edit(scope.row)"
                         type="text" size="small">查看
                     </el-button>
                     <!--<el-button @click="audit(scope.$index, scope.row)" type="text" size="small">
                         <i>{{ scope.row.audited == 1 ? '审核通过 ' : '审核不通过 ' }}</i>
                     </el-button>-->
-
                     <el-button v-if="scope.row.audited == 1" @click="showDialog(scope.$index, scope.row)" type="text" size="small">
                         <i>{{ '审核' }}</i>
                     </el-button>
                     <el-button @click="del(scope.$index, scope.row)" type="text" size="small">删除</el-button>
-
                     <!--<el-button v-if="scope.row.subject_num > 0" @click="$router.push({name:'course-manage-course-answer-analysis', params:{id:scope.row.id}})"
                         type="text" size="small">答案分析
                     </el-button>-->
@@ -155,12 +150,6 @@
             :page-size="fetchParam.pagesize" :page-sizes="[15, 30, 60, 100, 130, 160, 200]" layout="sizes,total, prev, pager, next"
             :total="total">
         </el-pagination>
-
-        <!--底部的批量删除和移动两个按钮-->
-        <!--<div class="bottom-manage">
-            <el-button :disabled='selectedIds.length < 1' @click="dialogTree.isShow = true">移动到</el-button>
-            <el-button :disabled='selectedIds.length < 1' @click="delMulti">批量删除</el-button>
-        </div>-->
 
         <!--移动子栏目的弹出框-->
         <div class="el-dialog__wrapper" v-show="dialogTree.isShow">
@@ -242,6 +231,20 @@
             xmview.setContentLoading(false)
         },
         methods: {
+            edit(row){
+                //{name: 'review-manage-addCourse', params: {courseInfo: scope.row,type:'reviewCheck'}, query: {id: scope.row.contentid}}
+                console.log('row====',row)
+                if(row.category_type==3||row.category_type==4||row.category_type==5){
+                    this.$router.push({name: 'review-manage-addCourse-herbal', params: {herbalInfo: row,handle:'edit'}, query: {id: row.contentid}})
+                }
+                else if(row.category_type==6){
+                    this.$router.push({ name:'review-manage-addCourse-imgtxt',params:{imgtxtInfo:row,handle:'edit'}})
+                    return 
+                }
+                else{
+                    this.$router.push({name: 'review-manage-addCourse', params: {courseInfo: row,handle:'edit'}, query: {id: row.contentid}})
+                }
+            },
             initFetchParam() {
                 this.fetchParam = getFetchParam()
             },

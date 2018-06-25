@@ -73,7 +73,7 @@
             </section>
             <section>
                 <i>角色</i>
-                <el-select clearable v-model="fetchParam.role_id" placeholder="请选择" @change="fetchData" :clearable="true">
+                <el-select  v-model="fetchParam.role_id" placeholder="请选择" @change="fetchData">
                     <el-option label="全部" :value="-1"></el-option>
                     <el-option label="管理员" value="1"></el-option>
                     <el-option label="部门人员" value="0"></el-option>
@@ -85,7 +85,7 @@
             </section>
              <section>
                 <i>是否激活</i>
-                <el-select clearable v-model="fetchParam.active" @change="fetchData">
+                <el-select v-model="fetchParam.active" @change="fetchData">
                     <el-option label="全部" :value="-1"></el-option>
                     <el-option label="已激活" value="1"></el-option>
                     <el-option label="未激活" value="0"></el-option>

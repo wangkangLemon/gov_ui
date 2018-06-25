@@ -48,6 +48,12 @@
                 timespan: [this.start, this.end],
                 pickerOptionsStart: {
                     disabledDate(time) {
+                        // console.log(_this.timespan[1]);
+                        // console.log(time.getTime());
+                        // console.log(time.getTime() - 1000 * 60 * 60 * 4);
+                        // console.log(new Date(_this.timespan[1]).getTime());
+                        // console.log(timeUtils.compareDate(time, new Date(_this.timespan[0])) );
+                        //设置禁用范围
                         return !_this.timespan[1] ? null
                             : (time.getTime() - 1000 * 60 * 60 * 4 >= new Date(_this.timespan[1]).getTime() && timeUtils.compareDate(time, new Date(_this.timespan[0])) !== 0)
                     }
@@ -62,6 +68,8 @@
         },
         watch: {
             'start'(val) {
+                console.log(this.timespan[0]);
+                console.log(this.start);
                 if (getTimeStr(this.timespan[0]) != val) {
                     this.timespan[0] = val
                     // console.log(this.timespan[0])
@@ -70,6 +78,8 @@
                 }
             },
             'end'(val) {
+                console.log(this.timespan[1]);
+                console.log(this.end);
                 if (getTimeStr(this.timespan[1]) != val) {
                     this.timespan[1] = val
                     if (!val) this.$refs.end.$el.querySelector('input').value = ''

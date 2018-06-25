@@ -41,14 +41,14 @@
                     <i>课程</i>
                     <DepSelect v-model="search.department_id" :change="getData"></DepSelect>
                 </section>-->
-                <DateRange   
+                <!-- <DateRange   
                     title="发送时间" 
                     :start="search.createTime" 
                     :end="search.endTime" 
                     v-on:changeStart="val=> search.createTime=val" 
                     v-on:changeEnd="val=> search.endTime=val"
                     :change="getData">
-                </DateRange>
+                </DateRange> -->
             </section>
             <el-dialog class="show-detail" title="企业公告信息" v-model="showCompany">
                 <div class="info" v-if="courseTaskCompany">

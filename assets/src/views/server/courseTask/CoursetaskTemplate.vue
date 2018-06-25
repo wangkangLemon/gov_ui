@@ -101,7 +101,7 @@
                         </div>
                         <div class="bottom">
                             <div><el-button type="text" @click="templateViewFn(item)">课程列表</el-button></div>
-                            <div><el-button type="text" @click="()=>{$router.push({name: 'server-manage-add', params:{coursetaskInfo:item,type:'template'},query: {id: item.id}})}">使用</el-button></div>
+                            <div><el-button type="text" @click="()=>{$router.push({name: 'server-manage-add', params:{coursetaskInfo:item,type:'template',add:1},query: {id: item.id}})}">使用</el-button></div>
                         </div>
                         <br/>
                     </section>
