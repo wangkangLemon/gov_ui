@@ -119,9 +119,9 @@
                 </section>
                 <article class="temp-container" v-loading="temp.loading">
                     <section class="temp-item" v-for="item in temp.dataList" :key="item.id">
-                        <div class="corner course" v-if="item.category_type==2"></div>
-                        <div class="corner exam" v-else></div>
-                        <div class="mark">{{item.category_type==2?'课程':'考试'}}</div>
+                        <div class="corner course" v-if="item.category_type==1"></div>
+                        <div class="corner exam" v-else-if="item.category_type==2"></div>
+                        <div class="mark">{{item.category_type==1?'课程':'考试'}}</div>
                         <div class="content">
                             <h2>{{item.title}}</h2>
                             <!--<img :src="item.image" alt="">-->
