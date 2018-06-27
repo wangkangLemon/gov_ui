@@ -1,4 +1,4 @@
-<!--课程任务模板-->
+<!--课程任务 模板推荐-->
 <style lang='scss' rel="stylesheet/scss">
     @import "../../../utils/mixins/mixins";
     @import "../../../utils/mixins/topSearch";
@@ -31,6 +31,32 @@
                 flex-basis: 30%;
                 height: 310px;
                 font-size: 14px;
+                .corner{
+                    // background: #58a; /* Fallback */ 
+                    // background:linear-gradient(-135deg, transparent 2em, #58a 0)
+                    // background:linear-gradient(to left bottom, transparent 50%, rgba(0,0,0,.4) 0) no-repeat 100% 0 / 3em 1.73em, linear-gradient(-150deg, transparent 1.5em, #58a 0);
+                    position: absolute;
+                    right: 0;
+                    width: 0; 
+                    height: 0; 
+                    // border-top: 70px solid red; 
+                    border-left: 70px solid transparent; 
+                }
+                .exam{
+                    border-top: 70px solid #FF7042; 
+                }
+                .course{
+                    border-top: 70px solid #4677D1; 
+                }
+                .mark{
+                        position: absolute;
+                        top:11px;
+                        right:6px;
+                        color:#fff;
+                        font: normal bold 16px "Microsoft YaHei";
+                        transform:rotate(45deg)
+                        // skew(30deg,30deg
+                        }
                 .content {
                     height: 210px;
                     padding: 10px 15px;
@@ -92,11 +118,14 @@
                     </section>
                 </section>
                 <article class="temp-container" v-loading="temp.loading">
-                    <section class="temp-item" v-for="(item,index) in temp.dataList">
+                    <section class="temp-item" v-for="item in temp.dataList" :key="item.id">
+                        <div class="corner course" v-if="item.category_type==2"></div>
+                        <div class="corner exam" v-else></div>
+                        <div class="mark">{{item.category_type==2?'课程':'考试'}}</div>
                         <div class="content">
                             <h2>{{item.title}}</h2>
                             <!--<img :src="item.image" alt="">-->
-                            <img :src="item.image | fillImgPath" :alt="item.image">
+                            <img :src="item.image | fillImgPath">
                             <div class="des">{{item.description}}</div>
                         </div>
                         <div class="bottom">

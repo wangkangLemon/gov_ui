@@ -91,8 +91,12 @@
                                                   v-model="fetchParam.category_id"></CourseTaskTemplateCategorySelect>
             </section>-->
             <section>
-                <i>课程名称</i>
+                <i>任务名称</i>
                 <el-input @keyup.enter.native="getData" class="name" v-model="fetchParam.title"/>
+            </section>
+            <section>
+                <i>任务类型</i>
+                <el-input @keyup.enter.native="getData" class="name" v-model="fetchParam.type"/>
             </section>
             <!--<section>
                 <i>状态</i>
@@ -110,7 +114,21 @@
         <el-table border :data="coursetasktemplateData" v-loading="loading">
             <el-table-column
                     prop="title"
-                    label="课程任务">
+                    label="任务标题">
+            </el-table-column>
+            <el-table-column
+                    prop="type"
+                    label="任务类型"
+                    width="100">
+                     <template scope="scope">
+                    <!-- <el-tag type="warning" size="medium" v-if="scope.row.tasktype=='1'">任务</el-tag> -->
+                    <el-tag type="warning" size="medium" v-if="scope.row.type=='1'">任务</el-tag>
+                    <!-- <el-tag type="primary" size="medium" v-if="scope.row.tasktype=='2'">考试</el-tag> -->
+                    <el-tag type="primary" size="medium" v-if="scope.row.type=='2'">考试</el-tag>
+                </template>
+                     <!-- <template scope="scope">
+                     {{scope.row.type=='1'?'课程':'考试'}}
+                </template> -->
             </el-table-column>
             <el-table-column
                     prop="addate"

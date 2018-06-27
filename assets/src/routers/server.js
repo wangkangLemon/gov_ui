@@ -19,7 +19,7 @@ export default {
                 })
             },
             meta: {
-                title: '任务管理',
+                title: '任务列表',
                 noback: true
             }
         },
