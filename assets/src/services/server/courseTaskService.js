@@ -4,18 +4,9 @@ const urlPre = config.apiHost + '/course/task'
 
 class sysService {
     // 课程任务
-    getCourseTaskList ({
-                            page ,
-                            pagesize,
-                            title,
-                            stime,
-                            etime,
-                            type,
-                            status,
-                            deleted,
-                       }) {
+    getCourseTaskList (param) {
         let finalUrl = urlPre + '/lists'
-        return api.get(finalUrl, {page, pagesize,title,stime,etime,type,status,deleted,}).then((ret) => {
+        return api.get(finalUrl, param).then((ret) => {
             return ret
         })
     }
@@ -40,6 +31,8 @@ class sysService {
         type=void 0,       // 任务类型
         stime='',
         etime='',
+        task_type,
+        exam_id
 
     }) {
         let finalUrl =`${urlPre}`+'/create'
@@ -55,6 +48,8 @@ class sysService {
             type,
             stime,
             etime,
+            task_type,
+            exam_id
             
         }, false).then((ret) => {
             return ret
@@ -73,7 +68,7 @@ class sysService {
         type=void 0,       // 任务类型
         stime='',
         etime='',
-
+        task_type
     }) {
         let finalUrl = `${urlPre}/edit/${id}`
         return api.post(finalUrl, {
@@ -88,6 +83,7 @@ class sysService {
             type,
             stime,
             etime,
+            task_type
             
         }, false).then((ret) => {
             return ret
@@ -117,16 +113,9 @@ class sysService {
     }
 
     // 课程任务模板管理
-    getCourseTaskTemplateList ({
-                                   category_id,
-                                   title,
-                                   deleted,
-                                   status,
-                                   page,
-                                   pagesize
-                               }) {
+    getCourseTaskTemplateList (param) {
         let finalUrl = urlPre + '/template/lists'
-        return api.get(finalUrl, {category_id, title, deleted, status, page, pagesize}).then((ret) => {
+        return api.get(finalUrl, param).then((ret) => {
             return ret
         })
     }
@@ -176,10 +165,10 @@ class sysService {
     }
 
  // 获取课程任务模板分列表
-    getCategoryTree({ id = 'tree', type, filter = true, pid =-1 , level=-1, pagesize=-1}) {
+    getCategoryTree({ id , type, task_type,pagesize=-1}) {
         let finalUrl = urlPre + '/template/category/lists'
         // alert('进入getData')
-        return api.get(finalUrl, { id, name }).then((ret) => {
+        return api.get(finalUrl, { id, type, task_type,pagesize}).then((ret) => {
             // console.log(ret)
             return ret
         })

@@ -29,10 +29,10 @@ class CommonService {
     // }
     
     //区块
-    commonUploadImageBaseSection({image, alias = Date.now() + '.jpg', biz='section', extpath}) {
+    commonUploadImageBaseSection({image, alias = Date.now() + '.jpg', biz='section'}) {
         
         let url = `${config.apiHost}/common/upload/base64`
-        return api.post(url, {image, alias, biz, extpath}).then((ret) => {
+        return api.post(url, {image, alias, biz}).then((ret) => {
             xmview.showTip('success',ret.message)
             return ret.data
         })

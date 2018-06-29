@@ -96,16 +96,51 @@
                 <ImagEcropperInput :isRound="false" :confirmFn="cropperFn"
                                    class="upload-btn"></ImagEcropperInput>
             </el-form-item>
-            <el-form-item prop="course" label="选择课程">
+            <!--  1课程  -->
+            <el-form-item prop="course" label="选择课程" v-if="this.t==1||this.$route.params.type=='add'">
                 <el-tag style="margin-right: 3px"
                         v-for="(c,index) in form.course" :key="index"
                         :closable="true"
-                        @close="form.course.splice(index,1)"
+                        @close="form.range.splice(index,1)"
                         type="success">
                     {{c.course_name}}
                 </el-tag>
                 <el-button type="primary" @click="dialogCourse.isShow=true" size="small">添加课程</el-button>
             </el-form-item>
+             <!--  2考试  -->
+             <el-form-item prop="categorys" label="选择范围" v-if="this.t==2">
+                <el-tag style="margin-right: 3px"
+                        v-for="(c,index) in form.categorys" :key="index"
+                        @close="form.categorys.splice(index,1)"
+                        type="success">
+                    {{c.name}}
+                </el-tag>
+                <!-- <el-button type="primary" @click="dialogTree.isShow=true" size="small">选取范围</el-button> -->
+            </el-form-item>
+            <el-form-item prop="single_score" label="单选题" v-if="this.t==2">
+                <el-input-number v-model="form.single_num" :disabled="true" class="shortInput"></el-input-number> 个，
+                每题 <el-input-number class="shortInput" v-model="form.single_score" :disabled="true" ></el-input-number> 分
+            </el-form-item>
+            <el-form-item prop="multi_score" label="多选题" v-if="this.t==2">
+                <el-input-number v-model="form.multi_num" :disabled="true" class="shortInput"></el-input-number> 个，
+                每题 <el-input-number class="shortInput" v-model="form.multi_score" :disabled="true" ></el-input-number> 分
+            </el-form-item>
+            <el-form-item prop="judgment_score" label="判断题" v-if="this.t==2">
+                <el-input-number v-model="form.judgment_num" :disabled="true" class="shortInput"></el-input-number> 个，
+                每题 <el-input-number class="shortInput" v-model="form.judgment_score" :disabled="true"></el-input-number> 分
+            </el-form-item> 
+                <el-form-item label="试题总数" prop="total_subject" v-if="this.t==2">
+                <p>{{form.single_num+form.multi_num+form.judgment_num}}个</p>
+            </el-form-item>
+            <el-form-item label="试卷总分" prop="total_score" v-if="this.t==2">
+                <p>{{form.single_score*form.single_num+form.multi_score*form.multi_num+form.judgment_score*form.judgment_num}}分</p>
+            </el-form-item>
+            <el-form-item prop="pass_score" label="及格分数" v-if="this.t==2">
+                <el-input-number v-model="form.pass_score" :disabled="true"
+                                ></el-input-number>
+            </el-form-item>  
+           
+            
             <!-- <el-form-item prop="sort" label="排序">
                 <el-input-number v-model="form.sort" auto-complete="off"></el-input-number>
             </el-form-item> -->
@@ -213,12 +248,15 @@
                     course_ids: [],     // 课程
                     gov_ids: '',     // 部门
                     user_ids: '',     // 用户
-                    // status: void 0,       // 状态
+                    // status: void 0, // 状态
                     course: [],
                     score:void 0,     // 可获得学分
-                    type:void 0,       // 任务类型
+                    type:void 0,       // 任务类型 1:部门 2:人员
                     stime:'',
                     etime:'',
+                    task_type:void 0,
+                    exam_id:'',
+
                 },
                 rules: {
                     title:  [
@@ -267,6 +305,7 @@
                     pagesize: 15,
                     total: 0,
                 },
+                t:this.$route.params.taskType,
             }
         },
         watch:{
@@ -277,37 +316,59 @@
                 //         this.form.gov_ids= ''
                 //     }
                 // },
-                // 'form.course'(){
-                //     // console.log(this.form.course) 
-                // }
         },
         created () {
             xmview.setContentLoading(false)
-            console.log(this.$route.params.coursetaskInfo)
-            if (this.$route.params.coursetaskInfo) {
-            //     this.form = this.$route.query.courseinfo
-            //     xmview.setContentTile('编辑课程任务模板')
-            //     this.choosePushType()
+            let t=this.$route.params.taskInfo
+            if (t) {
                 let req = courseTaskService.getTask
                 if (this.$route.params.type=="template") {req = courseTaskService.getCourseTaskTemplateEditDetail}
                 req(this.$route.query.id).then((ret) => {
                     this.form = Object.assign(this.form, ret.data)
                     // this.form.course_ids=ret.data.courses
-                    if(this.$route.params.type=="task"){
-                         console.log(ret.data)
+                    let txt=t.task_type==1?'课程':'考试'
+                    // if(this.$route.params.type=="look"){
+                    //     xmview.setContentTile( `查看${txt}任务`)
+                    //     // xmview.setContentTile(`编辑课程-中草药 ${ this.category_name}`)
+                    //     this.form.stime =  ret.data.start_date.split(' ')[0]
+                    //     this.form.etime =  ret.data.end_date.split(' ')[0]
+                    //     this.form.type =   ret.data.type
+                    //     this.pushTypeDialog.type = ret.data.type
+                    // }
+                    // 选择课程
+                    if(t.task_type==1){
+                        xmview.setContentTile( '添加课程任务')
+                        this.form.task_type=1
+                        this.form.course = ret.data.courses.map(v=>{
+                            v.contentid = v.course_id
+                            return v
+                        }) 
+                        this.$refs.dialogSelect.setSelected()
+                    }
+                    // //选择栏目
+                    if(t.task_type==2){
+                        xmview.setContentTile( '添加考试任务')
+                        
+                        this.form.task_type=2
+                        let e=ret.data.exam
+                        this.form.exam_id=e.id
+                        for(let i in e){  
+                            this.form[i]=e[i]   
+                        } 
+                        this.form.categorys = e.categorys.map(v=>{
+                            v.contentid = v.id
+                            return v
+                        }) 
+                    }
+                    if(this.$route.params.type=="look"){
+                        xmview.setContentTile( `查看${txt}任务`)
+                        // xmview.setContentTile(`编辑课程-中草药 ${ this.category_name}`)
                         this.form.stime =  ret.data.start_date.split(' ')[0]
                         this.form.etime =  ret.data.end_date.split(' ')[0]
-                        this.form.type = ret.data.type
+                        this.form.type =   ret.data.type
                         this.pushTypeDialog.type = ret.data.type
                     }
-                    // console.log(ret.data.courses)
-                    this.form.course = ret.data.courses.map(v=>{
-                        v.contentid = v.course_id
-                        return v
-                    }) 
-                    console.log('selectedData : ', this.form.course)
-                    this.$refs.dialogSelect.setSelected()
-           
+
                     this.choosePushType()
                     if(ret.data.govs.length!==0){
                         this.pushTypeDialog.selectedData[this.pushTypeDialog.type] = this.generatorList(ret.data.govs || [])
@@ -315,7 +376,6 @@
                     else if(ret.data.users.length!==0){
                         this.pushTypeDialog.selectedData[this.pushTypeDialog.type] = this.generatorList(ret.data.users || [])
                     }
-                    xmview.setContentTile('查看课程任务 ')
                     xmview.setContentLoading(false)
                 })
             }
@@ -350,12 +410,10 @@
                     }
                 }
                 let param = map[this.form.type]
-                // console.log(param)
                 if(param!=undefined){
                     this.pushTypeDialog.title = param.label
                     this.pushTypeDialog.isSearch = param.isSearch
                     this.pushTypeDialog.type = param.type
-                    // console.log(this.pushTypeDialog.type)
                 }
 
             },
@@ -382,7 +440,6 @@
                     param.role_id = -1
                     param.noself = 1
                 }
-                console.log(param)
                 map[this.pushTypeDialog.type](param).then(ret => {
                     // this.pushTypeDialog.total = ret._exts.total
                     this.pushTypeDialog.total = ret._exts.total
@@ -425,10 +482,8 @@
                     // this.form.course.forEach((c) => {
                     //     this.form.course_ids.push(c.id)
                     // })
-                    // console.log(this.form.course)  //这里数据都没错
                       this.form.course.forEach((c) => {
                         this.form.course_ids.push(c.contentid||c.course_id) //开始出错
-                        // console.log(this.form.course_ids)
                     })
                     this.form.course_ids = this.form.course_ids.join(',')
 
@@ -461,7 +516,7 @@
                     }
                     reqFn(this.form).then((ret) => {
                         xmview.showTip('success', '保存成功')
-                        this.$router.back()
+                        this.$router.push({name:'server-coursetask'})
                     }).catch((ret) => {
                         xmview.showTip('error', ret.message)
                     })

@@ -32,14 +32,10 @@
                 height: 310px;
                 font-size: 14px;
                 .corner{
-                    // background: #58a; /* Fallback */ 
-                    // background:linear-gradient(-135deg, transparent 2em, #58a 0)
-                    // background:linear-gradient(to left bottom, transparent 50%, rgba(0,0,0,.4) 0) no-repeat 100% 0 / 3em 1.73em, linear-gradient(-150deg, transparent 1.5em, #58a 0);
                     position: absolute;
                     right: 0;
                     width: 0; 
                     height: 0; 
-                    // border-top: 70px solid red; 
                     border-left: 70px solid transparent; 
                 }
                 .exam{
@@ -55,7 +51,6 @@
                         color:#fff;
                         font: normal bold 16px "Microsoft YaHei";
                         transform:rotate(45deg)
-                        // skew(30deg,30deg
                         }
                 .content {
                     height: 210px;
@@ -66,7 +61,6 @@
                     }
                     img {
                         width: 100%;
-                        height: 100%;
                     }
                     .des {
                         line-height: 25px;
@@ -94,6 +88,22 @@
                 }
             }
         }
+        .el-dialog__body{
+            padding:0 20px 20px;
+        }
+        .course-section{
+            .list-item{
+
+            }
+            h3{
+                padding: 18px 20px;
+                border-bottom: 1px solid #ebeef5;
+                box-sizing: border-box;
+            }
+            ol{
+                padding: 18px 35px;
+            }
+        }
     }
 </style>
 <template>
@@ -107,8 +117,16 @@
         <!--<el-tab-pane label="任务列表" name="list">-->
                 <section class="search">
                     <section>
+                        <i>栏目类型</i>
+                        <el-select clearable v-model="temp.fetchParam.task_type" placeholder="未选择" @change="selectCate">
+                            <el-option label="课程任务" value="1"></el-option>
+                            <el-option label="试题任务" value="2"></el-option>
+                        </el-select>
+                    </section>
+                    <section>
                         <i>类别</i>
-                        <el-select clearable class="select" v-model="temp.fetchParam.category_id" placeholder="请选择类别" :fetch-suggestions="querySearch" @change="getTempData">
+                        <el-select clearable class="select" v-model="temp.fetchParam.category_id" placeholder="请选择类别" 
+                                    :fetch-suggestions="querySearch" @change="getTempData">
                             <el-option  v-for="item in  category_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </section>
@@ -119,18 +137,19 @@
                 </section>
                 <article class="temp-container" v-loading="temp.loading">
                     <section class="temp-item" v-for="item in temp.dataList" :key="item.id">
-                        <div class="corner course" v-if="item.category_type==1"></div>
-                        <div class="corner exam" v-else-if="item.category_type==2"></div>
-                        <div class="mark">{{item.category_type==1?'课程':'考试'}}</div>
+                        <div class="corner course" v-if="item.task_type==1"></div>
+                        <div class="corner exam" v-else-if="item.task_type==2"></div>
+                        <div class="mark">{{item.task_type==1?'课程':'考试'}}</div>
                         <div class="content">
                             <h2>{{item.title}}</h2>
                             <!--<img :src="item.image" alt="">-->
-                            <img :src="item.image | fillImgPath">
+                            <img :src="item.image | fillImgPath" :alt="item.image">
                             <div class="des">{{item.description}}</div>
                         </div>
                         <div class="bottom">
-                            <div><el-button type="text" @click="templateViewFn(item)">课程列表</el-button></div>
-                            <div><el-button type="text" @click="()=>{$router.push({name: 'server-manage-add', params:{coursetaskInfo:item,type:'template',add:1},query: {id: item.id}})}">使用</el-button></div>
+                            <div><el-button type="text" @click="templateViewFn(item)">{{item.task_type==1?'课程':'考试'}}列表</el-button></div>
+                            <!-- <div><el-button type="text" @click="()=>{$router.push({name: 'server-manage-add', params:{coursetaskInfo:item,type:'template',add:1},query: {id: item.id}})}">使用</el-button></div> -->
+                            <div><el-button type="text" @click="use(item)">使用</el-button></div>
                         </div>
                         <br/>
                     </section>
@@ -152,9 +171,12 @@
                 <div class="list-item">
                     <template v-if="temp.count">
                         <h3 class="list-title">此任务共包含{{temp.count}}项{{temp.name}}：</h3>
-                        <ul>
+                        <ol v-if="temp.name=='课程'">
                             <li v-for="(item,index) in temp.courseList" :key="index" v-if="temp.type === item.type || !item.type">{{item.course_name}}</li>
-                        </ul>
+                        </ol>
+                        <ol v-if="temp.name=='考试'">
+                            <li v-for="(item,index) in temp.courseList" :key="index" v-if="temp.type === item.type || !item.type">{{item.name}}</li>
+                        </ol>
                     </template>
                 </div>
             </section>
@@ -221,7 +243,8 @@
                         deleted:-1,
                         status :-1,
                         page: 1,
-                        pagesize: 6
+                        pagesize: 6,
+                        task_type:'',
                     },
                     courseList: null,
                 },
@@ -229,18 +252,27 @@
             }
         },
         activated () {
-            this.getTaskData().then(() => {
+            // this.getTaskData().then(() => {
+            //     xmview.setContentLoading(false)
+            // })
+             this.getCategory()
+             this.getTempData().then(() => {
                 xmview.setContentLoading(false)
             })
-             this.getCategory()
-             this.getTempData() //暂无tab切换 在初始化页面请求
+             //暂无tab切换 在初始化页面请求
         },
         methods: {
-
+            selectCate(){
+                this.getTempData()
+                this.getCategory(this.temp.fetchParam.task_type)
+            },
+            use(item){
+                this.$router.push({name: 'server-manage-add', params:{taskInfo:item,type:'template',add:1,taskType:item.task_type},query: {id: item.id}})
+            },
              //获取部门组下拉列表
             getCategory(val){
-                courseTaskService.getCategoryTree({pagesize:-1}).then((ret)=>{
-                 console.log(ret)
+                if(!val)val=-1
+                courseTaskService.getCategoryTree({ id : '', type:'', task_type :val, pagesize:-1}).then((ret)=>{
                  this.category_list = ret.data;
                 })
             },
@@ -273,33 +305,21 @@
                     this.temp.loading = false
                 })
             },
-            // 获取课程列表
-            courseListFn (row) {
-                this.temp.listDialog = true
-                this.temp.count = row.course_count
-                this.temp.name = '课程'
-                this.temp.type = 'course'
-                courseTaskService.courseTaskDetail({id: row.id}).then((ret) => {
-                    this.temp.courseList = ret.object
-                })
-            },
-            // 获取考试列表
-            examListFn (row) {
-                this.temp.listDialog = true
-                this.temp.count = row.exam_count
-                this.temp.name = '考试'
-                this.temp.type = 'exam'
-                courseTaskService.courseTaskDetail({id: row.id}).then((ret) => {
-                    this.temp.courseList = ret.object
-                })
-            },
+            // 获取课程 / 考试列表
             templateViewFn (row) {
+                console.log(1111,row);
                 this.temp.listDialog = true
-                courseTaskService.getCourseTaskTemplateEditDetail( row.id).then((ret) => {
-                    this.temp.count = ret.data.courses.length
-                    this.temp.name = '课程'
-                    this.temp.courseList = ret.data.courses
-                    console.log(ret.data.courses)
+                courseTaskService.getCourseTaskTemplateEditDetail( row.id ).then((ret) => {
+                    console.log(2222,ret.data);
+                    if(row.task_type==1){
+                            this.temp.count = ret.data.courses.length
+                            this.temp.name = '课程'
+                            this.temp.courseList = ret.data.courses
+                    }else{
+                        this.temp.count = ret.data.exam.categorys.length
+                        this.temp.name = '考试'
+                        this.temp.courseList = ret.data.exam.categorys
+                    }
                 })
             },
             // 处理状态

@@ -95,8 +95,18 @@
                 <el-input @keyup.enter.native="getData" class="name" v-model="fetchParam.title"/>
             </section>
             <section>
+                <i>栏目类型</i>
+                <el-select clearable v-model="fetchParam.task_type" placeholder="未选择" @change="getData">
+                    <el-option label="课程任务" value="1"></el-option>
+                    <el-option label="试题任务" value="2"></el-option>
+                </el-select>
+            </section>
+            <section>
                 <i>任务类型</i>
-                <el-input @keyup.enter.native="getData" class="name" v-model="fetchParam.type"/>
+                <el-select clearable v-model="fetchParam.type" placeholder="未选择" @change="getData">
+                    <el-option label="部门任务" value="1"></el-option>
+                    <el-option label="个人任务" value="2"></el-option>
+                </el-select>
             </section>
             <!--<section>
                 <i>状态</i>
@@ -115,20 +125,11 @@
             <el-table-column
                     prop="title"
                     label="任务标题">
-            </el-table-column>
-            <el-table-column
-                    prop="type"
-                    label="任务类型"
-                    width="100">
-                     <template scope="scope">
-                    <!-- <el-tag type="warning" size="medium" v-if="scope.row.tasktype=='1'">任务</el-tag> -->
-                    <el-tag type="warning" size="medium" v-if="scope.row.type=='1'">任务</el-tag>
-                    <!-- <el-tag type="primary" size="medium" v-if="scope.row.tasktype=='2'">考试</el-tag> -->
-                    <el-tag type="primary" size="medium" v-if="scope.row.type=='2'">考试</el-tag>
+                    <template scope="scope">
+                    <el-tag type="primary" v-if="scope.row.task_type=='1'">课程</el-tag>
+                    <el-tag type="danger" v-else-if="scope.row.task_type=='2'">考试</el-tag>
+                    {{scope.row.title}}
                 </template>
-                     <!-- <template scope="scope">
-                     {{scope.row.type=='1'?'课程':'考试'}}
-                </template> -->
             </el-table-column>
             <el-table-column
                     prop="addate"
@@ -171,8 +172,8 @@
             <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :current-page="currentPage"
-                    :page-size="this.pagesize"
+                    :current-page="fetchParam.page"
+                    :page-size="fetchParam.pagesize"
                     :page-sizes="[15, 30, 60, 100]"
                     layout="sizes,total, ->, prev, pager, next"
                     :total="total">
@@ -245,16 +246,16 @@
                     category_id: '',
                     stime: '',
                     etime: '',
-                    type :void 0,
-                    status :void 0,
+                    type :'',
+                    status :-1,
                     deleted :-1,
-
+                    task_type:'',
+                    page: 1, // 分页当前显示的页数
+                    pagesize: 15
                 },
                 itemName: '',           // 要删除项名称
                 coursetasktemplateData: [],
                 total: 0,
-                currentPage: 1, // 分页当前显示的页数
-                pagesize: 15
             }
         },
         activated () {
@@ -264,7 +265,7 @@
         },
         methods: {
             handleDelete (index, row) {
-                xmview.showDialog(`你将要删除课程任务【<i style="color:red">${row.title || ''}</i>】操作不可恢复确认吗？`, this.deleteItem(row.id))
+                xmview.showDialog(`你将要删除${row.task_type==1?'课程':'考试'}任务【<i style="color:red">${row.title || ''}</i>】操作不可恢复确认吗？`, this.deleteItem(row.id))
             },
             deleteItem (id) {
                 // 以下执行接口删除动作
@@ -279,7 +280,7 @@
             },
             lookItm (row) {
                 row.course = row.course || []
-                this.$router.push({name: 'server-manage-edit' ,params: {coursetaskInfo:row, type:'task'}, query: {id: row.id} })
+                this.$router.push({name: 'server-manage-edit' ,params: {taskInfo:row, type:'look',taskType:row.task_type}, query: {id: row.id} })
             },
             publishCourseTaskTemplate (row) {
                 xmview.showDialog(`你将要上线课程任务【<i style="color:red">${row.title || ''}</i>】吗？`, this.publishItem(row.id))
@@ -310,27 +311,16 @@
                 }
             },
             handleSizeChange (val) {
-                this.pagesize = val
+                this.fetchParam.pagesize = val
                 this.getData()
             },
             handleCurrentChange (val) {
-                this.currentPage = val
+                this.fetchParam.page = val
                 this.getData()
             },
             getData () {
                 this.loading = true
-                return courseTaskService.getCourseTaskList({
-                    // category_id: this.fetchParam.category_id,
-                    title: this.fetchParam.title,
-                    stime: this.fetchParam.stime,
-                    etime: this.fetchParam.etime,
-                    type: this.fetchParam.type,
-                    deleted: this.fetchParam.deleted,
-                    status: this.fetchParam.status,
-                    page: this.currentPage,
-                    pagesize: this.pagesize,
-
-                }).then((ret) => {
+                return courseTaskService.getCourseTaskList(this.fetchParam).then((ret) => {
                     this.coursetasktemplateData = ret.data
                     this.total = ret._exts.total
                 }).then(() => {

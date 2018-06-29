@@ -66,11 +66,11 @@
                     <el-input v-model="fetchParam.mobile"></el-input>
                 </el-form-item>
 
-                <!--<el-form-item label="密码" prop="password" v-if="this.$route.params.id">
-                    <el-input v-model.password="fetchParam.password" auto-complete="off" type="password" key=""  placeholder="密码、不修改请留空"></el-input>
+                <!--<el-form-item label="密码" prop="passwd" v-if="this.$route.params.id">
+                    <el-input v-model.passwd="fetchParam.passwd" auto-complete="off" type="passwd" key=""  placeholder="密码、不修改请留空"></el-input>
                 </el-form-item>-->
-                <!--<el-form-item label="密码" prop="password" v-else>
-                    <el-input v-model.password="fetchParam.password" auto-complete="off" type="password" key=""  ></el-input>
+                <!--<el-form-item label="密码" prop="passwd" v-else>
+                    <el-input v-model.passwd="fetchParam.passwd" auto-complete="off" type="passwd" key=""  ></el-input>
                 </el-form-item>-->
 
                 <el-form-item label="部门" prop="gov_id" :fetch-suggestions="querySearch">
@@ -83,9 +83,9 @@
                         <el-option  v-for="item in  role_list" :key="item.id" :label="item.name" :value="item.id" ></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="密码" prop="password" v-if="fetchParam.role_id==1">
-                    <el-input v-model="fetchParam.password" v-if="this.$route.params.id" auto-complete="off" type="password" key=""  placeholder="密码、不修改请留空"></el-input>
-                    <el-input v-model="fetchParam.password" v-else auto-complete="off" type="password" key=""  ></el-input>
+                <el-form-item label="密码" prop="passwd" v-if="fetchParam.role_id==1">
+                    <el-input v-model="fetchParam.passwd" v-if="this.$route.params.id" auto-complete="off" type="passwd" key=""  placeholder="密码、不修改请留空"></el-input>
+                    <el-input v-model="fetchParam.passwd" v-else auto-complete="off" type="passwd" key=""  ></el-input>
                 </el-form-item>
 
                 <el-form-item label="" >
@@ -134,8 +134,7 @@
                     sex: { required: true },
                     mobile: { pattern: /^1[34578]\d{9}$/, required: true, type: 'string', message: '请输入正确的手机号', trigger: 'blur' },
                     email: { pattern: /^\w+([-+.]\w+)*@\w+([-+.]\w+)*.\w+([-+.]\w+)*$/, required: true, message: '请输入邮箱地址', trigger: 'blur' },
-                    // password: {  pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$/,required: true, message: '请输入6-12位包含数字与字母的密码', trigger: 'blur' },
-                    password: { required: !this.$route.params.id, message:  !this.$route.params.id?'请输入密码':'密码、不修改请留空', trigger: 'blur' },
+                    passwd: { required: !this.$route.params.id, message:  !this.$route.params.id?'请输入密码':'密码、不修改请留空', trigger: 'blur' },
             },
                 multi: {
                     data: [{
@@ -164,9 +163,9 @@
             this.getrole()
         },
         watch: {
-            'fetchParam.password'(){
-                if(this.fetchParam.password==undefined){
-                    this.fetchParam.password=''
+            'fetchParam.passwd'(){
+                if(this.fetchParam.passwd==undefined){
+                    this.fetchParam.passwd=''
                 }
             }
         },
@@ -241,8 +240,6 @@
                         console.log(2222,this.fetchParam);
                         if(!this.fetchParam.province_id) return
                          req(this.fetchParam).then((ret) => {
-                            console.log(111111111111)
-                            console.log(ret)
                             // 重置当前数据
                             xmview.showTip('success', '数据提交成功')
                             this.$refs['form'].resetFields();
@@ -297,7 +294,7 @@
             name: '',
             mobile: '',
             email: '',
-            password: '',
+            passwd: '',
             address: '',
             id: 0,
             sex: 1,
