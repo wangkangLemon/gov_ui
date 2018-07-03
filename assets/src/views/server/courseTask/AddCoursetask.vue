@@ -100,12 +100,12 @@
             <el-form-item prop="course" label="选择课程" v-if="this.t==1||this.$route.params.type=='add'">
                 <el-tag style="margin-right: 3px"
                         v-for="(c,index) in form.course" :key="index"
-                        :closable="true"
-                        @close="form.range.splice(index,1)"
+                        :closable="delCourse"
+                        @close="form.course.splice(index,1)"
                         type="success">
                     {{c.course_name}}
                 </el-tag>
-                <el-button type="primary" @click="dialogCourse.isShow=true" size="small">添加课程</el-button>
+                <el-button type="primary" @click="dialogCourse.isShow=true" size="small" v-if="this.$route.params.add">添加课程</el-button>
             </el-form-item>
              <!--  2考试  -->
              <el-form-item prop="categorys" label="选择范围" v-if="this.t==2">
@@ -254,7 +254,7 @@
                     type:void 0,       // 任务类型 1:部门 2:人员
                     stime:'',
                     etime:'',
-                    task_type:void 0,
+                    task_type:'',
                     exam_id:'',
 
                 },
@@ -306,6 +306,7 @@
                     total: 0,
                 },
                 t:this.$route.params.taskType,
+                delCourse:this.$route.params.add==1,
             }
         },
         watch:{
@@ -320,6 +321,10 @@
         created () {
             xmview.setContentLoading(false)
             let t=this.$route.params.taskInfo
+            //普通添加
+            if(this.$route.params.taskType==1)this.form.task_type=1
+            
+            //模板添加 
             if (t) {
                 let req = courseTaskService.getTask
                 if (this.$route.params.type=="template") {req = courseTaskService.getCourseTaskTemplateEditDetail}
@@ -348,7 +353,6 @@
                     // //选择栏目
                     if(t.task_type==2){
                         xmview.setContentTile( '添加考试任务')
-                        
                         this.form.task_type=2
                         let e=ret.data.exam
                         this.form.exam_id=e.id
@@ -379,6 +383,7 @@
                     xmview.setContentLoading(false)
                 })
             }
+
 
             this.pushTypeDialog.selectedData[this.pushTypeDialog.type] = []
         },
@@ -482,11 +487,14 @@
                     // this.form.course.forEach((c) => {
                     //     this.form.course_ids.push(c.id)
                     // })
-                      this.form.course.forEach((c) => {
-                        this.form.course_ids.push(c.contentid||c.course_id) //开始出错
-                    })
-                    this.form.course_ids = this.form.course_ids.join(',')
-
+                     
+                    if(this.form.task_type==1){
+                        this.form.course_ids = []
+                        this.form.course.forEach((c) => {
+                            this.form.course_ids.push(c.contentid||c.course_id) //开始出错
+                        })
+                        this.form.course_ids = this.form.course_ids.join(',')
+                    }
 
                     if(this.form.type==1){
                         // 处理govids
@@ -499,7 +507,6 @@
                         return item.id
                         }).join(',')
                     }
-
 
                     // this.fetchParam.end_time = this.timeFormatter(this.fetchParam.end_time, true)
 
@@ -514,6 +521,8 @@
                             reqFn = courseTaskService.editTask
                         }
                     }
+                    console.log(this.form);
+                    
                     reqFn(this.form).then((ret) => {
                         xmview.showTip('success', '保存成功')
                         this.$router.push({name:'server-coursetask'})

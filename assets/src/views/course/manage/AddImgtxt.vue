@@ -110,7 +110,7 @@
                 courseService.getImgTxt({
                     contentid:this.$route.params.imgtxtInfo.contentid
                     }).then((ret) => {
-                        xmview.setContentTile(`编辑课程-图文系列`)
+                        xmview.setContentTile(`查看课程-图文系列`)
                         this.loadingData=false
                         this.fetchParam= this.imgtxtInfo=JSON.parse(ret)
                         this.courseTags = this.imgtxtInfo.tags ? this.imgtxtInfo.tags.split(',') : []

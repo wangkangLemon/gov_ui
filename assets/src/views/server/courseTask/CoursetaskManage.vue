@@ -78,7 +78,7 @@
         <!--添加/编辑表单-->
         <!--点击添加 form数据取邮箱/手机号 密码-->
         <article class="manage-container">
-            <el-button icon="plus" type="primary" @click="()=> $router.push({name:'server-manage-add',params: { type:'add',add:1} })">添加
+            <el-button icon="plus" type="primary" @click="()=> $router.push({name:'server-manage-add',params: { type:'add',add:1,taskType:1} })">添加
                    <!-- this.$router.push({name: 'server-manage-edit' ,params: {coursetaskInfo:row, type:'task'}, query: {id: row.id},type:'look'}) -->
             <!--添加-->
             </el-button>
@@ -131,6 +131,14 @@
                     {{scope.row.title}}
                 </template>
             </el-table-column>
+             <!-- <el-table-column
+                    prop="study_duration"
+                    label="学时(分)"
+                    width="100">
+                     <template scope="scope">
+                        {{Math.floor(scope.row.study_duration/60)}}/{{scope.row.study_duration/60}}
+                    </template>
+            </el-table-column> -->
             <el-table-column
                     prop="addate"
                     label="创建时间"

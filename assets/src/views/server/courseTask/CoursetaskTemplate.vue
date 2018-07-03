@@ -62,9 +62,21 @@
                     img {
                         width: 100%;
                     }
+                    .class{
+                         overflow: hidden;
+                        .fr{
+                            float:right;
+                        }
+                    }
                     .des {
+                        height:25px;
                         line-height: 25px;
-                        @include lineCount(2);
+                        // @include lineCount(2);
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+
+                        
                     }
                 }
                 .bottom {
@@ -142,8 +154,8 @@
                         <div class="mark">{{item.task_type==1?'课程':'考试'}}</div>
                         <div class="content">
                             <h2>{{item.title}}</h2>
-                            <!--<img :src="item.image" alt="">-->
                             <img :src="item.image | fillImgPath" :alt="item.image">
+                            <!-- <div class="class"><span class="fr">  wwwwwww</span></div> -->
                             <div class="des">{{item.description}}</div>
                         </div>
                         <div class="bottom">
