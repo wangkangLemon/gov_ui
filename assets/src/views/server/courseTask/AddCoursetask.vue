@@ -97,11 +97,11 @@
                                    class="upload-btn"></ImagEcropperInput>
             </el-form-item>
             <!--  1课程  -->
-            <el-form-item prop="course" label="选择课程" v-if="this.t==1||this.$route.params.type=='add'">
+            <el-form-item prop="course_ids" label="选择课程" v-if="this.t==1||this.$route.params.type=='add'">
                 <el-tag style="margin-right: 3px"
-                        v-for="(c,index) in form.course" :key="index"
+                        v-for="(c,index) in courseBox" :key="index"
                         :closable="delCourse"
-                        @close="form.course.splice(index,1)"
+                        @close="courseBox.splice(index,1)"
                         type="success">
                     {{c.course_name}}
                 </el-tag>
@@ -110,8 +110,8 @@
              <!--  2考试  -->
              <el-form-item prop="categorys" label="选择范围" v-if="this.t==2">
                 <el-tag style="margin-right: 3px"
-                        v-for="(c,index) in form.categorys" :key="index"
-                        @close="form.categorys.splice(index,1)"
+                        v-for="(c,index) in categorysBox" :key="index"
+                        @close="categorysBox.splice(index,1)"
                         type="success">
                     {{c.name}}
                 </el-tag>
@@ -179,7 +179,7 @@
 
         <!-- 选择课程弹窗 -->
         <dialogSelectData ref="dialogSelect" v-model="dialogCourse.isShow" :getData="fetchCourse" title="选择课程"
-                          :selectedList="form.course" @changeSelected="val=>form.course=val"  item-key="contentid">
+                          :selectedList="courseBox" @changeSelected="val=>courseBox=val"  item-key="contentid">
             <div slot="search" class="course-search">
                 <el-input @keyup.enter.native="$refs.dialogSelect.fetchCourse(true)" v-model="dialogCourse.course_name"
                           icon="search"
@@ -238,6 +238,8 @@
         data () {
             return {
                 selectData:[],
+                courseBox:[],
+                categorysBox:[],
                 form: {                // 表单属性值
                     id: void 0,
                     title: void 0,          // 标题
@@ -249,7 +251,6 @@
                     gov_ids: '',     // 部门
                     user_ids: '',     // 用户
                     // status: void 0, // 状态
-                    course: [],
                     score:void 0,     // 可获得学分
                     type:void 0,       // 任务类型 1:部门 2:人员
                     stime:'',
@@ -275,10 +276,7 @@
                     stime: [{required: true, message: '必须填写', trigger: 'change'}],
                     etime: [{required: true, message: '必须填写', trigger: 'change'}],
                     type: [{required: true, message: '必须填写', trigger: 'change'}],
-                    // score: [{required: true, message: '必须填写', trigger: 'blur'}],
-                    // sort: [{required: true, message: '必须填写'}],
-                    course: [{ required: true, message: '必须填写'}],
-                    // category_id: {type: 'number', required: true, message: '请选择栏目', trigger: 'change'}
+                    course_ids: [{ required: true, message: '必须填写'}],
                 },
                 dialogCourse: {
                     loading: false,
@@ -310,6 +308,17 @@
             }
         },
         watch:{
+            'courseBox'(){   //--------------注销新功能-----------
+                this.getCourseIds()
+                console.log(111111111);
+                let param={course_ids:this.form.course_ids}
+                courseTaskService.getCourseTaskTemplateStudyCheck(param).then((ret) => {
+                    console.log(ret);
+                    this.studyCheck=ret
+                    this.form.study_duration=ret.second
+                    console.log('this.form',this.form);
+                    })
+            }
             // 'form.type'(){
                 //     if(this.form.type==1){//政府
                 //         this.form.user_ids= ''
@@ -344,7 +353,7 @@
                     if(t.task_type==1){
                         xmview.setContentTile( '添加课程任务')
                         this.form.task_type=1
-                        this.form.course = ret.data.courses.map(v=>{
+                        this.courseBox = ret.data.courses.map(v=>{
                             v.contentid = v.course_id
                             return v
                         }) 
@@ -359,7 +368,7 @@
                         for(let i in e){  
                             this.form[i]=e[i]   
                         } 
-                        this.form.categorys = e.categorys.map(v=>{
+                        this.categorysBox = e.categorys.map(v=>{
                             v.contentid = v.id
                             return v
                         }) 
@@ -388,6 +397,16 @@
             this.pushTypeDialog.selectedData[this.pushTypeDialog.type] = []
         },
         methods: {
+            //把数组转化成接口提交的 最终字符串
+            getCourseIds(){
+                let courses=[] //放栏目范围的空容器
+                 console.log(this.courseBox)  //这里数据都没错
+                      this.courseBox.forEach((c) => {
+                        courses.push(c.contentid||c.course_id) //开始出错
+                        // console.log(this.form.course_ids)
+                    })
+                    this.form.course_ids = courses.join(',')
+            },
             transferConfirmFn () {
                 this.pushTypeDialog.showDialog = false
             },
@@ -482,19 +501,9 @@
                     if (!valid) {
                         return false
                     }
+
                     // 处理课程id
-                    // this.form.course_ids = []
-                    // this.form.course.forEach((c) => {
-                    //     this.form.course_ids.push(c.id)
-                    // })
-                     
-                    if(this.form.task_type==1){
-                        this.form.course_ids = []
-                        this.form.course.forEach((c) => {
-                            this.form.course_ids.push(c.contentid||c.course_id) //开始出错
-                        })
-                        this.form.course_ids = this.form.course_ids.join(',')
-                    }
+                    this.getCourseIds()
 
                     if(this.form.type==1){
                         // 处理govids
@@ -523,12 +532,12 @@
                     }
                     console.log(this.form);
                     
-                    reqFn(this.form).then((ret) => {
-                        xmview.showTip('success', '保存成功')
-                        this.$router.push({name:'server-coursetask'})
-                    }).catch((ret) => {
-                        xmview.showTip('error', ret.message)
-                    })
+                    // reqFn(this.form).then((ret) => {
+                    //     xmview.showTip('success', '保存成功')
+                    //     this.$router.push({name:'server-coursetask'})
+                    // }).catch((ret) => {
+                    //     xmview.showTip('error', ret.message)
+                    // })
                 })
             }
         },

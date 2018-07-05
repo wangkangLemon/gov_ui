@@ -84,7 +84,6 @@ class sysService {
             stime,
             etime,
             task_type
-            
         }, false).then((ret) => {
             return ret
         })
@@ -109,6 +108,13 @@ class sysService {
         let finalUrl = urlPre + '/template/get/' + id
         return api.get(finalUrl, {}).then((ret) => {
             return ret
+        })
+    }
+    //可得学时检测接口
+    getCourseTaskTemplateStudyCheck(ids) {
+        let finalUrl = urlPre + '/template/study/check'
+        return api.get(finalUrl, ids).then((ret) => {
+            return ret.data
         })
     }
 
