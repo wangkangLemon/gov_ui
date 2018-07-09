@@ -101,11 +101,12 @@
                 <el-tag style="margin-right: 3px"
                         v-for="(c,index) in courseBox" :key="index"
                         :closable="delCourse"
-                        @close="courseBox.splice(index,1)"
+                        @close="delCourseTag(index)"
                         type="success">
                     {{c.course_name}}
                 </el-tag>
                 <el-button type="primary" @click="dialogCourse.isShow=true" size="small" v-if="this.$route.params.add">添加课程</el-button>
+                <h5 style="color:#20a0ff" v-if="courseBox.length>0">检测到可得课时 <i style="color:red">{{this.studyCheck.minute}} </i>分钟 </h5>
             </el-form-item>
              <!--  2考试  -->
              <el-form-item prop="categorys" label="选择范围" v-if="this.t==2">
@@ -257,7 +258,7 @@
                     etime:'',
                     task_type:'',
                     exam_id:'',
-
+                    study_duration: '',
                 },
                 rules: {
                     title:  [
@@ -305,19 +306,25 @@
                 },
                 t:this.$route.params.taskType,
                 delCourse:this.$route.params.add==1,
+                studyCheck:{} //
             }
         },
         watch:{
-            'courseBox'(){   //--------------注销新功能-----------
-                this.getCourseIds()
-                console.log(111111111);
-                let param={course_ids:this.form.course_ids}
-                courseTaskService.getCourseTaskTemplateStudyCheck(param).then((ret) => {
-                    console.log(ret);
-                    this.studyCheck=ret
-                    this.form.study_duration=ret.second
-                    console.log('this.form',this.form);
-                    })
+            // 'courseBox'(){   //--------------注销新功能-----------
+            //     this.getCourseIds()
+            //     let param={course_ids:this.form.course_ids}
+            //     courseTaskService.getCourseTaskTemplateStudyCheck(param).then((ret) => {
+            //         console.log(ret);
+            //         this.studyCheck=ret
+            //         this.form.study_duration=ret.second
+            //         console.log('this.form',this.form);
+            //         })
+            // }
+            'dialogCourse.isShow'(){
+                if(this.dialogCourse.isShow==false){
+                    this.getCourseIds()
+                    this.getStudyCheck()
+                }
             }
             // 'form.type'(){
                 //     if(this.form.type==1){//政府
@@ -357,6 +364,8 @@
                             v.contentid = v.course_id
                             return v
                         }) 
+                        this.getCourseIds()
+                        this.getStudyCheck()
                         this.$refs.dialogSelect.setSelected()
                     }
                     // //选择栏目
@@ -397,6 +406,11 @@
             this.pushTypeDialog.selectedData[this.pushTypeDialog.type] = []
         },
         methods: {
+            delCourseTag(index){
+                this.courseBox.splice(index,1)
+                this.getCourseIds()
+                this.getStudyCheck()
+            },
             //把数组转化成接口提交的 最终字符串
             getCourseIds(){
                 let courses=[] //放栏目范围的空容器
@@ -406,6 +420,14 @@
                         // console.log(this.form.course_ids)
                     })
                     this.form.course_ids = courses.join(',')
+            },
+             //可得课时检测接口
+            getStudyCheck(){
+                let param={course_ids:this.form.course_ids}
+                courseTaskService.getCourseTaskTemplateStudyCheck(param).then((ret) => {
+                    this.studyCheck=ret
+                    this.form.study_duration=ret.second
+                })
             },
             transferConfirmFn () {
                 this.pushTypeDialog.showDialog = false
@@ -532,12 +554,12 @@
                     }
                     console.log(this.form);
                     
-                    // reqFn(this.form).then((ret) => {
-                    //     xmview.showTip('success', '保存成功')
-                    //     this.$router.push({name:'server-coursetask'})
-                    // }).catch((ret) => {
-                    //     xmview.showTip('error', ret.message)
-                    // })
+                    reqFn(this.form).then((ret) => {
+                        xmview.showTip('success', '保存成功')
+                        this.$router.push({name:'server-coursetask'})
+                    }).catch((ret) => {
+                        xmview.showTip('error', ret.message)
+                    })
                 })
             }
         },

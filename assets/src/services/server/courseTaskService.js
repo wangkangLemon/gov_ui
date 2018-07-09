@@ -32,8 +32,8 @@ class sysService {
         stime='',
         etime='',
         task_type,
-        exam_id
-
+        exam_id,
+        study_duration,
     }) {
         let finalUrl =`${urlPre}`+'/create'
         return api.post(finalUrl, {
@@ -49,8 +49,8 @@ class sysService {
             stime,
             etime,
             task_type,
-            exam_id
-            
+            exam_id,
+            study_duration,
         }, false).then((ret) => {
             return ret
         })
@@ -68,7 +68,8 @@ class sysService {
         type=void 0,       // 任务类型
         stime='',
         etime='',
-        task_type
+        task_type,
+        study_duration
     }) {
         let finalUrl = `${urlPre}/edit/${id}`
         return api.post(finalUrl, {
@@ -83,7 +84,8 @@ class sysService {
             type,
             stime,
             etime,
-            task_type
+            task_type,
+            study_duration
         }, false).then((ret) => {
             return ret
         })
@@ -110,9 +112,9 @@ class sysService {
             return ret
         })
     }
-    //可得学时检测接口
+    //可得课时检测接口
     getCourseTaskTemplateStudyCheck(ids) {
-        let finalUrl = urlPre + '/template/study/check'
+        let finalUrl = urlPre + '/study/check'
         return api.get(finalUrl, ids).then((ret) => {
             return ret.data
         })

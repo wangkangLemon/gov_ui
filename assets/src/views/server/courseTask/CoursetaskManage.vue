@@ -131,14 +131,14 @@
                     {{scope.row.title}}
                 </template>
             </el-table-column>
-             <!-- <el-table-column
+            <el-table-column
                     prop="study_duration"
-                    label="学时(分)"
+                    label="课时(分)"
                     width="100">
                      <template scope="scope">
-                        {{Math.floor(scope.row.study_duration/60)}}/{{scope.row.study_duration/60}}
+                        {{Math.floor(scope.row.study_duration/60)}}
                     </template>
-            </el-table-column> -->
+            </el-table-column>
             <el-table-column
                     prop="addate"
                     label="创建时间"

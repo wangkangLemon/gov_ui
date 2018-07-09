@@ -79,21 +79,24 @@
             // 获取数据的方法 返回一个Promise,  数据格式: { total: 9, data:[{ name:'xxx', id:1 }] }
             getData: Function,
             // 被选中的列表集合
-            selectedList: Array,
+            selectedList: Array, //右侧
             itemKey: {
+                type:String,
+                default: 'id'
+            },
+            getItemKey: {
                 type:String,
                 default: 'id'
             }
         },
         data () {
             return {
-                currVal: this.value,
+                currVal: this.value, //控制弹出框关闭
                 currSelectedList: this.selectedList,
                 fetchParam: {
                     page: 1,
                     pagesize: 15,
-                    need_testing:1,
-
+                    need_testing: 1,
                 },
                 total: 0,
                 data: [],
@@ -106,14 +109,12 @@
             },
             value (val) {
                 val !== this.currVal && (this.currVal = val)
-
                 if (val && this.data.length < 1) this.fetchCourse()
-
                 val && this.setSelected()
-            
             },
-            selectedList (val) {
-                if (val !== this.currSelectedList && val.length !== this.currSelectedList.length)
+            selectedList (val) { //出现混乱是不是ID没有匹配对？？？ 拿到的值
+                console.log('右侧列表上次val====',val) 
+                if (val !== this.currSelectedList && val.length !== this.currSelectedList.length)  //检测刷新赋值
                     this.currSelectedList = val
             }
         },
@@ -127,7 +128,6 @@
                 if (isFirst) this.fetchParam.page = 1
                 this.getData(this.fetchParam).then((ret) => {
                     this.total = ret._exts.total
-                    // this.total = 2000
                     // 是否首次加载
                     if (this.fetchParam.page === 1) {
                         this.fetchParam.page = 1
@@ -146,20 +146,29 @@
                     this.loading = false
                 })
             },
-            rowSelected (selection, row) {
+            rowSelected (selection, row) {// 选中 取消选中选择框！ //selection左侧选中 
                 // 排除已选课程
-                // console.log(selection, row)  
+                console.log(111111111111111,selection, row)  
                 if (selection.indexOf(row) > -1)
                     this.currSelectedList.push(row)
                 else
-                    this.currSelectedList.splice(this.currSelectedList.indexOf(row), 1)
-
+                    // this.currSelectedList.splice(this.currSelectedList.indexOf(row), 1)
+                    this.currSelectedList.splice(this.currSelectedList.findIndex(item => {
+                        row.id=row[this.itemKey]?row[this.itemKey]:row.id //2018-07-06 解决ID不对应，删除混乱 优先匹配[this.itemKey]删除
+                        console.log('item.id ===',row.id);
+                        return item[this.itemKey] === row.id  // 优先匹配[this.itemKey]删除
+                    }), 1)
+                // 重新设置选中
+                // this.setSelected ()
                 this.$emit('changeSelected', this.currSelectedList)
-                // console.log(this.currSelectedList)
+                console.log('右侧选中的列表',this.currSelectedList)
             },
-            delItem (row) {
+            delItem (row) {    // 右侧删除！
                 this.currSelectedList.splice(this.currSelectedList.findIndex(item => {
-                    return item.id === row.id
+                    row.id=row.id?row.id:row[this.itemKey] //2018-07-06 解决ID不对应，删除混乱 优先匹配id删除
+                    console.log('item.id ===',row.id);
+                    return item.id === row.id  
+
                 }), 1)
                 // 重新设置选中
                 this.setSelected()
@@ -172,11 +181,11 @@
                     if (!this.$refs.courseTable) return
                     this.$refs.courseTable.clearSelection()
                     this.currSelectedList.forEach((row) => {
-                        console.log(this.data)//左边数据
+                        console.log('左边数据',this.data)//左边数据
                         let currRow = this.data.find((item) => {
                             return item[this.itemKey] == row[this.itemKey]
                         })
-                        console.log(currRow)//左边选中数据
+                        console.log('左边选中数据',currRow)//左边选中数据
                         this.$refs.courseTable.toggleRowSelection(currRow, true)
                         console.log('setSelected finished')
                     })

@@ -62,10 +62,15 @@
                     img {
                         width: 100%;
                     }
-                    .class{
-                         overflow: hidden;
+                    .study{
+                        height:16px;
                         .fr{
+                            font-size: 12px;
+                            color:#20a0ff;
                             float:right;
+                            i{
+                                color:red;
+                            }
                         }
                     }
                     .des {
@@ -155,7 +160,7 @@
                         <div class="content">
                             <h2>{{item.title}}</h2>
                             <img :src="item.image | fillImgPath" :alt="item.image">
-                            <!-- <div class="class"><span class="fr">  wwwwwww</span></div> -->
+                            <div class="study"><span class="fr" v-if="item.task_type==1">课时 <i>{{Math.floor(item.study_duration/60)}}</i> 分钟</span></div>
                             <div class="des">{{item.description}}</div>
                         </div>
                         <div class="bottom">
