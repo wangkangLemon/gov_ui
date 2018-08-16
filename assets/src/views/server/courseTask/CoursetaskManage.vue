@@ -78,7 +78,7 @@
         <!--添加/编辑表单-->
         <!--点击添加 form数据取邮箱/手机号 密码-->
         <article class="manage-container">
-            <el-button icon="plus" type="primary" @click="()=> $router.push({name:'server-manage-add',params: { type:'add',add:1,taskType:1} })">添加
+            <el-button icon="plus" type="primary" @click="()=> $router.push({name:'server-manage-add',params: { type:'add',add:1,taskType:1,changeType:1} })">添加
                    <!-- this.$router.push({name: 'server-manage-edit' ,params: {coursetaskInfo:row, type:'task'}, query: {id: row.id},type:'look'}) -->
             <!--添加-->
             </el-button>
@@ -99,6 +99,7 @@
                 <el-select clearable v-model="fetchParam.task_type" placeholder="未选择" @change="getData">
                     <el-option label="课程任务" value="1"></el-option>
                     <el-option label="试题任务" value="2"></el-option>
+                    <el-option label="学习任务" value="3"></el-option>
                 </el-select>
             </section>
             <section>
@@ -128,6 +129,7 @@
                     <template scope="scope">
                     <el-tag type="primary" v-if="scope.row.task_type=='1'">课程</el-tag>
                     <el-tag type="danger" v-else-if="scope.row.task_type=='2'">考试</el-tag>
+                    <el-tag type="success" v-else-if="scope.row.task_type=='3'">学习</el-tag>
                     {{scope.row.title}}
                 </template>
             </el-table-column>
@@ -329,6 +331,7 @@
             getData () {
                 this.loading = true
                 return courseTaskService.getCourseTaskList(this.fetchParam).then((ret) => {
+                    
                     this.coursetasktemplateData = ret.data
                     this.total = ret._exts.total
                 }).then(() => {

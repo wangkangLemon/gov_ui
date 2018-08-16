@@ -44,6 +44,9 @@
                 .course{
                     border-top: 70px solid #4677D1; 
                 }
+                .learn{
+                     border-top: 70px solid rgb(70, 209, 105); 
+                }
                 .mark{
                         position: absolute;
                         top:11px;
@@ -156,7 +159,8 @@
                     <section class="temp-item" v-for="item in temp.dataList" :key="item.id">
                         <div class="corner course" v-if="item.task_type==1"></div>
                         <div class="corner exam" v-else-if="item.task_type==2"></div>
-                        <div class="mark">{{item.task_type==1?'课程':'考试'}}</div>
+                        <div class="corner learn" v-else-if="item.task_type==3"></div>
+                        <div class="mark">{{TYPE[item.task_type]}}</div>
                         <div class="content">
                             <h2>{{item.title}}</h2>
                             <img :src="item.image | fillImgPath" :alt="item.image">
@@ -218,6 +222,7 @@
         },
         data () {
             return {
+                TYPE:['','课程','考试','学习'],
                 currCategoryName: '',
                 loading: false,
                 fetchParam: {
@@ -317,6 +322,8 @@
             getTempData () {
                 this.temp.loading = true
                 return courseTaskService.getCourseTaskTemplateList(this.temp.fetchParam).then((ret) => {
+                    console.log(JSON.stringify(ret.data));
+
                     this.temp.dataList = ret.data
                     this.temp.total = ret._exts.total
                     this.temp.loading = false

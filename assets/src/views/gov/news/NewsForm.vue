@@ -20,8 +20,7 @@
     <main id="medical-form">
         <section class="submit-form">   
             <el-form label-width="120px" ref="form" :rules="rules" :model="fetchParam">
-                <el-form-item label="
-                " prop="title">
+                <el-form-item label="标题" prop="title">
                     <el-input v-model="fetchParam.title"></el-input>
                 </el-form-item>
                 <el-form-item label="作者" prop="author">
@@ -40,7 +39,6 @@
                 </el-form-item>
                 <el-form-item prop="html" label="资讯内容" id="editor" :label-width="formLabelWidth">
                     <vue-editor v-model="fetchParam.html" @ready="ueReady"></vue-editor>
-                    
                 </el-form-item>
                 <el-form-item label="" >
                     <!--<el-button @click="$router.push({ name:'medical-index'})">取消</el-button>-->
@@ -70,12 +68,6 @@
             townSelect: '',
             villageSelect: '',
             name: ''
-
-
-
-
-
-            
         }
     }
     export default {
@@ -92,7 +84,6 @@
                     index: -1
                 },
                 fetchParam: getOriginData(),
-                // passValue: true,
                 role_list:[
                     {
                         name: '管理员',
@@ -136,14 +127,9 @@
         created() {
             xmview.setContentLoading(false)
             if (this.$route.params.id != undefined) {    //路由id传递
-                // this.passValue = false
                 newsService.getProduct(this.$route.params.id).then((ret) => {
-                    console.log(ret)
                     this.fetchParam = ret
                     this.fillImgPath = ret.image
-                    // this.fetchParam.html = ret.html
-
-                    // this.fetchParam.role_id = ret.course.role_id
                 })
             } 
             //暂时不获取角色列表       
@@ -169,7 +155,6 @@
             getExpertsList (val, length) {
                 return newsService.fetchProductList({
                     name: val,
-                    // category: this.type,
                     pagesize: this.pageSize,
                     page: parseInt(length / this.pageSize) + 1
                 }).then((ret) => {

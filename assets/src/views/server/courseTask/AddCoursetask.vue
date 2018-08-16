@@ -81,7 +81,12 @@
 <template>
     <article class="create-course-task">
         <el-form :model="form" :rules="rules" label-position="right" ref="form" label-width="120px" style="width: 60%">
-
+            <el-form-item prop="title" label="任务类型" v-if="this.$route.params&&this.$route.params.changeType">
+                <el-select v-model="form.task_type">
+                    <el-option label="课程任务" :value="1"></el-option>
+                    <el-option label="学习任务" :value="3"></el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item prop="title" label="标题">
                 <el-input v-model="form.title" auto-complete="off"></el-input>
             </el-form-item>
@@ -97,7 +102,7 @@
                                    class="upload-btn"></ImagEcropperInput>
             </el-form-item>
             <!--  1课程  -->
-            <el-form-item prop="course_ids" label="选择课程" v-if="this.t==1||this.$route.params.type=='add'">
+            <el-form-item prop="course_ids" label="选择课程" v-if="this.t==1||this.t==3||this.$route.params.type=='add'">
                 <el-tag style="margin-right: 3px"
                         v-for="(c,index) in courseBox" :key="index"
                         :closable="delCourse"
@@ -238,6 +243,7 @@
         },
         data () {
             return {
+                TYPE:['','课程','考试','学习'],
                 selectData:[],
                 courseBox:[],
                 categorysBox:[],
@@ -311,28 +317,38 @@
         },
         watch:{
             // 'courseBox'(){   //--------------注销新功能-----------
-            //     this.getCourseIds()
-            //     let param={course_ids:this.form.course_ids}
-            //     courseTaskService.getCourseTaskTemplateStudyCheck(param).then((ret) => {
-            //         console.log(ret);
-            //         this.studyCheck=ret
-            //         this.form.study_duration=ret.second
-            //         console.log('this.form',this.form);
-            //         })
-            // }
-            'dialogCourse.isShow'(){
-                if(this.dialogCourse.isShow==false){
-                    this.getCourseIds()
-                    this.getStudyCheck()
-                }
-            }
-            // 'form.type'(){
+                //     this.getCourseIds()
+                //     let param={course_ids:this.form.course_ids}
+                //     courseTaskService.getCourseTaskTemplateStudyCheck(param).then((ret) => {
+                //         console.log(ret);
+                //         this.studyCheck=ret
+                //         this.form.study_duration=ret.second
+                //         console.log('this.form',this.form);
+                //         })
+                // }
+                // 'form.type'(){
                 //     if(this.form.type==1){//政府
                 //         this.form.user_ids= ''
                 //     }else{ //政府
                 //         this.form.gov_ids= ''
                 //     }
                 // },
+            'dialogCourse.isShow'(){
+                if(this.dialogCourse.isShow==false){
+                    this.getCourseIds()
+                    this.getStudyCheck()
+                }
+            },
+            'form.task_type'(){
+                this.passTasktype=this.form.task_type
+                if(!this.flag){
+                    this.flag=true
+                }else{
+                    this.initCourse()
+                }
+                this.$refs.dialogSelect.fetchCourse(true)
+            }
+    
         },
         created () {
             xmview.setContentLoading(false)
@@ -345,21 +361,16 @@
                 let req = courseTaskService.getTask
                 if (this.$route.params.type=="template") {req = courseTaskService.getCourseTaskTemplateEditDetail}
                 req(this.$route.query.id).then((ret) => {
+
                     this.form = Object.assign(this.form, ret.data)
-                    // this.form.course_ids=ret.data.courses
-                    let txt=t.task_type==1?'课程':'考试'
-                    // if(this.$route.params.type=="look"){
-                    //     xmview.setContentTile( `查看${txt}任务`)
-                    //     // xmview.setContentTile(`编辑课程-中草药 ${ this.category_name}`)
-                    //     this.form.stime =  ret.data.start_date.split(' ')[0]
-                    //     this.form.etime =  ret.data.end_date.split(' ')[0]
-                    //     this.form.type =   ret.data.type
-                    //     this.pushTypeDialog.type = ret.data.type
-                    // }
+                    // this.form.task_type= ret.data.task_type
+                    console.log( this.form);
+                    
+                    let txt=this.TYPE[t.task_type]
+                    xmview.setContentTile( `添加${txt}任务`)
                     // 选择课程
-                    if(t.task_type==1){
-                        xmview.setContentTile( '添加课程任务')
-                        this.form.task_type=1
+                    if(t.task_type==1||t.task_type==3){
+                        // this.form.task_type=t.task_type
                         this.courseBox = ret.data.courses.map(v=>{
                             v.contentid = v.course_id
                             return v
@@ -370,8 +381,7 @@
                     }
                     // //选择栏目
                     if(t.task_type==2){
-                        xmview.setContentTile( '添加考试任务')
-                        this.form.task_type=2
+                        // this.form.task_type=t.task_type
                         let e=ret.data.exam
                         this.form.exam_id=e.id
                         for(let i in e){  
@@ -392,10 +402,10 @@
                     }
 
                     this.choosePushType()
-                    if(ret.data.govs.length!==0){
+                    if(ret.data.govs&&ret.data.govs.length!==0){
                         this.pushTypeDialog.selectedData[this.pushTypeDialog.type] = this.generatorList(ret.data.govs || [])
                     }
-                    else if(ret.data.users.length!==0){
+                    else if(ret.data.users&&ret.data.users.length!==0){
                         this.pushTypeDialog.selectedData[this.pushTypeDialog.type] = this.generatorList(ret.data.users || [])
                     }
                     xmview.setContentLoading(false)
@@ -411,13 +421,18 @@
                 this.getCourseIds()
                 this.getStudyCheck()
             },
+            //初始化课程数据
+            initCourse(){
+                this.courseBox=[]
+                 this.getCourseIds()
+                this.studyCheck={}
+                this.form.study_duration=''
+            },
             //把数组转化成接口提交的 最终字符串
             getCourseIds(){
                 let courses=[] //放栏目范围的空容器
-                 console.log(this.courseBox)  //这里数据都没错
                       this.courseBox.forEach((c) => {
                         courses.push(c.contentid||c.course_id) //开始出错
-                        // console.log(this.form.course_ids)
                     })
                     this.form.course_ids = courses.join(',')
             },
@@ -516,6 +531,17 @@
                 })
             },
             fetchCourse (params) {
+                console.log('this.form.task_typ',this.form.task_type);
+                
+                if(this.form.task_type==1||this.form.task_type==2){
+                    console.log(' params.need_testing= 1');
+                    params.need_testing= 1
+                    params.category_type=''
+                }else{
+                     console.log(' params.need_testing= 0');
+                     params.need_testing= 0
+                     params.category_type=1
+                }
                 return courseService.getPublicCourselist(Object.assign({}, this.dialogCourse, params))
             },
             submit(s) {
@@ -552,8 +578,6 @@
                             reqFn = courseTaskService.editTask
                         }
                     }
-                    console.log(this.form);
-                    
                     reqFn(this.form).then((ret) => {
                         xmview.showTip('success', '保存成功')
                         this.$router.push({name:'server-coursetask'})

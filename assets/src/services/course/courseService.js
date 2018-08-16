@@ -152,9 +152,9 @@ class CourseService {
     }
 
     // 获取公开课列表 { course_name = '', status, category_id , time_start, time_end, page, pagesize }
-    getPublicCourselist({ course_name = '', status, category_id, need_testing, time_start, time_end, page, pagesize}) {
+    getPublicCourselist({ course_name = '', status, category_id, need_testing, time_start, time_end, page, pagesize, category_type }) {
         let url = urlPre + '/lists'
-        return api.get(url, { course_name, status, category_id, need_testing, time_start, time_end, page, pagesize }, false).then(ret => {
+        return api.get(url, { course_name, status, category_id, need_testing, time_start, time_end, page, pagesize, category_type }, false).then(ret => {
             if (ret.code == 0) {
                 return ret
             } else {

@@ -173,6 +173,8 @@
                     </section>
                 </section>
             </template>
+
+            
             <Transfer placeholder="搜索"
                       @searchFn="(val)=>{pushTypeDialog.page=1;pushTypeDialog.fetchParam.name=val;fetchPushTypeData();}"
                       @moreFn="()=>{pushTypeDialog.page++;fetchPushTypeData('no-clear');}"
@@ -184,6 +186,8 @@
                 <el-button @click="pushTypeDialog.showDialog = false">取 消</el-button>
                 <el-button type="primary" @click="transferConfirmFn">确 定</el-button>
             </span>
+
+
         </el-dialog>
 
 
