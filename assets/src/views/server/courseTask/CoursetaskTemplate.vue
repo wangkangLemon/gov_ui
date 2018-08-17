@@ -137,10 +137,15 @@
         <!--<el-tab-pane label="任务列表" name="list">-->
                 <section class="search">
                     <section>
+                        <i>标题搜索</i>
+                        <el-input v-model="temp.fetchParam.title" @keyup.enter.native="getTempData"></el-input>
+                    </section>
+                    <section>
                         <i>栏目类型</i>
                         <el-select clearable v-model="temp.fetchParam.task_type" placeholder="未选择" @change="selectCate">
                             <el-option label="课程任务" value="1"></el-option>
                             <el-option label="试题任务" value="2"></el-option>
+                            <el-option label="学习任务" value="3"></el-option>
                         </el-select>
                     </section>
                     <section>
@@ -149,10 +154,6 @@
                                     :fetch-suggestions="querySearch" @change="getTempData">
                             <el-option  v-for="item in  category_list" :key="item.id" :label="item.name" :value="item.id"></el-option>
                         </el-select>
-                    </section>
-                    <section>
-                        <i>标题搜索</i>
-                        <el-input v-model="temp.fetchParam.title" @keyup.enter.native="getTempData"></el-input>
                     </section>
                 </section>
                 <article class="temp-container" v-loading="temp.loading">
@@ -168,7 +169,7 @@
                             <div class="des">{{item.description}}</div>
                         </div>
                         <div class="bottom">
-                            <div><el-button type="text" @click="templateViewFn(item)">{{item.task_type==1?'课程':'考试'}}列表</el-button></div>
+                            <div><el-button type="text" @click="templateViewFn(item)">{{TYPE[item.task_type]}}列表</el-button></div>
                             <!-- <div><el-button type="text" @click="()=>{$router.push({name: 'server-manage-add', params:{coursetaskInfo:item,type:'template',add:1},query: {id: item.id}})}">使用</el-button></div> -->
                             <div><el-button type="text" @click="use(item)">使用</el-button></div>
                         </div>
@@ -192,7 +193,7 @@
                 <div class="list-item">
                     <template v-if="temp.count">
                         <h3 class="list-title">此任务共包含{{temp.count}}项{{temp.name}}：</h3>
-                        <ol v-if="temp.name=='课程'">
+                        <ol v-if="temp.name=='课程'||temp.name=='学习'">
                             <li v-for="(item,index) in temp.courseList" :key="index" v-if="temp.type === item.type || !item.type">{{item.course_name}}</li>
                         </ol>
                         <ol v-if="temp.name=='考试'">
@@ -283,6 +284,11 @@
             })
              //暂无tab切换 在初始化页面请求
         },
+         watch:{
+             'fetchParam.task_type'(){
+                this.getCategory()
+            }
+        },
         methods: {
             selectCate(){
                 this.getTempData()
@@ -294,7 +300,7 @@
              //获取部门组下拉列表
             getCategory(val){
                 if(!val)val=-1
-                courseTaskService.getCategoryTree({ id : '', type:'', task_type :val, pagesize:-1}).then((ret)=>{
+                courseTaskService.getCategoryTree({ id : '', type:this.temp.fetchParam.task_type, task_type :val, pagesize:-1}).then((ret)=>{
                  this.category_list = ret.data;
                 })
             },
@@ -335,9 +341,9 @@
                 this.temp.listDialog = true
                 courseTaskService.getCourseTaskTemplateEditDetail( row.id ).then((ret) => {
                     console.log(2222,ret.data);
-                    if(row.task_type==1){
+                    if(row.task_type==1||row.task_type==3){
                             this.temp.count = ret.data.courses.length
-                            this.temp.name = '课程'
+                            this.temp.name = this.TYPE[row.task_type]
                             this.temp.courseList = ret.data.courses
                     }else{
                         this.temp.count = ret.data.exam.categorys.length

@@ -249,6 +249,7 @@
         },
         data () {
             return {
+                TYPE:['','课程','考试','学习'],
                 currCategoryName: '',
                 loading: false,
                 fetchParam: {
@@ -275,7 +276,8 @@
         },
         methods: {
             handleDelete (index, row) {
-                xmview.showDialog(`你将要删除${row.task_type==1?'课程':'考试'}任务【<i style="color:red">${row.title || ''}</i>】操作不可恢复确认吗？`, this.deleteItem(row.id))
+                let txt=this.TYPE[row.task_type]
+                xmview.showDialog(`你将要删除${txt}任务【<i style="color:red">${row.title || ''}</i>】操作不可恢复确认吗？`, this.deleteItem(row.id))
             },
             deleteItem (id) {
                 // 以下执行接口删除动作
