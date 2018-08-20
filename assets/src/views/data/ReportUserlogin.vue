@@ -200,7 +200,6 @@
             getData (page) {
                 this.loading = true
                 if(this.search.gov_id){
-                    // alert('this.level=Number(this.govLevel) + 2='+Number(this.govLevel+2) )
                     this.level=Number(this.govLevel) + 2
                 }else{
                      this.level=Number(this.govLevel) + 1

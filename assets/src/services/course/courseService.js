@@ -17,7 +17,6 @@ class CourseService {
 
     // // 添加栏目
     // addCategory({ govid, parent_id, type, name, image, sort }) {
-    //     alert('addCategory')
     //     govid = govid || authUtils.getUserInfo().company_id
     //     let reqParam = { parent_id, type, name, image, sort }
     //     if (parent_id === 0) delete reqParam['parent_id']
@@ -46,9 +45,7 @@ class CourseService {
     //========================种类数据请求===================================
     getCategoryTree({ id = 'tree', type, filter = true, pid =-1 , level=-1 }) {
         let finalUrl = urlPre + '/category/lists'
-        // alert('进入getData')
         return api.get(finalUrl, { id, filter, type, pid, level }).then((ret) => {
-            // console.log(ret)
             return ret
         })
     }

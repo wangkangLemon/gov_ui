@@ -130,10 +130,6 @@
             statid () {
                 return this.$route.params.id
             },
-            // title () {
-            //     debugger
-            //     return this.$route.query.title
-            // }
         },
         activated () {
             this.fetchParam.name= ''

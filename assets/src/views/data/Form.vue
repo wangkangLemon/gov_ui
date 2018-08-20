@@ -166,7 +166,6 @@
                     this.fetchParam.tags = this.courseTags.join(',')
                     let req = dataService.create
                     if (this.$route.params.sys_id) req = dataService.edit
-                    // alert(req)
                     // console.log(this.$route.params.sys_id)
                         console.log(this.fetchParam)
                     req(this.fetchParam).then((ret) => {

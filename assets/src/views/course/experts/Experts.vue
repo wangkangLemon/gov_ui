@@ -394,7 +394,6 @@ export default {
                     this.fetchParam.townSelect && !this.fetchParam.villageSelect) {
                     this.fetchParam.gov_id = -1
                 } 
-                // alert(this.fetchParam.gov_id) 测试选中的部门
             this.loadingData = true
 
             //初始化角色提交-1

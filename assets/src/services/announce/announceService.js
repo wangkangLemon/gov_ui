@@ -120,14 +120,10 @@ class CompanyService {
         })
     }
 
-
-
      // 获取课程任务模板分列表
     getCategoryTree({ id = '', type, filter = true, pid =-1 , level=-1, pagesize=-1, disabled=-1}) {
         let finalUrl = urlPre + '/category/lists'
-        // alert('进入getData')
         return api.get(finalUrl, { id, name, pagesize,disabled}).then((ret) => {
-            // console.log(ret)
             return ret
         })
     }

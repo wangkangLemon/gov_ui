@@ -175,7 +175,6 @@ class sysService {
  // 获取课程任务模板分列表
     getCategoryTree({ id , type, task_type,pagesize=-1}) {
         let finalUrl = urlPre + '/template/category/lists'
-        // alert('进入getData')
         return api.get(finalUrl, { id, type, task_type,pagesize}).then((ret) => {
             // console.log(ret)
             return ret
