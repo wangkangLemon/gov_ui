@@ -1,4 +1,4 @@
-// 医政管理模块
+// 医政管理模块（公告管理）
 const pathPre = '/announce'
 //  管理员管理
 export default {

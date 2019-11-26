@@ -36,6 +36,7 @@
         },
         created () {
             this.currVal = this.value
+            console.log(window.UE)
             if (window.UE !== undefined) {
                 // 如果全局对象存在，说明编辑器代码已经初始化完成，直接加载编辑器
                 this.scriptTagStatus = 2
@@ -79,6 +80,7 @@
                         configScriptTag.loaded = true
                         this.initEditor()
                     })
+                    
                     configScriptTag.onerror = () => {
                         xmview.showTip('error', '加载编辑器失败, 请刷新重试!')
                     }
@@ -99,6 +101,7 @@
             },
             initEditor () {
                 // scriptTagStatus 为 2 的时候，说明两个必需引入的 js 文件都已经被引入，且加载完成
+                console.log(this.scriptTagStatus)
                 if (this.scriptTagStatus === 2 && this.instance === null) {
                     this.loading = false
                     // Vue 异步执行 DOM 更新，这样一来代码执行到这里的时候可能 template 里面的 script 标签还没真正创建

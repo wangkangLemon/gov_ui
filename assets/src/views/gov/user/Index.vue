@@ -60,11 +60,11 @@
                 <p><i class="title">注册时间：</i><span class="value">{{clerkDetail.addate}}</span></p>
             </div>
         </el-dialog>
-        <section class="manage-container">
+        <!--<section class="manage-container">
             <el-button type="primary" icon="plus" @click="$router.push({ name:'person-add',params:{sys_type:'add'}})">
                 <i>添加人员</i>
             </el-button>
-        </section>
+        </section>-->
 
         <article class="search">
             <section>
@@ -91,6 +91,13 @@
                     <el-option label="未激活" value="0"></el-option>
                 </el-select>
             </section>
+            <section>
+                <i>医生角色</i>
+                <el-select  v-model="fetchParam.character" placeholder="请选择" @change="fetchData" clearable>
+                    <el-option label="村医" :value='2'></el-option>
+                    <el-option label="院医" value='1'></el-option>
+                </el-select>
+            </section>
         </article>
 
         <el-table class="data-table" v-loading="loadingData" :data="tableData" :fit="true" @select="selectRow" @select-all="selectRow" border>
@@ -105,7 +112,7 @@
             </el-table-column>
             <el-table-column min-width="170" :formatter="Time" label="创建时间">
             </el-table-column>
-            <el-table-column width="80" label="状态">
+            <el-table-column min-width="80" label="状态">
                 <template scope="scope">
                     <el-tag v-if="scope.row.deleted == 1">已删除</el-tag>
                     <el-tag v-else-if="scope.row.deleted == 0&&scope.row.disabled == 0" type="success">正常</el-tag>
@@ -166,6 +173,8 @@ function getFetchParam() {
         mobile: void 0,
         role_id: null,
         active: -1,
+        character:''
+        
     }
 }
 
@@ -343,6 +352,16 @@ export default {
             })
             return arr
         }
+    },
+    mounted(){
+    	if(this.$route.query.roleDocter=='village'){
+    		this.fetchParam.character=2
+    		this.fetchParam.active='1'
+    	}else if(this.$route.query.roleDocter=='medicine'){
+    		this.fetchParam.character='1'
+    		this.fetchParam.active='1'
+    		
+    	}
     }
 }
 </script>

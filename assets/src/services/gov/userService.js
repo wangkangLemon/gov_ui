@@ -44,7 +44,10 @@ class sysService {
     update(param) {
         let url = `${urlPre}/edit/${param.id}`
         return api.post(url, param).then(ret => {
-            if (ret.code) {
+            if (ret.code == 0) {
+                return ret.data
+            } else {
+                xmview.showTip('error',ret.message)
                 return Promise.reject(ret)
             }
         })

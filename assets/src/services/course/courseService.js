@@ -149,9 +149,9 @@ class CourseService {
     }
 
     // 获取公开课列表 { course_name = '', status, category_id , time_start, time_end, page, pagesize }
-    getPublicCourselist({ course_name = '', status, category_id, need_testing, time_start, time_end, page, pagesize, category_type }) {
+    getPublicCourselist({ course_name = '',category_id,status, id,page, pagesize,deleted,material_type,need_testing,create_start,create_end,category_type,type}) {
         let url = urlPre + '/lists'
-        return api.get(url, { course_name, status, category_id, need_testing, time_start, time_end, page, pagesize, category_type }, false).then(ret => {
+        return api.get(url, { course_name, category_id,status, id,page, pagesize,deleted,material_type,need_testing,create_start,create_end,category_type,type}, false).then(ret => {
             if (ret.code == 0) {
                 return ret
             } else {
@@ -159,9 +159,9 @@ class CourseService {
             }
         })
     }
-    getReviewCourselist({ course_name = '', audited, category_id , time_start, time_end, page, pagesize}) {
+    getReviewCourselist({ course_name = '', audited, category_id , time_start, time_end, page, pagesize,type}) {
         let url = urlPre + '/lists'
-        return api.get(url, { course_name, audited, category_id, time_start, time_end, page, pagesize }, false).then(ret => {
+        return api.get(url, { course_name, audited, category_id, time_start, time_end, page, pagesize,type}, false).then(ret => {
             if (ret.code == 0) {
                 return ret
             } else {
@@ -172,10 +172,10 @@ class CourseService {
     
 
     // 创建
-    addCourse({  category_id, course_name, image, description, tags, type, material_type, material_id, need_testing, status}) {
+    addCourse({ category_id, course_name, image, description, tags, type, material_type, material_id, need_testing, status,source_url,file_name,limit_time,limit_repeat}) {
 
         let url = urlPre + '/create'
-        return api.post(url, {  category_id, course_name, image, description, tags, type, material_type, material_id, need_testing, status }).then(ret => {
+        return api.post(url, { category_id, course_name, image, description, tags, type, material_type, material_id, need_testing, status,source_url,file_name,limit_time,limit_repeat}).then(ret => {
             if (ret.code == 0) {
                 // console.log(ret)
                 return ret.data
@@ -186,26 +186,24 @@ class CourseService {
     }
 
     // 修改课程获取课程信息接口
-    getCourseInfo({ course_id }) {
-        let govid = authUtils.getUserInfo().company_id
+   getCourseInfo( course_id ) {
         let finalUrl = `${config.apiHost}/course/get/${course_id}`
         return api.get(finalUrl).then((ret) => {
             return ret.data
         })
     }
     // 修改课程
-    editCourse({ govid, contentid, category_id, course_name, image, tags, type, material_type, material_id, description, need_testing, status, limit_time, limit_repeat, score_pass }) {
+    editCourse({ govid, contentid, category_id, course_name, image, tags, type, material_type, material_id, description, need_testing, status, limit_time, limit_repeat, score_pass,source_url,file_name}) {
         govid = govid || authUtils.getUserInfo().company_id
         let finalUrl = `${config.apiHost}/course/edit/${contentid}`
-        return api.post(finalUrl, { category_id, course_name, image, tags, type, material_type, material_id, description, need_testing, limit_time, status, limit_repeat, score_pass }).then((ret) => {
+        return api.post(finalUrl, { category_id, course_name, image, tags, type, material_type, material_id, description, need_testing, limit_time, status, limit_repeat, score_pass,source_url,file_name}).then((ret) => {
             return ret.data
         })
     }
 
     // 上下线课程
-    offlineCourse({ govid, course_id, status }) {
-        govid = govid || authUtils.getUserInfo().company_id
-        let finalUrl = `${config.apiHost}/course/edit/${course_id}`
+    offlineCourse({ id, status }) {
+        let finalUrl = `${config.apiHost}/course/edit/${id}`
         // console.log(finalUrl)
         return api.post(finalUrl, { status })
     }
@@ -300,7 +298,7 @@ class CourseService {
     // 获取文档上传url
     getCourseDocUploadUrl({ govid } = {}) {
         govid = govid || authUtils.getUserInfo().company_id
-        return `${config.apiHost}/course/doc/upload`
+        return `${config.apiHost}/common/upload/file`
     }
 
    

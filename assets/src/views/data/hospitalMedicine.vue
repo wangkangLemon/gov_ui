@@ -74,26 +74,26 @@
 			<section class="search">
 				<section>
 					<i>部门</i>
-					<CompanySelect :change="this.level_name=='区(县)'||this.level_name=='乡镇'||this.level_name=='村'? getData :getData_Other" v-model="search.gov_id" v-on:change="val=>search.gov_id=val" :character='search.character'>
+					<CompanySelect :change="getData" v-model="search.gov_id" v-on:change="val=>search.gov_id=val" :character='search.character'>
 					</CompanySelect>
 				</section>
-				<section v-if="this.level_name=='区(县)'||this.level_name=='乡镇'||this.level_name=='村'">
+				<section>
 					<i>选取日期</i>
 					<DateRange :start="stime" :end="etime" :defaultStart="stime" :defaultEnd="etime" v-on:changeStart="val=> stime=val" v-on:changeEnd="val=>etime=val" :change="getChartData" ref="DateRange">
 					</DateRange>
 				</section>
-				<el-button type="primary" style="float: right;" @click="exports" v-if="this.level_name=='区(县)'||this.level_name=='乡镇'||this.level_name=='村'">导出</el-button>
+				<el-button type="primary" style="float: right;" @click="exports">导出</el-button>
 			</section>
-			<el-table v-loading="loading" border :data="manageData" stripe style="width: 100%" v-if="this.level_name=='区(县)'||this.level_name=='乡镇'||this.level_name=='村'">
+			<el-table v-loading="loading" border :data="manageData" stripe style="width: 100%">
 				<el-table-column min-width="180" label="姓名">
 					<template scope="scope">
 						<el-button type="text" @click='goUserDetail(scope.row)'>{{scope.row.name}}</el-button>
 					</template>
 				</el-table-column>
-				<el-table-column prop="town_name" min-width="180" label="卫生院">
-               
-				</el-table-column>
-				<el-table-column prop="village_name" min-width="180" label="卫生室">
+				<el-table-column min-width="180" label="部门">
+					<template scope="scope">
+						<span>{{scope.row.gov_name? scope.row.gov_name: "暂无部门"}}</span>
+					</template>
 				</el-table-column>
 				<el-table-column prop="course_cnt" min-width="180" label="课程总数">
 				</el-table-column>
@@ -102,23 +102,7 @@
 				<el-table-column prop="duration_lave_name" min-width="180" label="剩余时长">
 				</el-table-column>
 			</el-table>
-			<el-table v-loading="loading" border :data="manageData" stripe style="width: 100%" v-else>
-				<el-table-column min-width="180" label="所属部门">
-					<template scope="scope">
-						<span>{{scope.row.gov_name}}</span>
-					</template>
-				</el-table-column>
-				<el-table-column prop="user_cnt" min-width="180" label="录入人数">
-
-				</el-table-column>
-				<el-table-column prop="logined_cnt" min-width="180" label="激活人数">
-				</el-table-column>
-				<el-table-column prop="logined_rate" min-width="180" label="激活率">
-				</el-table-column>
-				<el-table-column prop="active_rate" min-width="180" label="活跃率">
-				</el-table-column>
-			</el-table>
-			<div class="block" v-if="this.level_name=='区(县)'||this.level_name=='乡镇'||this.level_name=='村'">
+			<div class="block">
 				<el-pagination class="pagin" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="search.page" :page-size="search.pagesize" :page-sizes="[15, 30, 60, 100, 130, 160, 200]" layout="sizes,total, prev, pager, next" :total="total">
 				</el-pagination>
 			</div>
@@ -130,7 +114,8 @@
 	import govService from '../../services/gov/govService.js'
 	import authUtils from '../../utils/authUtils'
 	import DateRange from '../component/form/DateRangePicker'
-    import config from '../../utils/config'
+	import config from '../../utils/config'
+
 	function clearFn() {
 		return {
 			name: '',
@@ -140,9 +125,9 @@
 			createTime: '',
 			endTime: '',
 			level: void 0,
-			pagesize: 15,
 			page: 1,
-			character: 2,
+			pagesize: 15,
+			character: 1,
 			_export: '',
 		}
 	}
@@ -161,35 +146,34 @@
 				currentPage: 1,
 				total: 0,
 				search: clearFn(),
-				level: void 0,
+				level: 3,
 				govID: void 0,
 				govLevel: authUtils.getUserInfo().gov_level,
-				levels: ['省', '市', '区(县)', '乡镇', '村'],
 				isVillage: '',
 				user_id: '',
 				stime: '',
 				etime: '',
 				token: '',
-				area_id:'',
-				town_id:'',
-				village_id:''
+				area_id: '',
+				town_id: '',
+				village_id: ''
 			}
 		},
 		created() {
-			this.level_name = this.levels[authUtils.getUserInfo().gov_level]
-			this.area_id=authUtils.getUserInfo().area_id
-			this.town_id=authUtils.getUserInfo().town_id
-			this.village_id=authUtils.getUserInfo().village_id
-			xmview.setContentLoading(false)
-			this.stime = this.getlastweekday(this.getNow()),
-				this.etime = this.getNow()
+			//			console.log(this.$route.query.etime+"1111")
+			this.area_id = authUtils.getUserInfo().area_id
+			this.town_id = authUtils.getUserInfo().town_id
+			this.village_id = authUtils.getUserInfo().village_id
 			this.isVillage = ''
 			if(this.$route.path == '/data/report-userlogin-isVillage') {
 				this.isVillage = 1
 			}
-			this.area()
+			this.getData().then(() => {
+				xmview.setContentLoading(false)
+			})
 			this.token = authUtils.getAuthToken()
 			console.log(this.token)
+
 		},
 		watch: {
 			"$route": function(to, from) {
@@ -202,16 +186,23 @@
 					if(this.$route.path == '/data/report-userlogin-isVillage') {
 						this.isVillage = 1
 					}
-					this.area()
+					this.getData()
 				}
 			}
 		},
 		methods: {
 			exports() {
 				let urlPre = config.apiHost
-				let newurl=urlPre+'/report/userlearn/rank/lists?_export=1&token='+this.token+'&character='+this.search.character +'&page=1'+'&pagesize=15'+'&stime='+this.stime+'&etime='+this.etime+'&village_id='+this.search.gov_id
-				console.log(newurl)
-				window.location.href =newurl
+				let newurl = urlPre + '/report/userlearn/rank/lists?_export=1&token=' + this.token + '&character=' + this.search.character + '&page=1' + '&pagesize=15' + '&stime=' + this.stime + '&etime=' + this.etime
+				if(this.search.gov_id == this.area_id){ 
+					let area_id='&area_id='+this.search.gov_id
+					window.location.href = newurl+area_id
+				}else{
+					console.log(this.search.gov_id)
+					let town_id='&town_id='+this.search.gov_id
+					window.location.href = newurl+town_id
+				}
+				
 
 			},
 			goUserDetail(scope) {
@@ -219,23 +210,80 @@
 					path: '/data/user-Detail',
 					query: {
 						user_id: scope.user_id,
-						date_start:this.stime,
-						date_end:this.etime
+						date_start: this.stime,
+						date_end: this.etime
 					}
 				})
+
 			},
 			initFetchParam() {
 				this.currentPage = 1
 				this.search = clearFn()
 			},
 			handleSizeChange(val) {
-				console.log(val)
 				this.search.pagesize = val
-				this.area()
+				this.getData()
 			},
 			handleCurrentChange(val) {
 				this.search.page = val
-				this.area()
+				this.getData(val)
+			},
+			getData() {
+				this.loading = true
+				console.log(this.area_id)
+				if(this.search.gov_id == this.area_id && this.search.gov_id) {
+					return govService.getReportUserlogin({
+						page: this.search.page,
+						pagesize: this.search.pagesize,
+						stime: this.stime,
+						etime: this.etime,
+						character: this.search.character,
+					   _export: this.search._export,
+						area_id: this.search.gov_id
+					}).then((ret) => {
+						xmview.setContentLoading(false)
+						this.loading = false
+						this.total = ret._exts.total
+						this.manageData = ret.data
+					}).then(() => {
+						this.loading = false
+						xmview.setContentLoading(false)
+					})
+				} else if(this.search.gov_id !== this.area_id && this.search.gov_id) {
+					return govService.getReportUserlogin({
+						page: this.search.page,
+						pagesize: this.search.pagesize,
+						stime: this.stime,
+						etime: this.etime,
+						character: this.search.character,
+						_export: this.search._export,
+						town_id: this.search.gov_id
+					}).then((ret) => {
+						xmview.setContentLoading(false)
+						this.loading = false
+						this.total = ret._exts.total
+						this.manageData = ret.data
+					}).then(() => {
+						this.loading = false
+					})
+				}else{
+					return govService.getReportUserlogin({
+						page: this.search.page,
+						pagesize: this.search.pagesize,
+						stime: this.stime,
+						etime: this.etime,
+						character: this.search.character,
+						_export: this.search._export
+					}).then((ret) => {
+						xmview.setContentLoading(false)
+						this.loading = false
+						this.total = ret._exts.total
+						this.manageData = ret.data
+					}).then(() => {
+						this.loading = false
+					})
+				}
+
 			},
 			getlastweekday() {
 				var d = new Date();
@@ -262,61 +310,14 @@
 				return(Y + M + D)
 			},
 			getChartData() {
-				this.area()
-			},
-			getData(page) {
-				this.loading = true
-				return govService.getReportUserlogin({
-					page: this.search.page,
-					pagesize: this.search.pagesize,
-					stime: this.stime,
-					etime: this.etime,
-					character: this.search.character,
-				    _export: this.search._export,
-				    village_id:this.search.gov_id
-				}).then((ret) => {
-					xmview.setContentLoading(false)
-					this.loading = false
-					this.total = ret._exts.total
-					this.manageData = ret.data
-				}).then(() => {
-					this.loading = false
-				})
-			},
-			getData_Other() {
-				this.loading = true
-				if(this.search.gov_id) {
-					this.level = Number(this.govLevel) + 2
-				} else {
-					this.level = Number(this.govLevel) + 1
-				}
-				return govService.getDepartmentStatistics({
-					page: this.search.page,
-					pagesize: this.search.pagesize,
-					level: this.level,
-					isVillage: this.isVillage,
-				}).then((ret) => {
-					xmview.setContentLoading(false)
-					this.loading = false
-					this.total = ret._exts.total
-					this.manageData = ret.data
-				}).then(() => {
-					this.loading = false
-				})
-			},
-			area() {
-				if(this.level_name == '区(县)' || this.level_name == '乡镇'||this.level_name=='村') {
-					this.getData().then(() => {
-						xmview.setContentLoading(false)
-					})
-				} else {
-					this.getData_Other().then(() => {
-						console.log(111)
-						xmview.setContentLoading(false)
-					})
-
-				}
+				this.getData()
 			}
+
+		},
+		mounted() {
+			this.stime = this.getlastweekday(this.getNow()),
+				this.etime = this.getNow()
+
 		}
 	}
 </script>

@@ -40,11 +40,11 @@
                 <el-form-item prop="content" label="课程内容" id="editor" :label-width="formLabelWidth">
                     <vue-editor v-model="fetchParam.content" @ready="ueReady"></vue-editor>
                 </el-form-item>
-                <!-- <el-form-item label="" >
+                <el-form-item label="" >
                     <div>
                     <el-button type="primary" @click="btnNextClick">确认</el-button>
                     </div>
-                </el-form-item> -->
+                </el-form-item>
             </el-form>
         </section>
     </main>
@@ -103,8 +103,6 @@
         },
         created() {
             console.log(this.$route.params.imgtxtInfo);
-            
-            console.log(this.$route.params.imgtxtInfo)
             xmview.setContentLoading(false)
             if(this.$route.params.handle=='edit'){ //编辑
                 courseService.getImgTxt({
@@ -147,12 +145,61 @@
                     return ret
                 })
             },
+            btnNextClick() {
+                this.$refs['form'].validate((valid) => {
+                    if (!valid) return
+                    let f=Object.assign({},this.fetchParam)
+                    f.tags = this.courseTags ? this.courseTags.join(',') : ''
+                    let p,data,cid
+                    data=JSON.stringify(f)
+                    cid=this.$route.params.imgtxtInfo.category_id
+                    this.isDisable = true
+                    // if (this.fetchParam.contentid) {  // 如果是编辑
+                    if (this.$route.params.handle=='edit') {  // 如果是编辑
+                        p = courseService.editImgTxt({
+                            category_id:cid,
+                            id:this.$route.params.imgtxtInfo.contentid,
+                            data:data,
+                            noJson:0
+                            }).then((ret) => {
+                                this.isDisable = false
+                            this.$router.push({'name':'course-manage-public'})
+                        })
+                    } else {  //新建
+                        p = courseService.createImgTxt({
+                            category_id:cid,
+                            data:data,
+                            noJson:0
+                            }).then((ret) => {
+                                this.isDisable = false
+                            this.$router.push({'name':'course-manage-public'})
+                            this.fetchParam.contentid = ret.contentid 
+                        })
+                    }
+                    // let req = courseService.createImgTxt
+                    // if (cid) req = courseService.editImgTxt
+                    // req(this.fetchParam,this.fetchParam.id).then((ret) => {
+                    //     // 重置当前数据
+                    //     //this.$refs[fetchParam].resetFields();//自己加的方法
+                    //     xmview.showTip('success', '数据提交成功')
+                    //     // this.fetchParam=getOriginData(),
+                    //     this.$refs['form'].resetFields();
+                    //     this.currentData = {
+                    //         data: [],
+                    //         pindex: -1,
+                    //         index: -1
+                    //     }
+                    //     if (!this.fetchParam.id) this.fetchParam.id = ret.id;
+                    //     this.$router.go(-1)
+                    // })
+                })
+            }
       
         }
     }
 
     function getOriginData() {
-        return {
+         return {
             course_name: '',
             description:'',
             type:'public',

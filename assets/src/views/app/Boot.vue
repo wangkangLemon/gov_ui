@@ -13,16 +13,16 @@
                 }
 
                 .img-container {
-                    width: 200px;
-                    height: 264px;
+                    width: 264px;
+                    height: 200px;
                     border: solid 1px #ccd0d4;
                     background: #f8f8f8;
 
                     &:before {
-                        content: "1280 x 1706";
+                        content: "1706 x 1280";
                         font-size: 20px;
-                        height: 264px;
-                        line-height: 264px;
+                        height: 200px;
+                        line-height: 200px;
                         display: block;
                         text-align: center;
                         color: #666;
@@ -32,7 +32,7 @@
                         height: 100%;
                         z-index: 9;
                         position: absolute;
-                        width: 198px;
+                        width: 264px;
                         top: 0;
                         left: 1px;
                     }
@@ -73,14 +73,15 @@
                     </div>
                     <div class="img-desc">
                         <span>
-                            建议上传图片尺寸为 1280x1706；<br>下次开启医线通手机客户端时，启动页就会显示该启动图
+                            建议上传图片尺寸为 1706x1280；
+                            <!-- <br>下次开启医线通手机客户端时，启动页就会显示该启动图 -->
                         </span>
                         <a href="javascript:;" @click="isShowImgSample = true">查看示例</a>
-                        <ImagEcropperInput :aspectRatio="1280/1706" :confirmFn="cropperFn"></ImagEcropperInput>
+                        <ImagEcropperInput :aspectRatio="1706/1280" :confirmFn="cropperFn"></ImagEcropperInput>
                     </div>
                 </section>
             </el-form-item>
-            <el-form-item label="跳转链接" prop="logo_app_boot">
+            <!-- <el-form-item label="跳转链接" prop="logo_app_boot">
                 <el-input v-model="form.logo_app_boot" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="展示方式" prop="logo_app_priority">
@@ -89,7 +90,7 @@
                     <el-radio v-model="form.logo_app_priority" :label="1">优先展示广告</el-radio>
                     <el-radio v-model="form.logo_app_priority" :label="2">关闭广告</el-radio>
                 </el-radio-group>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
             </el-form-item>

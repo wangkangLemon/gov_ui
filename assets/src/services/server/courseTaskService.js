@@ -7,6 +7,7 @@ class sysService {
     getCourseTaskList (param) {
         let finalUrl = urlPre + '/lists'
         return api.get(finalUrl, param).then((ret) => {
+            console.log(ret)
             return ret
         })
     }
@@ -34,6 +35,8 @@ class sysService {
         task_type,
         exam_id,
         study_duration,
+        limit_repeat = 0   //考试次数
+
     }) {
         let finalUrl =`${urlPre}`+'/create'
         return api.post(finalUrl, {
@@ -51,6 +54,7 @@ class sysService {
             task_type,
             exam_id,
             study_duration,
+            limit_repeat
         }, false).then((ret) => {
             return ret
         })
@@ -69,7 +73,8 @@ class sysService {
         stime='',
         etime='',
         task_type,
-        study_duration
+        study_duration,  
+        limit_repeat = 0    //考试次数
     }) {
         let finalUrl = `${urlPre}/edit/${id}`
         return api.post(finalUrl, {
@@ -85,7 +90,8 @@ class sysService {
             stime,
             etime,
             task_type,
-            study_duration
+            study_duration,
+            limit_repeat    //考试次数
         }, false).then((ret) => {
             return ret
         })
@@ -257,9 +263,9 @@ class sysService {
         })
     }
     //单条课程任务明细数据报表
-    getTaskStatDetail({id, page, pagesize, name, status}){
+    getTaskStatDetail({id, page, pagesize, name, status,_export}){
         let finalUrl = `${urlPre}/stat/${id}/user`
-        return api.get(finalUrl, {page, pagesize, name, status}).then((ret) => {
+        return api.get(finalUrl, {page, pagesize, name, status,_export}).then((ret) => {
             return ret
         })
     }

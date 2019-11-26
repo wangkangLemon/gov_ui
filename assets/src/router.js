@@ -9,8 +9,7 @@ import app from './routers/app'                // 设置模块
 import announce from './routers/announce'      // 公告模块
 import review from './routers/review'          // 审核模块
 import server from './routers/server'          // 政府服务
-
-// import course from './routers/course'          // 培训模块
+import course from './routers/course'          // 培训模块
 // import finance from './routers/finance'        // 财务模块
 // import company from './routers/company'        // 企业模块
 // import sys from './routers/sys'                // 系统模块
@@ -75,7 +74,7 @@ const routes = [{
             // ============ 基础模块 ==================
             ...base,
             // ============ 培训模块 ==================
-            // course,
+               course,
             // ============ 财务模块 ==================
             // finance,
             // ============ 企业模块 ==================

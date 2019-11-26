@@ -81,7 +81,7 @@ export default {
                 })
             },
             meta: {
-                title: '公开课 - 课程管理',
+                title: '课程管理',     //（培训管理）
                 noback: true
             }
         },
@@ -94,7 +94,7 @@ export default {
                 })
             },
             meta: {
-                title: '添加课程-培训',
+                title: '添加课程',      //（培训管理）
             }
         },
         {

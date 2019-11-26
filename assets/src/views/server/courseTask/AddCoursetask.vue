@@ -1,81 +1,78 @@
 <!--添加任务模板-->
 <style lang='scss' rel='stylesheet/scss'>
-    @import "../../../utils/mixins/common";
-    @import "../../../utils/mixins/mixins";
-
-    .create-course-task {
-        @extend %content-container;
-        background: #fff;
-        padding: 20px;
-        .el-form {
-            width: 60%;
-            img {
-                width: 35%;
-                // height: 50%
-            }
-        }
-        /*.search {
+@import "../../../utils/mixins/common";
+@import "../../../utils/mixins/mixins";
+.create-course-task {
+  @extend %content-container;
+  background: #fff;
+  padding: 20px;
+  .el-form {
+    width: 60%;
+    img {
+      width: 35%;
+      // height: 50%
+    }
+  }
+  /*.search {
             @extend %top-search-container;
         }*/
-        .collection {
-            align-items: center;
-            min-height: 36px;
-            border-radius: 4px;
-            padding: 3px 30px 3px 10px;
-            border: 1px solid #bfcbd9;
-        }
-
-        .u-course-tag {
-            margin-right: 10px;
-            background-color: rgba(32,160,255,.1);
-            display: inline-block;
-            padding: 0 10px;
-            height: 32px;
-            line-height: 30px;
-            font-size: 12px;
-            color: #20a0ff;
-            border-radius: 4px;
-            box-sizing: border-box;
-            border: 1px solid rgba(32,160,255,.2);
-            white-space: nowrap;
-            &:last-child {
-                margin-right: 0;
-            }
-        }
-        .el-tabs__content {
-            position: relative;
-            .dialog-select-item {
-                h5 {
-                    line-height: 40px;
-                    font-size: 14px;
-                    padding-left: 20px;
-                    background: #fbfdff;
-                    border: 1px solid #d1dbe5;
-                    border-bottom: none;
-                }
-                position: absolute;
-                top: 54px;
-                right: 120px;
-                height: 500px;
-                width: 42%;
-                display: inline-block;
-                vertical-align: top;
-            }
-        }
-        .row-class {
-            border: 1px solid #d1dbe5;
-        }
-
-        .course-search {
-            margin-bottom: 12px;
-            .el-input {
-                width: 150px;
-                ::-webkit-input-placeholder {
-                    font-size: 13px
-                }
-            }
-        }
+  .collection {
+    align-items: center;
+    min-height: 36px;
+    border-radius: 4px;
+    padding: 3px 30px 3px 10px;
+    border: 1px solid #bfcbd9;
+  }
+  .u-course-tag {
+    margin-right: 10px;
+    background-color: rgba(32, 160, 255, 0.1);
+    display: inline-block;
+    padding: 0 10px;
+    height: 32px;
+    line-height: 30px;
+    font-size: 12px;
+    color: #20a0ff;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: 1px solid rgba(32, 160, 255, 0.2);
+    white-space: nowrap;
+    &:last-child {
+      margin-right: 0;
     }
+  }
+  .el-tabs__content {
+    position: relative;
+    .dialog-select-item {
+      h5 {
+        line-height: 40px;
+        font-size: 14px;
+        padding-left: 20px;
+        background: #fbfdff;
+        border: 1px solid #d1dbe5;
+        border-bottom: none;
+      }
+      position: absolute;
+      top: 54px;
+      right: 120px;
+      height: 500px;
+      width: 42%;
+      display: inline-block;
+      vertical-align: top;
+    }
+  }
+  .row-class {
+    border: 1px solid #d1dbe5;
+  }
+  .course-search {
+    margin-bottom: 12px;
+    .el-input {
+      width: 150px;
+      ::-webkit-input-placeholder {
+        font-size: 13px;
+      }
+    }
+  }
+}
 </style>
 
 <template>
@@ -142,11 +139,11 @@
                 <p>{{form.single_score*form.single_num+form.multi_score*form.multi_num+form.judgment_score*form.judgment_num}}分</p>
             </el-form-item>
             <el-form-item prop="pass_score" label="及格分数" v-if="this.t==2">
-                <el-input-number v-model="form.pass_score" :disabled="true"
-                                ></el-input-number>
+                <el-input-number v-model="form.pass_score" :disabled="true"></el-input-number>
             </el-form-item>  
-           
-            
+            <el-form-item label="考试次数" prop="limit_repeat" v-if="this.t==2">
+                <el-input-number v-model="form.limit_repeat" :min="0" placeholder="请输入考试次数"></el-input-number>
+            </el-form-item>
             <!-- <el-form-item prop="sort" label="排序">
                 <el-input-number v-model="form.sort" auto-complete="off"></el-input-number>
             </el-form-item> -->
@@ -183,56 +180,67 @@
             </el-form-item>
         </el-form>
 
-        <!-- 选择课程弹窗 -->
-        <dialogSelectData ref="dialogSelect" v-model="dialogCourse.isShow" :getData="fetchCourse" title="选择课程"
-                          :selectedList="courseBox" @changeSelected="val=>courseBox=val"  item-key="contentid">
-            <div slot="search" class="course-search">
-                <el-input @keyup.enter.native="$refs.dialogSelect.fetchCourse(true)" v-model="dialogCourse.course_name"
-                          icon="search"
-                          placeholder="请输入关键字搜索"></el-input>
-            </div>
-        </dialogSelectData>
-        <!-- 发布对象弹窗 -->
-        <el-dialog
-            :title="pushTypeDialog.title"
-            :visible.sync="pushTypeDialog.showDialog"
-            v-if="pushTypeDialog.showDialog">
-            <template v-if="pushTypeDialog.isSearch">
-                <section class="search">
-                    <section>
-                        <i>部门</i>
-                        <DepSelect v-model="pushTypeDialog.fetchParam.gov_id" :change="getPushTypeData"></DepSelect>
-                    </section>
-                </section>
-            </template>
-            <Transfer placeholder="搜索"
-                      @searchFn="(val)=>{pushTypeDialog.page=1;pushTypeDialog.fetchParam.name=val;fetchPushTypeData();}"
-                      @moreFn="()=>{pushTypeDialog.page++;fetchPushTypeData('no-clear');}"
-                      :total="pushTypeDialog.total"
-                      :data="pushTypeDialog.data"
-                      :selectedValue='selectData'
-                      v-model="pushTypeDialog.selectedData[pushTypeDialog.type]"></Transfer>
-            <span slot="footer" class="dialog-footer" >
-                <el-button @click="pushTypeDialog.showDialog = false">取 消</el-button>
-                <el-button type="primary" @click="transferConfirmFn">确 定</el-button>
-            </span>
-        </el-dialog>
-
-    </article>
+    <!-- 选择课程弹窗 -->
+    <dialogSelectData
+      ref="dialogSelect"
+      v-model="dialogCourse.isShow"
+      :getData="fetchCourse"
+      title="选择课程"
+      :selectedList="courseBox"
+      @changeSelected="val=>courseBox=val"
+      item-key="contentid"
+    >
+      <div slot="search" class="course-search">
+        <el-input
+          @keyup.enter.native="$refs.dialogSelect.fetchCourse(true)"
+          v-model="dialogCourse.course_name"
+          icon="search"
+          placeholder="请输入关键字搜索"
+        ></el-input>
+      </div>
+    </dialogSelectData>
+    <!-- 发布对象弹窗 -->
+    <el-dialog
+      :title="pushTypeDialog.title"
+      :visible.sync="pushTypeDialog.showDialog"
+      v-if="pushTypeDialog.showDialog"
+    >
+      <template v-if="pushTypeDialog.isSearch">
+        <section class="search">
+          <section>
+            <i>部门</i>
+            <DepSelect v-model="pushTypeDialog.fetchParam.gov_id" :change="getPushTypeData"></DepSelect>
+          </section>
+        </section>
+      </template>
+      <Transfer
+        placeholder="搜索"
+        @searchFn="(val)=>{pushTypeDialog.page=1;pushTypeDialog.fetchParam.name=val;fetchPushTypeData();}"
+        @moreFn="()=>{pushTypeDialog.page++;fetchPushTypeData('no-clear');}"
+        :total="pushTypeDialog.total"
+        :data="pushTypeDialog.data"
+        :selectedValue="selectData"
+        v-model="pushTypeDialog.selectedData[pushTypeDialog.type]"
+      ></Transfer>
+      <span slot="footer" class="dialog-footer">
+        <!-- <el-button @click="pushTypeDialog.showDialog = false">取 消</el-button> -->
+        <el-button type="primary" @click="transferConfirmFn">确定</el-button>
+      </span>
+    </el-dialog>
+  </article>
 </template>
 
 <script>
-    import Transfer from '../../component/dialog/Transfer.vue'
-    import ImagEcropperInput from '../../component/upload/ImagEcropperInputTask.vue'
-    import courseTaskService from '../../../services/server/courseTaskService.js'
-    import courseService from '../../../services/course/courseService.js'
-    import commonService from '../../../services/commonService.js'
-    import govService from '../../../services/gov/govService.js'
-    import userService from '../../../services/gov/userService.js'
-    import dialogSelectData from '../../component/dialog/SelectData4table.vue'
-    import DateRange from '../../component/form/DateRangePicker.vue'
-    import DepSelect from '../../component/select/DepartmentNoself.vue'
-
+import Transfer from "../../component/dialog/Transfer.vue";
+import ImagEcropperInput from "../../component/upload/ImagEcropperInputTask.vue";
+import courseTaskService from "../../../services/server/courseTaskService.js";
+import courseService from "../../../services/course/courseService.js";
+import commonService from "../../../services/commonService.js";
+import govService from "../../../services/gov/govService.js";
+import userService from "../../../services/gov/userService.js";
+import dialogSelectData from "../../component/dialog/SelectData4table.vue";
+import DateRange from "../../component/form/DateRangePicker.vue";
+import DepSelect from "../../component/select/DepartmentNoself.vue";
 
     export default{
         name: 'server-manage-add',
@@ -265,6 +273,7 @@
                     task_type:'',
                     exam_id:'',
                     study_duration: '',
+                    limit_repeat: void 0   //考试次数
                 },
                 rules: {
                     title:  [
@@ -273,7 +282,8 @@
                             min: 1,
                             max: 40,
                             message: '长度不得大于 40 个字符'
-                        },{
+                        },
+                        {
                             pattern:  /\S$/,
                             message: '请输入非空格或非特殊字符的标题'
                         }
@@ -289,6 +299,7 @@
                     loading: false,
                     isShow: false,
                     course_name: void 0,
+                    type: "public"
                 },
                 pushTypeDialog: { //发布对象数据模型
                     fetchParam: {
@@ -300,6 +311,7 @@
                     title: '',
                     isSearch: '',
                     type: '',
+                    // limit_repeat: '',
                     showDialog: false,
                     selectedData: {
                         2: [],
@@ -314,43 +326,44 @@
                 delCourse:this.$route.params.add==1,
                 studyCheck:{} //
             }
+
         },
-        watch:{
-            // 'courseBox'(){   //--------------注销新功能-----------
-                //     this.getCourseIds()
-                //     let param={course_ids:this.form.course_ids}
-                //     courseTaskService.getCourseTaskTemplateStudyCheck(param).then((ret) => {
-                //         console.log(ret);
-                //         this.studyCheck=ret
-                //         this.form.study_duration=ret.second
-                //         console.log('this.form',this.form);
-                //         })
-                // }
-                // 'form.type'(){
-                //     if(this.form.type==1){//政府
-                //         this.form.user_ids= ''
-                //     }else{ //政府
-                //         this.form.gov_ids= ''
-                //     }
-                // },
-            'dialogCourse.isShow'(){
-                if(this.dialogCourse.isShow==false){
-                    this.getCourseIds()
-                    this.getStudyCheck()
-                }
-            },
-            'form.task_type'(){
-                this.passTasktype=this.form.task_type
-                if(!this.flag){
-                    this.flag=true
-                }else{
-                    this.initCourse()
-                }
-                this.$refs.dialogSelect.fetchCourse(true)
-            }
-    
-        },
-        created () {
+        
+  watch: {
+    // 'courseBox'(){   //--------------注销新功能-----------
+    //     this.getCourseIds()
+    //     let param={course_ids:this.form.course_ids}
+    //     courseTaskService.getCourseTaskTemplateStudyCheck(param).then((ret) => {
+    //         console.log(ret);
+    //         this.studyCheck=ret
+    //         this.form.study_duration=ret.second
+    //         console.log('this.form',this.form);
+    //         })
+    // }
+    // 'form.type'(){
+    //     if(this.form.type==1){//政府
+    //         this.form.user_ids= ''
+    //     }else{ //政府
+    //         this.form.gov_ids= ''
+    //     }
+    // },
+    "dialogCourse.isShow"() {
+      if (this.dialogCourse.isShow == false) {
+        this.getCourseIds();
+        this.getStudyCheck();
+      }
+    },
+    "form.task_type"() {
+      this.passTasktype = this.form.task_type;
+      if (!this.flag) {
+        this.flag = true;
+      } else {
+        this.initCourse();
+      }
+      this.$refs.dialogSelect.fetchCourse(true);
+    }
+  },
+  created () {
             xmview.setContentLoading(false)
             let t=this.$route.params.taskInfo
             //普通添加
@@ -364,7 +377,6 @@
 
                     this.form = Object.assign(this.form, ret.data)
                     // this.form.task_type= ret.data.task_type
-                    console.log( this.form);
                     
                     let txt=this.TYPE[t.task_type]
                     xmview.setContentTile( `添加${txt}任务`)
@@ -424,7 +436,7 @@
             //初始化课程数据
             initCourse(){
                 this.courseBox=[]
-                 this.getCourseIds()
+                this.getCourseIds()
                 this.studyCheck={}
                 this.form.study_duration=''
             },
@@ -535,12 +547,14 @@
                 
                 if(this.form.task_type==1||this.form.task_type==2){
                     console.log(' params.need_testing= 1');
-                    params.need_testing= 1
-                    params.category_type=''
+                    params.need_testing= 1;
+                    params.category_type='';
+                    params.material_type = "";
                 }else{
                      console.log(' params.need_testing= 0');
-                     params.need_testing= 0
-                     params.category_type=1
+                     params.need_testing= 0;
+                     params.category_type=1;
+                     params.material_type = "video";
                 }
                 return courseService.getPublicCourselist(Object.assign({}, this.dialogCourse, params))
             },
@@ -549,7 +563,6 @@
                     if (!valid) {
                         return false
                     }
-
                     // 处理课程id
                     this.getCourseIds()
 
@@ -588,5 +601,6 @@
             }
         },
         components: {DateRange,ImagEcropperInput, dialogSelectData, Transfer, DepSelect }
-    }
+
+};
 </script>

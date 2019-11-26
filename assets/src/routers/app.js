@@ -1,5 +1,5 @@
 // 区块模块
-// 角色模块
+// 角色模块（客户端管理）
 const pathPre = '/app'
 //  角色管理
 export default {
@@ -33,7 +33,7 @@ export default {
                 })
             },
             meta: {
-                title: '手机客户端-启动图',
+                title: '手机客户端-医政设置',
                 noback: true
             }
         },

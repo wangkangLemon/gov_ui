@@ -298,7 +298,7 @@ export default {
         Time(row, column, cellValue){
               return  this.timeFilter(row.addate) 
         },
-        timeFilter( addate){
+        timeFilter(addate){
             let time
             this.dataCache.forEach(v=> {3
                     time = addate.split(" ")[0]

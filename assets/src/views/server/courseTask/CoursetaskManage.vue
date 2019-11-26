@@ -102,13 +102,13 @@
                     <el-option label="学习任务" value="3"></el-option>
                 </el-select>
             </section>
-            <section>
+            <!--<section>
                 <i>任务类型</i>
                 <el-select clearable v-model="fetchParam.type" placeholder="未选择" @change="getData">
                     <el-option label="部门任务" value="1"></el-option>
                     <el-option label="个人任务" value="2"></el-option>
                 </el-select>
-            </section>
+            </section>-->
             <!--<section>
                 <i>状态</i>
                 <el-select v-model="fetchParam.status" placeholder="未选择" @change="getData" :clearable="true">
@@ -175,6 +175,9 @@
                     <el-button type="text" size="small" @click="handleDelete(scope.$index, scope.row)">
                         <i>删除</i>
                     </el-button>
+                     <el-button type="text" size="small" @click="export_exam(scope.$index, scope.row)" v-if="scope.row.task_type=='2'">
+                        <i>导出试题</i>
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -237,7 +240,8 @@
     import courseTaskService from '../../../services/server/courseTaskService.js'
     // import CourseTaskTemplateCategorySelect from '../../component/select/CourseTaskTemplateCategory.vue'
     import {fillImgPath} from '../../../utils/filterUtils'
-    
+    import config from '../../../utils/config'
+    import authUtils from '../../../utils/authUtils'
 
     export default {
         filters: {
@@ -257,7 +261,7 @@
                     category_id: '',
                     stime: '',
                     etime: '',
-                    type :'',
+                    type :'public',
                     status :-1,
                     deleted :-1,
                     task_type:'',
@@ -267,9 +271,14 @@
                 itemName: '',           // 要删除项名称
                 coursetasktemplateData: [],
                 total: 0,
+                token:''
             }
         },
+        created(){
+            this.token = authUtils.getAuthToken()
+        },
         activated () {
+            this.token = authUtils.getAuthToken()
             this.getData().then(() => {
                 xmview.setContentLoading(false)
             })
@@ -345,6 +354,12 @@
             },
             ueReady (ue) {
                 this.editor = ue
+            },
+            export_exam(index,row){//导出试题
+                let urlPre = config.apiHost
+                console.log(urlPre)
+				let newurl=`${urlPre}/course/task/export/${row.id}?token=${this.token}`
+				window.location.href =newurl
             }
         }
     }

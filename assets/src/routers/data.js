@@ -121,11 +121,11 @@ export default {
         
         //部门统计
          {
-            path: 'report-userlogin',
-            name: 'data-report-userlogin',
+            path: 'department-statistics',
+            name: 'data-department-statistics',
             component: resolve => {
                 require.ensure([], () => {
-                    resolve(require('../views/data/ReportUserlogin.vue'))
+                    resolve(require('../views/data/DepartmentStatistics.vue'))
                 })
             },
             meta: {
@@ -145,6 +145,32 @@ export default {
             meta: {
                 title: '村医统计 ',
                 noback: true
+            }
+        },
+        {
+            path: 'hospital-Medicine',
+            name: 'data-hospital-Medicine',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/data/hospitalMedicine.vue'))
+                })
+            },
+            meta: {
+                title: '院医统计 ',
+                noback: true
+            }
+        },
+        {
+            path: 'user-Detail',
+            name: 'data-user-Detail',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/data/userDetail.vue'))
+                })
+            },
+            meta: {
+                title: '统计详情',
+                noback: false
             }
         },
     ]

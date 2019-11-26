@@ -172,8 +172,8 @@
                     let req = userService.create
                     if (this.fetchParam.id) req = userService.update
                     console.log(this.fetchParam.id)
+                    this.fetchParam.passwd=this.fetchParam.password
                     req(this.fetchParam).then((ret) => {
-                        console.log(111111111111)
                         console.log(ret)
                         // 重置当前数据
                         //this.$refs[fetchParam].resetFields();//自己加的方法

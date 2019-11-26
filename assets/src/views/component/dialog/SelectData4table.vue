@@ -38,7 +38,7 @@
                           @select="rowSelected">
                     <el-table-column type="selection" :selectable="(row) =>  row.id != -1"></el-table-column>
                     <el-table-column>
-                        <template scope="scope" >
+                        <template scope="scope">
                             <i v-if="scope.row.id != -1">{{scope.row.course_name}}</i>
                             <el-button @click="fetchCourse(false)" class="dialog-getmore-btn" type="text"
                                        v-else :disabled="data.length - 1 >= total">

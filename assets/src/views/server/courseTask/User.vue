@@ -18,9 +18,7 @@
 </style>
 <template>
     <article id="task-statistics-container">
-        <!--<div class="top-btn">
-            <el-button icon="el-icon-document" type='warning' :loading="exportLoading" @click.native="exportTask">导出 excel</el-button>
-        </div>-->
+       
         <article class="search">
             <!--<section>
                 <i>完成状态</i>
@@ -33,10 +31,15 @@
                 <i>人员姓名</i>
                 <el-input v-model="fetchParam.name" @keyup.enter.native="fetchData"></el-input>
             </section>
+            <div style="float:right;">
+            <el-button icon="el-icon-document" type='warning' :loading="exportLoading" @click.native="exportExcel">导出 excel</el-button>
+            </div>
         </article>
         <el-table class="data-table" v-loading="loading" :data="dataList" :fit="true" border>
             <!--<el-table-column prop="name" width="130" label="人员姓名"></el-table-column>-->
             <el-table-column prop="user_name"label="人员姓名"></el-table-column>
+             <el-table-column prop="town_name"label="卫生院"></el-table-column>
+              <el-table-column prop="village_name"label="卫生室"></el-table-column>
             <el-table-column prop="course_count" label="任务数"></el-table-column>
             <el-table-column prop="course_done_cnt" label="完成数"></el-table-column>
             <el-table-column :formatter="status" label="完成状态"></el-table-column>
@@ -96,6 +99,8 @@
 
 <script>
     import courseTaskService from '../../../services/server/courseTaskService.js'
+    import config from '../../../utils/config'
+    import authUtils from '../../../utils/authUtils'
     export default {
         data () {
             return {
@@ -110,8 +115,10 @@
                     role_type: '',
                     name: '',
                     page: 1,
-                    pagesize: 15
+                    pagesize: 15,
+                    _export:''
                 },
+                token:'',
                 exportLoading: false,
                 courseDetail: {
                     showDialog: false,
@@ -131,7 +138,13 @@
                 return this.$route.params.id
             },
         },
+        created(){
+              this.token = authUtils.getAuthToken()
+            console.log(this.token)
+        },
         activated () {
+            this.token = authUtils.getAuthToken()
+            console.log(this.token)
             this.fetchParam.name= ''
             xmview.setContentTile && xmview.setContentTile(`详细统计-${this.$route.query.title}`)
             this.fetchData().then(() => {
@@ -170,6 +183,13 @@
                 let start = (this.courseDetail.fetchParam.page - 1) * offset
                 let end = start + offset
                 this.courseDetail.data = this.courseDetail.object.slice(start, end)
+            },
+            exportExcel(){
+                // this.fetchData(Object.assign(this.fetchParam,{_export:1}))
+                let urlPre = config.apiHost
+				let newurl=urlPre+'/course/task/stat/'+this.statid+'/user?_export=1&token='+this.token+'&page=1'+'&pagesize=15'+'&status='+'&name='
+				window.location.href =newurl
+              
             },
             // exportTask () {
             //     this.exportLoading = true

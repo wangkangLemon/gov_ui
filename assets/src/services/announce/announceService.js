@@ -83,7 +83,7 @@ class CompanyService {
         return api.post(url, reqParam).then(ret => {
             if (ret.code == 0) {
                  xmview.showTip('success',ret.message)
-                return ret.data
+                 return ret.data
             } else {
                 xmview.showTip('error',ret.message)
                 return Promise.reject(ret)

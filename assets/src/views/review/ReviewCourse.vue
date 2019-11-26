@@ -138,7 +138,7 @@
                     <el-button v-if="scope.row.audited == 1" @click="showDialog(scope.$index, scope.row)" type="text" size="small">
                         <i>{{ '审核' }}</i>
                     </el-button>
-                    <el-button @click="del(scope.$index, scope.row)" type="text" size="small">删除</el-button>
+                    <!--<el-button @click="del(scope.$index, scope.row)" type="text" size="small">删除</el-button>-->
                     <!--<el-button v-if="scope.row.subject_num > 0" @click="$router.push({name:'course-manage-course-answer-analysis', params:{id:scope.row.id}})"
                         type="text" size="small">答案分析
                     </el-button>-->
@@ -183,7 +183,7 @@
             gov_id: void 0, // 部门id
             category_id: void 0, // 栏目id
             course_name: '',
-            type: '',
+            type: 'public',
             page: 1,
             pagesize: 15,
             level: void 0,
@@ -233,16 +233,16 @@
         methods: {
             edit(row){
                 //{name: 'review-manage-addCourse', params: {courseInfo: scope.row,type:'reviewCheck'}, query: {id: scope.row.contentid}}
-                console.log('row====',row)
+                console.log(row)
                 if(row.category_type==3||row.category_type==4||row.category_type==5){
                     this.$router.push({name: 'review-manage-addCourse-herbal', params: {herbalInfo: row,handle:'edit'}, query: {id: row.contentid}})
                 }
                 else if(row.category_type==6){
-                    this.$router.push({ name:'review-manage-addCourse-imgtxt',params:{imgtxtInfo:row,handle:'edit'}})
+                    this.$router.push({ name:'review-manage-addCourse-imgtxt',params:{imgtxtInfo:row,handle:'edit'},query: {id: row.contentid}})
                     return 
                 }
                 else{
-                    this.$router.push({name: 'review-manage-addCourse', params: {courseInfo: row,handle:'edit'}, query: {id: row.contentid}})
+                    this.$router.push({name: 'review-manage-addCourseShow', params: {courseInfo: row,handle:'edit'}, query: {id: row.contentid}})
                 }
             },
             initFetchParam() {

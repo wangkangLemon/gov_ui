@@ -183,7 +183,7 @@
                       :selectedValue='selectData'
                       v-model="pushTypeDialog.selectedData[pushTypeDialog.type]"></Transfer>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="pushTypeDialog.showDialog = false">取 消</el-button>
+                <!-- <el-button @click="pushTypeDialog.showDialog = false">取 消</el-button> -->
                 <el-button type="primary" @click="transferConfirmFn">确 定</el-button>
             </span>
 
@@ -356,7 +356,6 @@
                 // console.log(param)
                 // map[this.pushTypeDialog.type](param).then(ret => {
                 announceService.fetchAllCheckData(param).then(ret => {
-                    
 
                     // this.pushTypeDialog.total = ret._exts.total
                     this.pushTypeDialog.total = ret._exts.total

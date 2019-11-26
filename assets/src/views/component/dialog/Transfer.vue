@@ -65,15 +65,15 @@
                       ref="multiple"
                       v-loading="loading"
                       class="row-class"
-                      @select="selectRow" @select-all="selectRow">
+                      @select="selectRow">
                 <el-table-column type="selection" :selectable="(row) =>  row.id != -1"></el-table-column>
                 <el-table-column>
                     <template scope="scope">
                         <i v-if="scope.row.id != -1">{{scope.row.name}}</i>
-                        <el-button @click="$emit('moreFn')" class="dialog-getmore-btn" type="text"
+                        <!-- <el-button @click="$emit('moreFn')" class="dialog-getmore-btn" type="text"
                                    v-else :disabled="data.length >= total">
                             <i>{{data.length -1 >= total ? '已无更多' : '点击加载更多'}}</i>
-                        </el-button>
+                        </el-button> -->
                     </template>
                 </el-table-column>
             </el-table>
@@ -89,12 +89,10 @@
                 class="row-class"
                 v-loading="selectLoading">
                 <el-table-column prop="name" label="课程名"></el-table-column>
-                <el-table-column
-                        width="50"
-                        label="">
+                <el-table-column width="50" label="操作">
                     <template scope="scope">
-                        <el-button type="text" @click="deleteData(scope.$index, scope.row)" icon="el-icon-delete"
-                                   size="small">
+                        <el-button type="text" @click="deleteData(scope.$index, scope.row)" icon="el-icon-delete" size="small">
+                            删除
                         </el-button>
                     </template>
                 </el-table-column>
@@ -139,31 +137,31 @@
                 this.total = val
             },
             value (val) {
+                console.log(val)
                 this.selectData = val
+               
             }
         },
         data () {
             return {
                 selectData: this.value,
-                name: '',
+                name: '', 
                 loading: false,
                 selectLoading: false,
-                page: 1,
+                page: 2,
             }
         },
         created(){
-            console.log('1---------------------------')
             console.log(this.value)
         },
         methods: {
             fetchData () {
-                console.log(this)
                 this.$emit('searchFn', this.name)
             },
             deleteData (index, row) {
                 this.selectData.splice(index, 1)
                 this.toggleRowSelectionById(row)
-                this.$emit('input', this.selectData)
+                // this.$emit('input', this.selectData)
             },
             toggleRowSelectionById (row) {
                 this.data.forEach((item) => {
@@ -203,12 +201,12 @@
             selectAll () {
                 this.toggleRowSelection(true)
                 this.selectData = clone(this.data).splice(0, this.data.length).filter(item => item.id != -1)
-                this.$emit('input', this.selectData)
+              
+               this.$emit('input', this.selectData)
                 this.type && this.$emit('selectAll', this.type)
             },
             // 全部删除
             deleteAll () {
-                
                 this.selectData = []
                 this.toggleRowSelection()
                 this.$emit('input', this.selectData)

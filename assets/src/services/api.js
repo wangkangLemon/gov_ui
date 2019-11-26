@@ -11,6 +11,7 @@ import ajax from '@fdaciuk/ajax'
 let requestId = 0
 function getTimeoutPromise (url) {
     return new Promise((resolve, reject) => {
+        console.log(requestedUrls[url])
         setTimeout(() => {
             // 如果该url还未处理完毕
             if (!requestedUrls[url]) {

@@ -6,13 +6,18 @@
                :before-upload="beforeUpload"
                :headers="headers"
                :action="url"
+               :data='uploadData'
+               :name='name'
                :file-list="fileList"
                :accept="accept"
                :on-error="handleError"
                :auto-upload="autoUpload"
-               :on-success="handleUploadMedia" :multiple="false" :on-progress="onProgress">
-        <el-button size="small" :disabled="disabled" type="primary"><i><i class="el-icon-upload el-icon--left"></i></i>{{btnTitle}}
-        <!--a-->
+               :on-success="handleUploadMedia" :multiple="false" :on-progress="onProgress" :disabled="disabled" >
+        <el-button size="small" :disabled="disabled" type="primary" v-if="this.btnType=='add'"><i><i class="el-icon-upload el-icon--left"></i></i>
+        点击上传
+        </el-button>
+         <el-button size="small" :disabled="disabled" type="primary" :class="{active:'isactive'}" v-else>
+        {{btnTitle}}
         </el-button>
     </el-upload>
 </template>
@@ -21,25 +26,20 @@
     import authUtils from '../../../utils/authUtils'
     export default {
         props: {
-            beforeUpload: Function,
+            beforeUpload: Function, 
             url: {
                 type: String, // 上传的url
                 default: 'https://jsonplaceholder.typicode.com/posts/'
             },
             defaultFile: String,
             onSuccess: Function,
-            disabled: {
-                type: Boolean,
-                default: false
-            },
-            btnTitle: { // 按钮的title
-                type: String,
-                default: '点击上传'
-            },
+            disabled: Boolean,
+            btnTitle:String,
             accept: {
                 type: String,
                 default: '*/*'
             },
+             btnType:String,
             // 文件上传中的回调
             onProgress: Function,
             onError: Function,
@@ -50,8 +50,14 @@
         },
         data () {
             return {
+            	isactive:true,
                 headers: {},
-                fileList: this.defaultFile ? [{name: this.defaultFile}] : []
+                fileList: this.defaultFile ? [{name: this.defaultFile}] : [],
+                uploadData:{
+                	biz:'document'
+                	
+                },
+                name:'image'
             }
         },
         created () {
@@ -68,7 +74,7 @@
         },
         methods: {
             handleUploadMedia (response, file) {
-                this.onSuccess && this.onSuccess(response)
+                this.onSuccess && this.onSuccess(response,file)
                 this.fileList = [{name: file.name}]
             },
             choose () {
@@ -89,3 +95,16 @@
         components: {}
     }
 </script>
+<style scoped>
+	.active{
+		background-color: #FFFFFF;
+		/*color: #20a0ff;*/
+		color: #000;
+		border: 1px solid rgb(191, 203, 217);
+		font-size: 14px;
+	}
+	.active:hover{
+		color: #20a0ff;
+		border-color:#20a0ff ;
+	}
+</style>

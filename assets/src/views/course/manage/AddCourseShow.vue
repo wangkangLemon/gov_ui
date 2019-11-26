@@ -87,8 +87,8 @@
 						<CropperImg ref="imgcropper" :confirmFn="cropperImgSucc" :aspectRatio="16/9"></CropperImg>
 					</el-form-item>
 					<el-form-item label="课程类型" prop="material_type">
-						<el-select v-model="fetchParam.material_type" @change="typeChange" placeholder="请选择" :disabled='this.$route.query.contentid'>
-							<!--<el-option label="视频" value="video"></el-option>-->
+						<el-select v-model="fetchParam.material_type" @change="typeChange" placeholder="请选择" disabled>
+							<el-option label="视频" value="video"></el-option>
 							<el-option label="WORD" value="doc"></el-option>
 							<el-option label="PPT" value="ppt"></el-option>
 							<el-option label="PDF" value="pdf"></el-option>
@@ -96,12 +96,12 @@
 					</el-form-item>
 					<el-form-item label="课程文件" prop="material_id">
 						<UploadFile :onSuccess="handleUploadDoc" :url="uploadDocUrl" :accept="accept" :disabled="fetchParam.material_type == null" :btnTitle='filename' :btnType='btnType' v-show="fetchParam.material_type !== 'video'"></UploadFile>
-						<!--<el-button v-show="fetchParam.material_type === 'video'" @click="isShowVideoDialog=true">
+						<el-button v-show="fetchParam.material_type === 'video'" @click="isShowVideoDialog=true">
 							<i>{{fetchParam.material_name}}</i>
-						</el-button>-->
-						<!--<el-button @click="preview(scope.$index, scope.row)" type="text" size="small"     v-if="scope.row.status != 1 && scope.row.status != 2"-->
-						<!--<el-button @click="preview(fetchParam.material_id)" type="text" size="big" v-show="fetchParam.material_type === 'video'"> 查看视频
-						</el-button>-->
+						</el-button>
+						<el-button @click="preview(scope.$index, scope.row)" type="text" size="small"     v-if="scope.row.status != 1 && scope.row.status != 2"
+						<el-button @click="preview(fetchParam.material_id)" type="text" size="big" v-show="fetchParam.material_type === 'video'"> 查看视频
+						</el-button>
 					</el-form-item>
 					<!--<el-form-item label="所属专辑">
                         <CourseAlbumSelect :placeholder="fetchParam.album_name" v-model="fetchParam.albumid"></CourseAlbumSelect>
@@ -131,11 +131,11 @@
 					<!--<el-form-item label="及格分数" prop="score_pass">
 						<el-input :disabled="fetchParam.need_testing == 0" v-model="fetchParam.score_pass"></el-input>
 					</el-form-item>-->
-					<el-form-item label="" v-if="!readonly">
+					<!--<el-form-item label="" v-if="!readonly">
 						<el-button style="float: right" type="primary" @click="btnNextClick">
 							<i>{{ fetchParam.need_testing == 0 ? '保存' : '保存并下一步' }}</i>
 						</el-button>
-					</el-form-item>
+					</el-form-item>-->
 
 				</el-form>
 			</el-tab-pane>
@@ -210,10 +210,10 @@
 					</el-form-item>
 				</el-form>
 
-				<div class="bottom-btns" v-if="!readonly">
+				<!--<div class="bottom-btns" v-if="!readonly">
 					<el-button @click="btnPreClick">上一步</el-button>
 					<el-button class="submit" type="primary" @click="handleSubmitTesting">发布</el-button>
-				</div>
+				</div>-->
 			</el-tab-pane>
 		</el-tabs>
 
@@ -302,35 +302,17 @@
 			this.uploadDocUrl = courseService.getCourseDocUploadUrl()
 			this.uploadImgUrl = courseService.commonUploadImage()
 			//编辑页面
-			if(this.$route.query.contentid) {
-				console.log(this.$route.query.contentid)
+			if(this.$route.query.id) {
+				console.log(this.$route.query.id)
 				this.activeTab = 'first'
-				courseService.getCourseInfo(this.$route.query.contentid).then((ret) => {
+				courseService.getCourseInfo(this.$route.query.id).then((ret) => {
 					console.log(ret)
 					this.fetchParam = ret
 					this.filename = ret.material.file_name
-					this.fetchParam.source_url = ''
-					this.fetchParam.file_name = ''
 					this.fetchParam.material_name = ret.course_name
 //					this.rulesFirst.material_id.required = false;
 					this.courseTags = this.fetchParam.tags ? this.fetchParam.tags.split(',') : []
-					xmview.setContentTile('编辑课程')
-				})
-			} else if(this.$route.query.contentid) {
-				console.log(2222)
-				this.activeTab = 'first'
-				courseService.getCourseInfo(this.$route.query.contentid).then((ret) => {
-					//					this.fetchParam = ret.course
-					console.log(ret)
-					this.fetchParam = ret
-//					this.filename = ret.material.file_name
-					this.fetchParam.source_url = ''
-					this.fetchParam.file_name = ''
-					this.fetchParam.material_name = ret.course_name
-					this.courseTags = this.fetchParam.tags ? this.fetchParam.tags.split(',') : []
-					xmview.setContentTile('编辑课程')
-				}).catch((ret) => {
-					xmview.showTip('error', ret.message)
+					xmview.setContentTile('查看课程')
 				})
 			}
 

@@ -19,7 +19,7 @@ export default {
                 })
             },
             meta: {
-                title: '医政 - 部门',
+                title: '医政 - 部门',//部门管理页面
                 noback: true
             }
         },
@@ -32,7 +32,7 @@ export default {
                 })
             },
             meta: {
-                title: '医政添加',
+                title: '医政添加',//部门管理页面
                 noback: false
             }
         },
@@ -45,7 +45,7 @@ export default {
                 })
             },
             meta: {
-                title: '医政更新',
+                title: '医政更新',//部门管理页面
                 noback: false
             }
         },
@@ -59,7 +59,7 @@ export default {
                 })
             },
             meta: {
-                title: '管理员',
+                title: '管理员',//部门管理页面
             }
         },
         // // 部门人员查询
@@ -72,7 +72,7 @@ export default {
                 })
             },
             meta: {
-                title: '医政 - 人员',
+                title: '医政 - 人员',//人员管理
                 noback: true
             }
         },
@@ -114,7 +114,7 @@ export default {
                 })
             },
             meta: {
-                title: '人员修改',
+                title: '人员修改',//人员管理
                 noback: false
             }
         },
@@ -128,7 +128,7 @@ export default {
                 })
             },
             meta: {
-                title: '权限管理',
+                title: '权限管理',//权限管理界面
                 noback: true
             }
         },
@@ -142,7 +142,7 @@ export default {
                 })
             },
             meta: {
-                title: '资讯管理',
+                title: '资讯管理',//资讯管理
                 noback: true
             }
         },
@@ -155,7 +155,7 @@ export default {
                 })
             },
             meta: {
-                title: '资讯新建',
+                title: '资讯新建',//资讯管理
                 noback: false
             }
         },
@@ -168,10 +168,22 @@ export default {
                 })
             },
             meta: {
-                title: '资讯修改',
+                title: '资讯修改',//资讯管理
                 noback: false
             }
         },
-
+        {
+            path: 'school-time-management', //专家管理表单 -修改
+            name: 'gov-school-time-management',
+            component: resolve => {
+                require.ensure([], () => {
+                    resolve(require('../views/gov/schoolTimeManagement.vue'))
+                })
+            },
+            meta: {
+                title: '学时管理',
+                noback: true
+            }
+        },
     ]
 }

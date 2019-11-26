@@ -16,6 +16,7 @@
     import govService from '../../../services/gov/govService.js'
     export default{
         props: {
+        	character:Number,
             value: [String, Number],
             change: Function,
             placeholder: String,
@@ -41,7 +42,9 @@
         },
         methods: {
             fetchData (val, length) {
+            	
                 return govService.getSelectList({
+                	character:this.character,
                     name: val,
                     category: this.type,
                     pagesize: this.pageSize,
@@ -53,6 +56,7 @@
                 })
             },
             handleChange(val) {
+            	console.log(val)
                 this.currVal = val
                 this.$emit('input', val)
                 this.$emit('change', val)

@@ -33,7 +33,7 @@
             <div class="info">
                 <h2>
                     {{details.name}}
-                    <el-tag type="success">{{govType[details.category]}}</el-tag>
+                    <el-tag type="success">{{govType[details.level]}}</el-tag>
                 </h2>
                 <p><i class="title">联系人：</i><span class="value">{{details.concact || '无'}}</span></p>
                 <p><i class="title">联系人手机：</i><span class="value">{{details.mobile || '无'}}</span></p>
@@ -84,7 +84,7 @@
         <el-table v-loading="loading" border :data="govData" stripe style="width: 100%">
             <el-table-column prop="name" label="部门名称" min-width="180">
                 <template scope="scope">
-                    <el-tag type="gray">{{govType[scope.row.category]}}</el-tag>
+                    <el-tag type="gray">{{govType[scope.row.level]}}</el-tag>
                       {{scope.row.name}}
                 </template>
             </el-table-column>
@@ -114,7 +114,7 @@
             </el-table-column>
         </el-table>
         <!--<div class="block">-->
-            <el-pagination class="pagin" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-size="pageSize":page-sizes="[15, 30, 60, 100]"
+            <el-pagination class="pagin" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-size="pageSize" :page-sizes="[15, 30, 60, 100]"
                  layout="sizes,total, prev, pager, next" :total="total">
             </el-pagination>
         <!--</div>-->
@@ -142,7 +142,7 @@
         data() {
             return {
                 isInit: false,
-                govType: ['', '系统', '政府'],
+                govType: ['省级', '市级', '县、区级','镇级','村级'],
                 types: [ // 部门类型
                     {
                         name: '政府',
@@ -237,10 +237,10 @@
                 this.getData()
             },
             handleCurrentChange(val) {
-                if (!this.isInit) {
-                    this.isInit = true
-                    return
-                }
+                // if (!this.isInit) {
+                //     this.isInit = true
+                //     return
+                // }
                 this.currentPage = val
                 this.getData()
             },
